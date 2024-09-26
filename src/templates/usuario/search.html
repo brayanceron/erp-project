@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Buscar usuario</title>
+</head>
+
+<body>
+
+    {% include("partials/navbar.html") %}
+
+
+    <div class="container my-5">
+
+        <div class="is-flex is-justify-content-center is-align-items-center" style="height: 100px;">
+            <div class="field has-addons">
+
+                <p class="control">
+                    <span class="select">
+                        <select id="slt_opcion">
+                            <option value="names">Nombre</option>
+                            <option value="dni">DNI</option>
+                            <option value="email">Email</option>
+                        </select>
+                    </span>
+                </p>
+                <p class="control is-expanded">
+                    <input class="input" type="text" placeholder="Buscar usuario" id="inp_textobuscar">
+                </p>
+                <p class="control">
+                    <button class="button" id="btnBuscarUsuario">Buscar</button>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="container my-5" id="div_results">
+
+        <!-- <div class="grid" id="div_results"> -->
+        <!-- <div class="grid" id="div_results"> -->
+
+        <!-- </div> -->
+
+    </div>
+
+
+</body>
+
+
+<script>
+    let div_results = document.getElementById('div_results')
+    let slt_opcion = document.getElementById('slt_opcion')
+    let inp_textobuscar = document.getElementById('inp_textobuscar');
+
+
+
+    document.getElementById('btnBuscarUsuario').addEventListener('click', async (event) => {
+        div_results.innerHTML = "cargando..."
+        let url = `/api/usuario/search?${slt_opcion.value + "=" + inp_textobuscar.value}`
+        let res = await fetch(url, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        let status = res.status
+        let data = await res.json()
+
+        if (status != 200) {
+            div_results.innerHTML = "No se encontraron datos"
+            return;
+        }
+
+        div_results.innerHTML = ""
+
+        data.forEach(element => {
+            // <div class="cell is-col-min-4" style="width : 350px">
+            div_results.innerHTML += `     
+                    <br>   
+                    <div class="card m-2">
+                        <div class="columns">
+                            <div class="column is-1">
+                                <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngall.com%2Fwp-content%2Fuploads%2F5%2FUser-Profile-PNG.png&f=1&nofb=1&ipt=012389a2ca3994f485cc4f0b8ba61bdfeb839fddf9b26bb82c2e3421cd025174&ipo=images"
+                                    width="100px" alt="">
+                            </div>
+                            <div class="column">
+                                <div class="columns is-multiline">
+                                    <div class="column is-12">
+                                        <p class="title is-5">${element.names} ${element.surnames}</p>
+                                    </div>
+                                    <div class="column is-6 p-0 m-0">
+                                        <span class="icon-text">
+                                            <span class="icon"><i class="fa-solid fa-fingerprint"></i></span>
+                                            <span><a href="/ssr/usuario/get/${element.id}">${element.id}</a></span>
+                                        </span>
+                                    </div>
+                                    <div class="column is-6 p-0 m-0">
+                                        <span class="icon-text">
+                                            <span class="icon"><i class="fa-solid fa-venus-mars"></i></span>
+                                            <span>${element.gender}</span>
+                                        </span>
+                                    </div>
+                                    <div class="column is-6 p-0 m-0">
+                                        <span class="icon-text">
+                                            <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                                            <span>${element.dni}</span>
+                                        </span>
+                                    </div>
+                                    <div class="column is-6 p-0 m-0">
+                                        <span class="icon-text">
+                                            <span class="icon"><i class="fas fa-envelope"></i></span>
+                                            <span>${element.email}</span>
+                                        </span>
+                                    </div>
+                                    <div class="column is-6 p-0 m-0">
+                                        <span class="icon-text">
+                                            <span class="icon"><i class="fa-solid fa-location-crosshairs"></i></span>
+                                            <span>${element.country}</span>
+                                        </span>
+                                    </div>
+                                    <div class="column is-6 p-0 m-0">
+                                        Ciudad: ${element.city}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                
+            `
+        });
+
+
+        console.log(data);
+    });
+
+</script>
+
+
+
+</html>

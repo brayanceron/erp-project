@@ -1,0 +1,113 @@
+<div class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="dialog">
+        <div class="dialog-content">
+            <p class="dialog-heading">Delete file?</p>
+            <p class="dialog-description">Lorem ipsum dolor sit amet, consectetur adi</p>
+        </div>
+        <div class="dialog-button-wrapper">
+            <button class="dialog-button dialog_secondary">Cancel</button>
+            <button class="dialog-button dialog_primary">Delete</button>
+        </div>
+        <button class="dialog_dialog_secondary">
+            <svg height="20px" viewBox="0 0 384 512">
+                <path
+                    d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z">
+                </path>
+            </svg>
+        </button>
+    </div>
+
+</div>
+
+
+<style>
+    /* From Uiverse.io by vinodjangid07 */
+    .dialog {
+        width: 300px;
+        height: fit-content;
+        background: rgb(255, 255, 255);
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        padding: 30px;
+        position: relative;
+        box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.068);
+    }
+
+    .dialog-content {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .dialog-heading {
+        font-size: 20px;
+        font-weight: 700;
+        color: rgb(27, 27, 27);
+    }
+
+    .dialog-description {
+        font-weight: 100;
+        color: rgb(102, 102, 102);
+    }
+
+    .dialog-button-wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .dialog-button {
+        width: 50%;
+        height: 35px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .dialog_primary {
+        background-color: rgb(255, 114, 109);
+        color: white;
+    }
+
+    .dialog_primary:hover {
+        background-color: rgb(255, 73, 66);
+    }
+
+    .dialog_secondary {
+        background-color: #ddd;
+    }
+
+    .dialog_secondary:hover {
+        background-color: rgb(197, 197, 197);
+    }
+
+    .dialog_dialog_secondary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background-color: transparent;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+    }
+
+    .dialog_dialog_secondary:hover svg {
+        fill: black;
+    }
+
+    .dialog_dialog_secondary svg {
+        fill: rgb(175, 175, 175);
+    }
+</style>

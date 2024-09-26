@@ -1,0 +1,25 @@
+<table class="table mt-5">
+    <thead>
+        <tr class="is-primary">
+            <th>ID</th>
+            <th>ID Sucursal</th>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for departamento in departamentos %}
+        <tr>
+            <td>{{ departamento['id'] }}</td>
+            <td>{{ departamento['id_sucursal'] }}</td>
+            <td>{{ departamento['name'] }}</td>
+            <td>{{ departamento['phone'] }}</td>
+            <td>{{ departamento['email'] }}</td>
+            <td>{{ departamento['description'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

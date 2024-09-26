@@ -1,0 +1,180 @@
+<div class="modal" id="modal_search_suc">
+    <div class="modal-background"></div>
+
+
+
+    <div class="modal-content">
+        <div class="box">
+            <div class="is-flex my-3">
+                <p class="modal-card-title has-text-centered">Buscar sucursal</p>
+                <button class="delete" aria-label="close" onclick="closeModal()"></button>
+            </div>
+
+            <div class="exa">
+                {% include("ubicacion/ubicacion.html") %}
+            </div>
+
+            <div class="select is-fullwidth my-2" id="select_sucursal_modal_div">
+                <select name="sucursal" id="select_sucursal_modal" disabled>
+                    <!-- <option value="">Seleccionar sucursal</option> -->
+                </select>
+            </div>
+
+            <div class="is-flex is-justify-content-end my-2">
+                <button class="button is-light mx-1" id="" onclick="closeModal()">Cancelar</button>
+                <button class="button is-warning mx-1" id="btn_recargar">Recargar</button>
+                <button class="button is-success mx-1" id="btn_seleccionar" disabled>Seleccionar</button>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+    <button class="modal-close is-large" aria-label="close" onclick="closeModal()"></button>
+</div>
+
+
+
+<script>
+    let select_sucursal_modal = document.getElementById("select_sucursal_modal")
+    let btn_seleccionar = document.getElementById("btn_seleccionar")
+
+    let select_pais_modal = document.getElementById('select_pais')
+    let select_ciudad_modal = document.getElementById('select_ciudad')
+
+
+    function closeModal(event) {
+        let modal_search_suc = document.getElementById("modal_search_suc")
+        modal_search_suc.classList.remove("is-active")
+    }
+
+
+
+    async function after_onload_ubicacion(){
+        await set_select_sucursal_modal();
+    }
+    // select_pais_modal.addEventListener()
+    select_pais_modal.addEventListener('change', async (event) => {
+        // console.log("OUT pais (after)");
+        // await set_select_sucursal_modal()
+        // console.log("OUT pais (before)");
+    })
+
+    select_ciudad_modal.addEventListener('change', async (event) => {
+        console.log("OUT ciudad");
+        await set_select_sucursal_modal()
+        /* let select_sucursal_modal_div = document.getElementById("select_sucursal_modal_div")
+        select_sucursal_modal_div.classList.add("is-loading")
+
+        let res = await fetch(`/ssr/sucursal/get/${select_pais_modal.value}/${select_ciudad_modal.value}`)
+        let status = res.status
+
+        if (status == 200) {
+            let data = await res.json();
+            select_sucursal_modal.innerHTML = ""
+
+            select_sucursal_modal.disabled = false;
+            select_sucursal_modal_div.classList.remove("is-loading")
+
+            data.forEach(sucursal => {
+                let option = document.createElement('option')
+                option.value = sucursal.id
+                // option.innerText = `${sucursal.name} - ${sucursal.country}, ${sucursal.city}`
+                option.innerText = sucursal.name
+                select_sucursal_modal.appendChild(option)
+
+            });
+            activate_btnseleccionar(true)
+        }
+        else {
+            select_sucursal_modal.disabled = true;
+            select_sucursal_modal.innerHTML = "<option>Seleccionar sucursal</option>"
+            select_sucursal_modal_div.classList.remove("is-loading")
+            activate_btnseleccionar(false);
+        } */
+
+    })
+
+    async function set_select_sucursal_modal(){
+        // await get_paises()
+
+        let select_sucursal_modal_div = document.getElementById("select_sucursal_modal_div")
+        select_sucursal_modal_div.classList.add("is-loading")
+
+        console.log(`Intentando para ${select_pais_modal.value} - ${select_ciudad_modal.value}`);
+
+        if(!select_pais_modal.value || !select_ciudad_modal.value){
+            select_sucursal_modal.disabled = true;
+            select_sucursal_modal.innerHTML = "<option>Se debe seleccionar un pais y una ciudad</option>"
+            select_sucursal_modal_div.classList.remove("is-loading")
+            activate_btnseleccionar(false);
+            return
+        }
+        let res = await fetch(`/ssr/sucursal/get/${select_pais_modal.value}/${select_ciudad_modal.value}`)
+        let status = res.status
+
+        if (status == 200) {
+            let data = await res.json();
+            select_sucursal_modal.innerHTML = ""
+
+            select_sucursal_modal.disabled = false;
+            select_sucursal_modal_div.classList.remove("is-loading")
+
+            data.forEach(sucursal => {
+                let option = document.createElement('option')
+                option.value = sucursal.id
+                // option.innerText = `${sucursal.name} - ${sucursal.country}, ${sucursal.city}`
+                option.innerText = sucursal.name
+                select_sucursal_modal.appendChild(option)
+
+            });
+            activate_btnseleccionar(true)
+        }
+        else {
+            let data = await res.json();
+            console.log(data);
+
+            select_sucursal_modal.disabled = true;
+            select_sucursal_modal.innerHTML = "<option>Seleccionar sucursal</option>"
+            // select_sucursal_modal.innerHTML = `<option>${message}</option>`
+            select_sucursal_modal_div.classList.remove("is-loading")
+            activate_btnseleccionar(false);
+        }
+    }
+
+
+
+    btn_seleccionar.addEventListener('click', event => {
+        let sucursal_select_form = document.getElementById("sucursal_select_form")
+
+        let select_pais = document.getElementById("select_pais")
+        let select_ciudad = document.getElementById("select_ciudad")
+
+        sucursal_select_form.innerHTML = "";
+
+
+        if (!select_sucursal_modal.value) { alert("No se ha seleccionado ninguna sucursal"); return; };
+
+        let option = document.createElement('option')
+        option.value = select_sucursal_modal.value;
+        option.innerHTML = select_sucursal_modal.options[select_sucursal_modal.selectedIndex].text + " - " +
+            select_pais.options[select_pais.selectedIndex].text + ", " + select_ciudad.options[select_ciudad.selectedIndex].text
+
+        sucursal_select_form.appendChild(option)
+
+        closeModal()
+    })
+    function activate_btnseleccionar(value_activate) {
+        // console.log(value_activate);
+        // console.log(typeof value_activate);
+        btn_seleccionar.disabled = !value_activate
+    }
+    document.getElementById("btn_recargar").addEventListener('click', async (event) => {
+        await get_paises();
+        await set_select_sucursal_modal();
+        // console.log("OUT pais"); 
+    });
+
+</script>

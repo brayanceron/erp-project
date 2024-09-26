@@ -1,0 +1,29 @@
+<div class="modal is-active" id="myModal">
+<!-- <div class="modal" id="myModal"> -->
+    <div class="modal-background"></div>
+
+
+
+    <div class="modal-content">
+        <div class="box">
+            <div class="is-flex mb-3">
+                <p class="modal-card-title">Modal title</p>
+                <button class="delete" aria-label="close" onclick="closeModal()"></button>
+            </div>
+            <p>{{error}}</p>
+            <button class="button is-warning">Cerrar</button>
+            <button class="button is-success">Ok</button>
+        </div>
+
+    </div>
+
+    <button class="modal-close is-large" aria-label="close" onclick="closeModal()"></button>
+</div>
+<script>
+    function closeModal(event) {
+        let myModal = document.getElementById("myModal")
+        myModal.classList.remove("is-active")
+        // event.preventDefault()
+        // myModal.className = "modal"
+    }
+</script>

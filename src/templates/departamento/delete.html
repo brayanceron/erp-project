@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Eliminar departamento</title>
+</head>
+
+<body>
+    {% include("partials/navbar.html") %}
+
+
+
+    <div class="is-flex is-justify-content-center is-align-items-center" style="width: 100vw;">
+
+        <div class="fixed-grid has-1-cols" style="width: 32%;">
+            <div class="grid">
+
+                <div class="cell my-4">
+                    {% if status == 200 %}
+                    {% include("sucursal/partials/success.html") %}
+                    {% else %}
+                    {% include("sucursal/partials/error.html") %}
+                    {% endif %}
+                </div>
+                <div class="cell">
+                    <div class="is-flex is-align-items-center is-justify-content-center">
+                        <a href="/ssr/sucursal/get" class="button is-light">Volver al menu sucursales</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>

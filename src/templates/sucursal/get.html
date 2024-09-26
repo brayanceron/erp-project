@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Sucursales</title>
+</head>
+
+<body>
+
+    {% include("partials/navbar.html") %}
+
+
+    <div class="container my-5">
+        <h1 class="title is-4 has-text-centered my-2">Sucursales</h1>
+    </div>
+
+    {% if error %}
+    <div class="container">
+        {% include('sucursal/partials/error.html') %}
+    </div>
+    {% else %}
+
+    <div class="container">
+        <div class="columns is-multiline">
+
+            {% for sucursal in sucursales %}
+            {% include('sucursal/partials/card_sucursal.html') %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+    {% endif %}
+
+    <div class="container my-2">
+        <p class="has-text-centered">{{lenght}} resultado(s) encontrado(s)</p>
+    </div>
+
+
+
+</body>
+
+</html>

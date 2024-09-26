@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Sucursal</title>
+</head>
+
+<body>
+    {% include("partials/navbar.html") %}
+
+    <div class="container my-5">
+        <h1 class="title is-4 my-2 container has-text-centered">Sucursal</h1>
+    </div>
+
+
+    {% if error %}
+    <div class="container" style="width: 32%;">
+        {% include('sucursal/partials/error.html') %}
+    </div>
+    {% else %}
+
+
+    <!-- INFO SUCURSAL -->
+
+    <div class="container box">
+        <table class="table is-bordered is-fullwidth">
+            <tr>
+                <td class="is-dark">Id</td>
+                <td>{{sucursal["id"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Nombre</td>
+                <td>{{sucursal["name"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Ubicación</td>
+                <td>{{sucursal["country"]}}, {{sucursal["city"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Dirección</td>
+                <td>{{sucursal["address"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Teléfono</td>
+                <td>{{sucursal["phone"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Descripción</td>
+                <td>{{sucursal["description"]}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- INFO DEPARTAMENTOS SUCURSAL -->
+
+    <div class="container box">
+
+
+        <h1 class="title is-5 has-text-centered">Departamentos registrados</h1>
+
+        {% if lenght > 0 %}
+        <table class="table is-bordered is-fullwidth">
+            <thead>
+                <tr>
+                    <td class="is-dark has-text-white">Id</td>
+                    <td class="is-dark has-text-white">Nombre</td>
+                    <td class="is-dark has-text-white">Sucursal</td>
+                    <td class="is-dark has-text-white">Teléfono</td>
+                    <td class="is-dark has-text-white">Acciones</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for departamento in departamentos %}
+                <tr>
+                    <td><a href="/ssr/departamento/get/{{departamento['id']}}">{{ departamento["id"] }}</a></td>
+                    <td>{{ departamento["name"] }}</td>
+                    <td>{{ departamento["id_sucursal"] }}</td>
+                    <td>{{ departamento["phone"] }}</td>
+                    <td>
+                        <a class="button is-warning is-small mx-1" href="/ssr/departamento/put/{{departamento['id']}}">
+                            <span class="icon">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </span>
+                            <!-- <span>Editar</span> -->
+                        </a>
+                        <a class="button is-danger is-small mx-1"
+                            href="/ssr/departamento/delete/{{departamento['id']}}">
+                            <span class="icon">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </span>
+                            <!-- <span>Eliminar</span> -->
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+        {% endif %}
+
+        <p class="has-text-centered">{{lenght}} resultado(s) encontrado(s)</p>
+
+    </div>
+
+    {% endif %}
+
+
+</body>
+
+</html>

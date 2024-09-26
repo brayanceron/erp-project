@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Actualizar Departamento</title>
+</head>
+
+<body>
+
+    {% include("partials/navbar.html") %}
+
+
+    <form action="/ssr/departamento/put/{{departamento['id']}}" method="post">
+        <div class="is-flex is-justify-content-center is-align-items-center" style="width: 100vw;">
+
+
+            <div class="fixed-grid has-1-cols" style="width: 32%;">
+
+                <div class="grid">
+
+                    <div class="cell">
+                        <h1 class="title is-4 has-text-centered my-2">Actualizar Departamento</h1>
+                    </div>
+
+
+                    {% if error_get %}
+                    <div class="cell">
+                        {% include("sucursal/partials/error.html", error) %}
+                    </div>
+                    {% else %}
+                    <div class="cell">
+                        {% include("departamento/partials/form_departamento.html") %}
+                        <div class="">
+                            <input type="submit" class="button is-primary is-fullwidth" value="Actualizar">
+                        </div>
+                    </div>
+
+
+
+                    {% if error %}
+                    <div class="cell">
+                        {% include("sucursal/partials/error.html") %}
+                    </div>
+                    {% endif %}
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </form>
+
+
+</body>
+
+{% include("departamento/partials/modal_search_suc.html") %}
+
+<script>
+    let btnBuscar=document.getElementById("btnBuscar")
+    btnBuscar.addEventListener('click', async (event) => {
+        event.preventDefault()
+        btnBuscar.classList.add("is-loading")
+        await get_paises();
+        await set_select_sucursal_modal();
+        
+        let modal_sucursal = document.getElementById('modal_search_suc');
+        modal_sucursal.classList.add("is-active");
+        // activate_btn_seleccionar()
+        
+        btnBuscar.classList.remove("is-loading")
+    });
+</script>
+
+
+</html>

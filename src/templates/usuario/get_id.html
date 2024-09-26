@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Usuario</title>
+</head>
+
+<body>
+
+    {% include("partials/navbar.html") %}
+
+
+    <div class="container">
+        <h1 class="title is-4 has-text-centered">Perfil de usuario</h1>
+    </div>
+
+    <div class="container card  my-4 px-2" style="width: 30%;">
+
+
+        <div class="columns is-multiline">
+            <div class="column is-12">
+                <div class="is-flex is-justify-content-center">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngall.com%2Fwp-content%2Fuploads%2F5%2FUser-Profile-PNG.png&f=1&nofb=1&ipt=012389a2ca3994f485cc4f0b8ba61bdfeb839fddf9b26bb82c2e3421cd025174&ipo=images"
+                        width="200px" alt="">
+                </div>
+            </div>
+
+            <div class="column is-12">
+                <p class="title is-6 has-text-centered">{{usuario['names']}} {{usuario['surnames']}}</p>
+            </div>
+
+            <div class="column is-12">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-fingerprint"></i></span>
+                    <span>{{usuario['id']}}</span>
+                </span>
+            </div>
+
+
+            <div class="column is-6">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span>{{usuario['dni']}} (DNI)</span>
+                </span>
+            </div>
+
+            <div class="column is-6">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-venus-mars"></i></span>
+                    {% if usuario['gender']=='F' %}
+                    <span>Femenino</span>
+                    {% else %}
+                    <span>Masculino</span>
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="column is-6">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-cake-candles"></i></span>
+                    <span>{{usuario['birthdate']}}</span>
+                </span>
+            </div>
+
+            <div class="column is-6">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
+                    <span>{{usuario['phone']}}</span>
+                </span>
+            </div>
+
+
+            <div class="column is-6">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-user-tie"></i></span>
+                    <span>{{usuario['role']}}</span>
+                </span>
+            </div>
+
+            <div class="column is-6">
+                <span class="icon-text">
+                    <span class="icon"><i class="fas fa-envelope"></i></span>
+                    <span>{{usuario['email']}}</span>
+                </span>
+            </div>
+
+            <div class="column is-12">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-location-crosshairs"></i></span>
+                    <span>Lugar de nacimiento: {{usuario['country_birth']}}, {{usuario['city_birth']}}</span>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

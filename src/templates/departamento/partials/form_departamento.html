@@ -1,0 +1,72 @@
+<div class="columns is-multiline is-narrow">
+
+    <div class="column is-12">
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+                <input class="input" type="text" placeholder="Nombre" name="name" value="{{departamento['name']}}" />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-industry"></i>
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="column is-12">
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+                <input class="input" type="text" placeholder="Teléfono" name="phone"
+                    value="{{departamento['phone']}}" />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-phone"></i>
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="column is-12">
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+                <input class="input" type="email" placeholder="Correo" name="email" value="{{departamento['email']}}" />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                </span>
+            </p>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div class="column is-12">                
+
+        <div class="select" style="width: 100%;">
+            <select style="width: 100%;" name="id_sucursal" id="sucursal_select_form" >
+                {% if sucursales %}
+                {% for sucursal in sucursales %}
+                <option value="{{ sucursal['id'] }}">{{ sucursal['name'] }} - {{ sucursal['country'] }}, {{
+                    sucursal['city'] }}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+
+    </div>
+
+    <div class="column is-12 my-0">
+        <div class="is-flex is-justify-content-end">
+            <button class="button is-success is-small my-0" id="btnBuscar">Buscar sucursal</button>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="column is-12">
+        <textarea class="textarea" placeholder="Descripción"
+            name="description">{{departamento['description']}}</textarea>
+    </div>
+
+</div>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Actualizar Sucursal</title>
+</head>
+
+<body>
+
+    {% include("partials/navbar.html") %}
+
+    <!-- <form action="/ssr/sucursal/put" method="post"> -->
+    <form action="/ssr/sucursal/put/{{sucursal['id']}}" method="post">
+        <div class="is-flex is-justify-content-center is-align-items-center" style="width: 100vw;">
+
+            <div class="fixed-grid has-1-cols" style="width: 32%;">
+                <div class="grid">
+
+                    <div class="cell">
+                        <h1 class="title is-4 has-text-centered my-2">Actualizar Sucursal</h1>
+                    </div>
+
+                    {% if error_get_suc %}
+                    <div class="cell">
+                        {% include("sucursal/partials/error.html", error) %}
+                    </div>
+                    {% else %}
+
+                    <div class="cell">
+                        {% include("sucursal/partials/form_sucursal.html", sucursal)%}
+                        <div class="">
+                            <input type="submit" class="button is-warning is-fullwidth" value="Actualizar">
+                        </div>
+                    </div>
+                    
+                    {% if error_put %}
+                    <div class="cell">
+                        {% include("sucursal/partials/error.html", error) %}
+                    </div>
+                    {% endif %}
+                    
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+</body>
+
+</html>

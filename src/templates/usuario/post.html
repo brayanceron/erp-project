@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Registrar usuario</title>
+</head>
+
+<div id="blba">
+    {% include("departamento/partials/modal_search_suc.html") %}
+</div>
+
+<body>
+
+    {% include("partials/navbar.html") %}
+
+
+    <div class="container">
+        <h1 class="title is-4 has-text-centered">Registrar usuarios</h1>
+    </div>
+
+
+    <div class="container">
+        <form action="/ssr/usuario/post" method="post">
+            {% include("usuario/partials/form_usuario.html") %}
+
+            <input class="button is-success" type="submit" value="send">
+        </form>
+    </div>
+
+
+    <div id="test_1" name="test_i">Ho</div>
+    <div id="test_1">Ho</div>
+
+</body>
+
+
+
+<script>
+    // let test_1=document.getElementById("test_1")
+    let divs = document.querySelectorAll("#test_1")
+    div0 = divs[0]
+    div1 = divs[1]
+
+    let divName = document.getElementsByName("test_i")[0]
+
+    console.log("Mostrando test ####");
+    // console.log(divs);
+    console.log(div0, div1, divName);
+    console.log("-----------");
+    console.log(typeof div0, typeof div1, typeof divName);
+    console.log(divName);
+
+
+    // if(div0 === div1){
+    // if(JSON.stringify(div0) === JSON.stringify(div1)){
+    // if (Object.is(div0, div1)) {
+    //     console.log("SI son iguales");
+    // }
+    // else {
+    //     console.log("NO son iguales");
+    // }
+
+
+    if(div0 === divName){
+        console.log("div0 === divName");
+    }
+    else{
+        console.log("div0 !== divName");
+    }
+    if(div1 === divName){
+        console.log("div1 === divName");
+    }
+    else{
+        console.log("div1 !== divName");
+    }
+
+    console.log("Fin Mostrando test ####");
+
+
+    let btnBuscar = document.getElementById("btnBuscar")
+    btnBuscar.addEventListener('click', async (event) => {
+        event.preventDefault()
+        btnBuscar.classList.add("is-loading")
+        await get_paises();
+        await set_select_sucursal_modal();
+
+        let modal_sucursal = document.getElementById('modal_search_suc');
+        modal_sucursal.classList.add("is-active");
+        // activate_btn_seleccionar()
+
+        btnBuscar.classList.remove("is-loading")
+    });
+</script>
+
+</html>

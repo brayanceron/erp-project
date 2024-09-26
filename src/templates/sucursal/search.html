@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Buscar Sucursal</title>
+</head>
+
+<body>
+    {% include("partials/navbar.html") %}
+
+
+    <div class="is-flex is-align-content-center is-align-items-center is-justify-content-center" style="height: 90vh;">
+        <div class="field has-addons">
+            <p class="control">
+                <span class="select">
+                    <select>
+                        <option>Nombre</option>
+                        <option>Código</option>
+                        <option>País</option>
+                        <option>Ciudad</option>
+                    </select>
+                </span>
+            </p>
+            <p class="control">
+                <input class="input" type="text" placeholder="Amount of money">
+            </p>
+            <p class="control">
+                <button class="button is-primary">
+                    Buscar
+                </button>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

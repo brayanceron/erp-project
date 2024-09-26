@@ -1,0 +1,177 @@
+<div class="columns is-multiline is-narrow my-0" id="ubicacion_component">
+
+    <!--  -->
+    <div class="column is-12 my-0">
+        <div class="select" style="width: 100%;" id="select_pais_div">
+            <select style="width: 100%;" name="country" id="select_pais" onchange="onChangePais()">
+            </select>
+        </div>
+    </div>
+
+    <div class="column is-12 my-0">
+        <div class="select" style="width: 100%;" id="select_ciudad_div">
+            <select style="width: 100%;" name="city" id="select_ciudad"></select>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<script>
+
+    // let ubicacion_component = document.getElementById("ubicacion_component")
+    // let padre_ubicacion_component = ubicacion_component.parentNode
+    let padre_ubicacion_component = document.getElementById("ubicacion_component").parentNode
+
+
+    let select_pais = padre_ubicacion_component.children[0].children[0].children[0].children[0]
+    let select_ciudades = padre_ubicacion_component.children[0].children[1].children[0].children[0]
+    console.log(select_pais);
+    console.log(select_ciudades);
+    
+    // let select_pais = document.getElementById("select_pais");
+    // let select_ciudades = document.getElementById("select_ciudad")
+
+    async function onChangePais(event) { 
+        await set_select_ciudad(true) 
+        await after_onload_ubicacion()
+    }
+
+    async function set_select_ciudad(reset) {
+        // let select_pais = document.getElementById("select_pais");
+        // let select_ciudades = document.getElementById("select_ciudad")
+
+        select_ciudades.disabled = true
+        document.getElementById("select_ciudad_div").classList.add("is-loading")
+
+        let url = `/api/ubicacion/pais/get/${select_pais.value}/ciudades`
+        {% if url_ciudad %}
+            url = `{{url_ciudad}}`
+        {% endif %}
+        // let res = await fetch(`/api/ubicacion/pais/get/${select_pais.value}/ciudades${filtrar()}`);
+        let res = await fetch(url);
+        let status = res.status
+        let data = await res.json()
+
+        if (status == 200) {
+            select_ciudades.disabled = false
+            document.getElementById("select_ciudad_div").classList.remove("is-loading")
+
+            if (reset) { select_ciudades.innerHTML = ""; }
+
+            data.forEach(pais => {
+                // console.log(pais);
+                let ciudad = document.createElement('option')
+                ciudad.value = pais.id;
+                ciudad.innerText = pais.name;
+                select_ciudades.appendChild(ciudad)
+            });
+        }
+        else {
+            const { message } = data
+            let ciudad = document.createElement('option')
+            ciudad.value = "";
+            ciudad.innerText = message;
+            select_ciudades.appendChild(ciudad)
+            document.getElementById("select_ciudad_div").classList.remove("is-loading")
+        }
+
+    }
+
+
+    function filtrar(){
+        let filtrar_pais = ""
+        let filtrar_ciudad = ""
+        // if(location.href.includes('sucursal')) { filtrar_pais = "?filtrar=False" }
+        if(location.href.includes('departamento')) { filtrar_pais = "?filtrar=True" }
+        return filtrar_pais;
+    }
+
+    async function get_paises() {
+        // let select_pais = document.getElementById("select_pais");
+        // let select_ciudades = document.getElementById("select_ciudad")
+        
+        select_pais.disabled = true
+        select_ciudades.disabled = true
+        
+        document.getElementById("select_ciudad_div").classList.add("is-loading")
+        document.getElementById("select_pais_div").classList.add("is-loading")
+        
+
+        let url = '/api/ubicacion/pais/get'
+        {% if url_pais %}
+            // url = '/api/ubicacion/pais/get?filtrar=True'
+            url = "{{ url_pais }}"
+        {% endif %}
+
+        // let res = await fetch('/api/ubicacion/pais/get'+filtrar())
+        let res = await fetch(url)
+        let status = res.status
+
+        if (status == 200) {
+            let data = await res.json()
+
+            select_pais.disabled = false
+            select_ciudades.disabled = false
+            select_pais.innerHTML = "";
+
+            {% if ubicacion %}
+            let default_pais = document.createElement('option')
+            let default_ciudad = document.createElement('option')
+
+            default_pais.value = "{{sucursal['country_id']}}"
+            default_pais.innerHTML = "{{sucursal['country']}}"
+
+            default_ciudad.value = "{{sucursal['city_id']}}"
+            default_ciudad.innerHTML = "{{sucursal['city']}}"
+
+            select_pais.appendChild(default_pais)
+            select_ciudades.appendChild(default_ciudad)
+            await set_select_ciudad(false)
+
+            {% endif %}
+
+
+
+            data.forEach(pais => {
+                let pais_opt = document.createElement('option')
+                pais_opt.value = pais.id;
+                pais_opt.innerText = pais.name
+
+                select_pais.appendChild(pais_opt)
+            })
+
+            {% if not ubicacion %}
+            await set_select_ciudad(true)
+            {% endif %}
+            // await set_select_ciudad(true)
+
+        }
+        else {
+            let pais_opt = document.createElement('option')
+            let ciudad_opt = document.createElement('option')
+
+            // pais_opt.value = "No se pudo cargar la informacion";
+            pais_opt.value = "";
+            // ciudad_opt.value = "No se pudo cargar la informacion";
+            ciudad_opt.value = "";
+
+            pais_opt.innerText = "No se pudieron cargar los paises";
+            ciudad_opt.innerText = "No se pudieron cargar las ciudades";
+
+            select_pais.innerHTML = ""
+            select_pais.appendChild(pais_opt)
+            select_ciudades.innerHTML = ""
+            select_ciudades.appendChild(ciudad_opt)
+        }
+
+        document.getElementById("select_pais_div").classList.remove("is-loading")
+        document.getElementById("select_ciudad_div").classList.remove("is-loading")
+
+    }
+
+    get_paises();
+
+</script>

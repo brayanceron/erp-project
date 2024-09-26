@@ -1,0 +1,49 @@
+
+<div class="columns is-multiline is-narrow">
+
+    <div class="column is-12">
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+                <input class="input" type="text" placeholder="Nombre" name="name" value="{{sucursal['name']}}"/>
+                <span class="icon is-small is-left">
+                    <i class="fas fa-industry"></i>
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <div class="column is-12"  style="max-width: 100%;">
+        {% include("ubicacion/ubicacion.html") %}
+    </div>
+
+
+    <div class="column is-12">
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+                <input class="input" type="text" placeholder="Teléfono" name="phone" value="{{sucursal['phone']}}"/>
+                <span class="icon is-small is-left">
+                    <i class="fas fa-phone"></i>
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="column is-12">
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+                <input class="input" type="text" placeholder="Dirección" name="address" value="{{sucursal['address']}}"/>
+                <span class="icon is-small is-left">
+                    <i class="fas fa-location-dot"></i>
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="column is-12">
+        <textarea class="textarea" placeholder="Descripción" name="description">{{sucursal['description']}}</textarea>
+    </div>
+</div>
+
+<script>
+    async function after_onload_ubicacion() {
+        // continue;
+    }
+</script>
