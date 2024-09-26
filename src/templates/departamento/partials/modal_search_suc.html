@@ -10,7 +10,7 @@
                 <button class="delete" aria-label="close" onclick="closeModal()"></button>
             </div>
 
-            <div class="exa">
+            <div class="exa" id="father_ubicacion_modal">
                 {% include("ubicacion/ubicacion.html") %}
             </div>
 
@@ -38,6 +38,8 @@
 
 
 <script>
+    get_paises(document.getElementById("father_ubicacion_modal"))
+
     let select_sucursal_modal = document.getElementById("select_sucursal_modal")
     let btn_seleccionar = document.getElementById("btn_seleccionar")
 
@@ -55,6 +57,8 @@
     async function after_onload_ubicacion(){
         await set_select_sucursal_modal();
     }
+
+
     // select_pais_modal.addEventListener()
     select_pais_modal.addEventListener('change', async (event) => {
         // console.log("OUT pais (after)");
@@ -99,6 +103,7 @@
 
     async function set_select_sucursal_modal(){
         // await get_paises()
+        // await get_paises(document.getElementById("father_ubicacion_modal"))
 
         let select_sucursal_modal_div = document.getElementById("select_sucursal_modal_div")
         select_sucursal_modal_div.classList.add("is-loading")
@@ -172,7 +177,10 @@
         btn_seleccionar.disabled = !value_activate
     }
     document.getElementById("btn_recargar").addEventListener('click', async (event) => {
-        await get_paises();
+
+        await get_paises(document.getElementById("father_ubicacion_modal"))
+        // await get_paises();
+        
         await set_select_sucursal_modal();
         // console.log("OUT pais"); 
     });

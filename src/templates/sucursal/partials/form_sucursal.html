@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="column is-12"  style="max-width: 100%;">
+    <div class="column is-12"  style="max-width: 100%;" id="father_ubicacion_post_sucursal">
         {% include("ubicacion/ubicacion.html") %}
     </div>
 
@@ -43,6 +43,9 @@
 </div>
 
 <script>
+    
+    get_paises(document.getElementById("father_ubicacion_post_sucursal"))
+
     async function after_onload_ubicacion() {
         // continue;
     }

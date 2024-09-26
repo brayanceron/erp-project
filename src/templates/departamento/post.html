@@ -60,7 +60,7 @@
     btnBuscar.addEventListener('click', async (event) => {
         event.preventDefault()
         btnBuscar.classList.add("is-loading")
-        await get_paises();
+        // await get_paises();
         await set_select_sucursal_modal();
         
         let modal_sucursal = document.getElementById('modal_search_suc');
