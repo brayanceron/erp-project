@@ -1,0 +1,197 @@
+{%
+    macro 
+    ubicacion(
+        id,
+        url_pais = '/api/ubicacion/pais/get',
+        filter_city = '',
+        country_form = 'country',
+        city_form = 'city',
+        run = '1',
+
+
+        location_default = {
+            "country_name" : "",
+            "country_id" : "",
+            "city_name" : "",
+            "city_id" : ""
+        }
+
+    )
+%}
+
+<div class="columns is-multiline is-narrow my-0" id="ubicacion_component">
+
+    <input type="hidden" name="id_{{id}}" id="id_{{id}}" value="{{id}}">
+    <input type="hidden" name="url_pais_{{id}}" id="url_pais_{{id}}" value="{{url_pais}}">
+    <input type="hidden" name="run_{{id}}" id="run_{{id}}" value="{{run}}">
+
+    <input type="hidden" name="filter_city_{{id}}" id="filter_city_{{id}}" value="{{filter_city}}">
+
+    <input type="hidden" name="country_name_default_{{id}}" id="country_name_default_{{id}}" value="{{location_default['country_name']}}">
+    <input type="hidden" name="country_id_default_{{id}}" id="country_id_default_{{id}}" value="{{location_default['country_id']}}">
+    <input type="hidden" name="city_name_default_{{id}}" id="city_name_default_{{id}}" value="{{location_default['city_name']}}">
+    <input type="hidden" name="city_id_default_{{id}}" id="city_id_default_{{id}}" value="{{location_default['city_id']}}">
+
+
+
+    <!--  -->
+    <div class="column is-12 my-0">
+        <div class="select" style="width: 100%;" id="select_pais_div" data-id-select-pais-div="{{id}}">
+            <select style="width: 100%;" name="{{country_form}}" id="select_pais" data-id-select-pais="{{id}}"
+                onchange="onChangePais(event)">
+            </select>
+        </div>
+    </div>
+
+    <div class="column is-12 my-0">
+        <div class="select" style="width: 100%;" id="select_ciudad_div" data-id-select-ciudad-div="{{id}}">
+            <select style="width: 100%;" name="{{city_form}}" id="select_ciudad"
+                data-id-select-ciudad="{{id}}"></select>
+        </div>
+    </div>
+
+
+</div>
+
+<script id="id_{{id}}">    
+
+    // async function onChangePais(event, filtrar = '') {
+    async function onChangePais(event) {
+        let select_pais = event.target;
+        let id = select_pais.getAttribute('data-id-select-pais') //select_pais.dataset['idSelectPais']
+        let filtrar = document.getElementById(`filter_city_${id}`).value
+        let url_ciudad = `/api/ubicacion/pais/get/${select_pais.value}/ciudades${filtrar}`
+
+        await set_select_ciudad(true, id, url_ciudad)
+        await after_onload_ubicacion()
+    }
+
+    async function set_select_ciudad(reset, id, url_ciudad) {
+
+        let select_pais = document.querySelector(`[data-id-select-pais='${id}']`);
+        let select_ciudades = document.querySelector(`[data-id-select-ciudad='${id}']`);
+        // let select_pais_div = document.querySelector(`[data-id-select-pais-div='${id}']`);
+        let select_ciudad_div = document.querySelector(`[data-id-select-ciudad-div='${id}']`);
+
+        select_ciudades.disabled = true
+        select_ciudad_div.classList.add("is-loading")
+
+        let res = await fetch(url_ciudad);
+        let status = res.status
+        let data = await res.json()
+
+        if (status == 200) {
+            select_ciudades.disabled = false
+            select_ciudad_div.classList.remove("is-loading")
+
+            if (reset) { select_ciudades.innerHTML = ""; }
+
+            data.forEach(pais => {
+                let ciudad = document.createElement('option')
+                ciudad.value = pais.id;
+                ciudad.innerText = pais.name;
+                select_ciudades.appendChild(ciudad)
+            });
+        }
+        else {
+            const { message } = data
+            let ciudad = document.createElement('option')
+            ciudad.value = "";
+            ciudad.innerText = message;
+            select_ciudades.appendChild(ciudad)
+            select_ciudad_div.classList.remove("is-loading")
+        }
+
+    }
+
+    // async function get_paises(id, url_pais, filtrar = '') {
+    async function get_paises(id, url_pais) {
+        let select_pais = document.querySelector(`[data-id-select-pais='${id}']`);
+        let select_ciudades = document.querySelector(`[data-id-select-ciudad='${id}']`);
+        let select_pais_div = document.querySelector(`[data-id-select-pais-div='${id}']`);
+        let select_ciudad_div = document.querySelector(`[data-id-select-ciudad-div='${id}']`);
+        
+        select_pais.disabled = true
+        select_ciudades.disabled = true
+        
+        select_ciudad_div.classList.add("is-loading");
+        select_pais_div.classList.add("is-loading")
+
+        let res = await fetch(url_pais)
+        let status = res.status
+
+        if (status == 200) {
+            let data = await res.json()
+
+            select_pais.disabled = false
+            select_ciudades.disabled = false
+            select_pais.innerHTML = "";
+
+
+            let country_name_default = document.getElementById(`country_name_default_${id}`)
+            let country_id_default = document.getElementById(`country_id_default_${id}`)
+            let city_name_default = document.getElementById(`city_name_default_${id}`)
+            let city_id_default = document.getElementById(`city_id_default_${id}`)
+
+            let b = true
+
+            if (country_id_default.value && city_id_default.value) {                
+                let default_pais_option = document.createElement('option')
+                let default_ciudad_option = document.createElement('option')
+
+                default_pais_option.value = country_id_default.value;     
+                default_pais_option.innerHTML = country_name_default.value;     
+                default_ciudad_option.value = city_id_default.value;     
+                default_ciudad_option.innerHTML = city_name_default.value;     
+
+                select_pais.appendChild(default_pais_option)
+                select_ciudades.appendChild(default_ciudad_option)
+
+                b = false                
+            }
+
+            data.forEach(pais => {
+                let pais_opt = document.createElement('option')
+                pais_opt.value = pais.id;
+                pais_opt.innerText = pais.name
+
+                select_pais.appendChild(pais_opt)
+            })
+
+
+            let filtrar = document.getElementById(`filter_city_${id}`).value
+            let url_ciudad = `/api/ubicacion/pais/get/${select_pais.value}/ciudades${filtrar}`
+            await set_select_ciudad(b, id, url_ciudad)
+
+        }
+        else {
+            let pais_opt = document.createElement('option')
+            let ciudad_opt = document.createElement('option')
+
+            pais_opt.value = "";
+            ciudad_opt.value = "";
+
+            pais_opt.innerText = "No se pudieron cargar los paises";
+            ciudad_opt.innerText = "No se pudieron cargar las ciudades";
+
+            select_pais.innerHTML = ""
+            select_pais.appendChild(pais_opt)
+            select_ciudades.innerHTML = ""
+            select_ciudades.appendChild(ciudad_opt)
+        }
+
+        select_pais_div.classList.remove("is-loading");
+        select_ciudad_div.classList.remove("is-loading");
+
+    }
+
+    if (document.getElementById('run_{{id}}').value === '1') {
+        get_paises(
+            document.getElementById('id_{{id}}').value,
+            document.getElementById('url_pais_{{id}}').value,
+        )
+    }
+
+</script>
+
+{% endmacro %}
