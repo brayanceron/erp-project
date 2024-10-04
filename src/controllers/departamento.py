@@ -10,7 +10,9 @@ def get(page = 0, pagination_size = 10) :#{  Endpoint que nunca se usaria
     
     cursor = conn.cursor()
     pg = int(page)*int(pagination_size)
-    cursor.execute("select * from departamento order by id_sucursal limit %s offset %s",[int(pagination_size), int(pg)])
+    # cursor.execute("select * from departamento order by id_sucursal limit %s offset %s",[int(pagination_size), int(pg)])
+    cursor.execute("select id, id_sucursal, name, phone, email, description from departamento"\
+                    "order by id_sucursal limit %s offset %s",[int(pagination_size), int(pg)])
     row_count = cursor.rowcount
     if (row_count == 0) :#{
         return {"message":"No hay sucursales registradas :("}, 404
@@ -38,7 +40,8 @@ def get_id(id) :#{
         
     try :#{
         cursor = conn.cursor()
-        cursor.execute("select * from departamento where id = %s", [id])
+        # cursor.execute("select * from departamento where id = %s", [id])
+        cursor.execute("select id, id_sucursal, name, phone, email, description from departamento where id = %s", [id])
         row_counnt = cursor.rowcount
         result = cursor.fetchone()
         
@@ -75,7 +78,8 @@ def post(id_sucursal, name, phone, email, description) :#{
     try :#{
         id = uuid4()
         cursor = conn.cursor()
-        cursor.execute('insert into departamento values(%s, %s, %s, %s, %s, %s)',[id, id_sucursal, name, phone, email, description])
+        cursor.execute("insert into departamento(id, id_sucursal, name, phone, email, description)" \
+                    "values(%s, %s, %s, %s, %s, %s)",[id, id_sucursal, name, phone, email, description])
         conn.commit()
         conn.close()
         return {"message" : "Departamento registrado exitosamente", "id": id }, 200
@@ -140,11 +144,11 @@ def get_by_sucursal(id_sucursal) :#{
     
     try :#{
         cursor = conn.cursor()
-        cursor.execute("select * from departamento where id_sucursal = %s",[id_sucursal])
+        # cursor.execute("select * from departamento where id_sucursal = %s",[id_sucursal])
+        cursor.execute("select id, name from departamento where id_sucursal = %s",[id_sucursal])
         rows = cursor.fetchall()
         departamentos = []
-        for row in rows :#{
-            
+        for row in rows :#{            
             departamentos.append({
                 "id": row[0],
                 "name": row[2]
@@ -158,3 +162,4 @@ def get_by_sucursal(id_sucursal) :#{
         return ERROR_500
     #}
 #}
+

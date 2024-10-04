@@ -1,0 +1,254 @@
+{% macro modal_search_suc (
+            id,
+            element_destino,
+            params_ubicacion = {}
+        ) 
+%}
+
+{% from "ubicacion/ubicacion.jinja" import ubicacion %}
+
+<div class="modal" id="modal_search_suc" data-id-modal="{{id}}">
+    <input type="hidden" name="id_modal_{{id}}" id="id_modal_{{id}}" value="{{id}}">
+    <input type="hidden" name="element_destino_{{id}}" id="element_destino_{{id}}" value="{{id}}">
+    <div class="modal-background"></div>
+
+
+
+    <div class="modal-content">
+        <div class="box">
+            <div class="is-flex my-3">
+                <p class="modal-card-title has-text-centered">Buscar sucursal</p>
+                <button class="delete" aria-label="close" onclick="closeModal(event,'{{id}}')"></button>
+            </div>
+
+            
+            <div id="father_ubicacion_modal">
+                {{ ubicacion(
+                    id = id, 
+                    url_pais='/api/ubicacion/pais/get?filtrar=true', 
+                    filter_city='?filtrar=true',
+                    
+                    ) 
+                }}
+            </div>
+
+            <div class="select is-fullwidth my-2" id="select_sucursal_modal_div" data-id-select-sucursal-modal-div="{{id}}">
+                <select name="sucursal" id="select_sucursal_modal" data-id-select-sucursal-modal="{{id}}" disabled>
+                    <!-- <option value="">Seleccionar sucursal</option> -->
+                </select>
+            </div>
+
+            <div class="is-flex is-justify-content-end my-2">
+                <button class="button is-light mx-1" id="" onclick="closeModal(event,'{{id}}')">Cancelar</button>
+                <button class="button is-warning mx-1" id="btn_recargar" onclick="click_btnRecargar(event)"  data-id-modal-reload="{{id}}">Recargar</button>
+                <button class="button is-success mx-1" id="btn_seleccionar" onclick="click_btnSeleccionar(event,'{{id}}')" 
+                data-element_destino="{{element_destino}}"  data-id-btn-seleccionar="{{id}}" disabled>Seleccionar</button>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+    <button class="modal-close is-large" aria-label="close" onclick="closeModal(event,'{{id}}')"></button>
+</div>
+
+
+
+<script>
+    
+    // let select_sucursal_modal = document.getElementById("select_sucursal_modal")
+    // let btn_seleccionar = document.getElementById("btn_seleccionar")
+
+    // let select_pais_modal = document.getElementById('select_pais')
+    // let select_ciudad_modal = document.getElementById('select_ciudad')
+
+
+    function closeModal(event, id) {
+        // let id_modal = event.target.getAttribute("data-id-modal-close")
+        // let modal_search_suc = document.querySelector(`[data-id-modal='${id_modal}']`);
+        let modal_search_suc = document.querySelector(`[data-id-modal='${id}']`);
+        modal_search_suc.classList.remove("is-active")
+    }
+
+
+
+    async function after_onChangePais(event){
+        let select_pais = event.target
+        let id = select_pais.getAttribute('data-id-select-pais')
+        await set_select_sucursal_modal(id)
+    }
+
+    async function after_onChangeCiudad(event){
+        let select_ciudad = event.target
+        let id = select_ciudad.getAttribute('data-id-select-ciudad')
+        await set_select_sucursal_modal(id)
+    }
+    // select_pais_modal.addEventListener()
+    // select_pais_modal.addEventListener('change', async (event) => {
+    //     // console.log("OUT pais (after)");
+    //     // await set_select_sucursal_modal()
+    //     // console.log("OUT pais (before)");
+    // })
+
+
+    
+    // select_ciudad_modal.addEventListener('change', async (event) => {
+        // document.querySelector(`[data-id-select-ciudad='${id}']`);
+
+        // console.log("OUT ciudad");
+        // await set_select_sucursal_modal()
+        /* let select_sucursal_modal_div = document.getElementById("select_sucursal_modal_div")
+        select_sucursal_modal_div.classList.add("is-loading")
+
+        let res = await fetch(`/ssr/sucursal/get/${select_pais_modal.value}/${select_ciudad_modal.value}`)
+        let status = res.status
+
+        if (status == 200) {
+            let data = await res.json();
+            select_sucursal_modal.innerHTML = ""
+
+            select_sucursal_modal.disabled = false;
+            select_sucursal_modal_div.classList.remove("is-loading")
+
+            data.forEach(sucursal => {
+                let option = document.createElement('option')
+                option.value = sucursal.id
+                // option.innerText = `${sucursal.name} - ${sucursal.country}, ${sucursal.city}`
+                option.innerText = sucursal.name
+                select_sucursal_modal.appendChild(option)
+
+            });
+            activate_btnseleccionar(true)
+        }
+        else {
+            select_sucursal_modal.disabled = true;
+            select_sucursal_modal.innerHTML = "<option>Seleccionar sucursal</option>"
+            select_sucursal_modal_div.classList.remove("is-loading")
+            activate_btnseleccionar(false);
+        } */
+
+    // })
+
+    
+
+
+    async function set_select_sucursal_modal(id = '1'){
+        // let select_pais_modal = document.getElementById('select_pais')
+        let select_pais_modal = document.querySelector(`[data-id-select-pais='${id}']`);
+        // let select_ciudad_modal = document.getElementById('select_ciudad')
+        let select_ciudad_modal  = document.querySelector(`[data-id-select-ciudad='${id}']`);
+
+        // let select_sucursal_modal = document.getElementById("select_sucursal_modal")
+        let select_sucursal_modal = document.querySelector(`[data-id-select-sucursal-modal='${id}']`);
+
+
+        // await get_paises()
+        // await get_paises(document.getElementById("father_ubicacion_modal"))
+
+        // let select_sucursal_modal_div = document.getElementById("select_sucursal_modal_div")
+        let select_sucursal_modal_div = document.querySelector(`[data-id-select-sucursal-modal-div='${id}']`);
+        select_sucursal_modal_div.classList.add("is-loading")
+
+        console.log(`Intentando para ${select_pais_modal.value} - ${select_ciudad_modal.value}`);
+
+        if(!select_pais_modal.value || !select_ciudad_modal.value){
+            select_sucursal_modal.disabled = true;
+            select_sucursal_modal.innerHTML = "<option>Se debe seleccionar un pais y una ciudad</option>"
+            select_sucursal_modal_div.classList.remove("is-loading")
+            activate_btnseleccionar(id, false);
+            return
+        }
+        let res = await fetch(`/ssr/sucursal/get/${select_pais_modal.value}/${select_ciudad_modal.value}`)
+        let status = res.status
+
+        if (status == 200) {
+            let data = await res.json();
+            select_sucursal_modal.innerHTML = ""
+
+            select_sucursal_modal.disabled = false;
+            select_sucursal_modal_div.classList.remove("is-loading")
+
+            data.forEach(sucursal => {
+                let option = document.createElement('option')
+                option.value = sucursal.id
+                // option.innerText = `${sucursal.name} - ${sucursal.country}, ${sucursal.city}`
+                option.innerText = sucursal.name
+                select_sucursal_modal.appendChild(option)
+
+            });
+            activate_btnseleccionar(id, true)
+        }
+        else {
+            let data = await res.json();
+            console.log(data);
+
+            select_sucursal_modal.disabled = true;
+            select_sucursal_modal.innerHTML = "<option>Seleccionar sucursal</option>"
+            // select_sucursal_modal.innerHTML = `<option>${message}</option>`
+            select_sucursal_modal_div.classList.remove("is-loading")
+            activate_btnseleccionar(id, false);
+        }
+    }
+
+
+
+    function click_btnSeleccionar(event, id){
+    // function click_btnSeleccionar(event, id, element_destino){
+    // btn_seleccionar.addEventListener('click', (event, id) => {
+        // let sucursal_select_form = document.getElementById("sucursal_select_form")
+
+        // let sucursal_select_form = document.querySelector(element_destino)
+        let sucursal_select_form = document.querySelector(event.target.getAttribute("data-element_destino"));
+
+        let select_sucursal_modal = document.querySelector(`[data-id-select-sucursal-modal='${id}']`);
+        let select_pais = document.querySelector(`[data-id-select-pais='${id}']`);
+        let select_ciudad  = document.querySelector(`[data-id-select-ciudad='${id}']`);
+
+        let e_d = document.querySelector(`[data-id-select-ciudad='${id}']`);
+
+        // let select_pais = document.getElementById("select_pais")
+        // let select_ciudad = document.getElementById("select_ciudad")
+
+        sucursal_select_form.innerHTML = "";
+
+
+        if (!select_sucursal_modal.value) { alert("No se ha seleccionado ninguna sucursal"); return; };
+
+        let option = document.createElement('option')
+        option.value = select_sucursal_modal.value;
+        option.innerHTML = select_sucursal_modal.options[select_sucursal_modal.selectedIndex].text + " - " +
+            select_pais.options[select_pais.selectedIndex].text + ", " + select_ciudad.options[select_ciudad.selectedIndex].text
+
+        sucursal_select_form.appendChild(option)
+
+        closeModal(event, id)
+    }
+    
+
+
+
+
+    function activate_btnseleccionar(id, value_activate) {
+        let btn_seleccionar = document.querySelector(`[data-id-btn-seleccionar='${id}']`);
+        btn_seleccionar.disabled = !value_activate
+    }
+
+    async function click_btnRecargar(event){
+    // document.getElementById("btn_recargar").addEventListener('click', async (event) => {
+
+        let id = event.target.getAttribute("data-id-modal-reload")
+        let modal_search_suc = document.querySelector(`[data-id-modal='${id}']`);
+        await get_paises(id = id, url_pais="/api/ubicacion/pais/get?filtrar=true")
+
+        // console.log("modal");
+        // await get_paises(document.getElementById("father_ubicacion_modal"){% if url_pais %}, url = "{{url_pais}}", filtrar="?filtrar=true" {% endif %})
+        
+        await set_select_sucursal_modal(id);
+        // console.log("OUT pais"); 
+    }
+
+</script>
+
+{% endmacro %}

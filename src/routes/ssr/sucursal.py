@@ -25,9 +25,10 @@ def get_id(id) :#{
     sucursal, status  = src.controllers.sucursal.get_id(id)
     if (status == 200) :#{
         departamentos, status_dep = src.controllers.sucursal.get_deparatamentos(id) # ver cuando el estatus de esto no es 200
+        print(departamentos)
         return render_template('sucursal/get_id.html', sucursal = sucursal, departamentos = departamentos, lenght = len(departamentos))
     #}
-    elif (status == 404):#{
+    elif (status == 404) :#{
         return render_template('sucursal/get_id.html', sucursales=[], error = sucursal["message"], lenght = 0)
     #}
     else :#{
@@ -39,23 +40,37 @@ def get_id(id) :#{
 def post() :#{
     empty_sucursal = dict(request.args)
     error = request.args.get("error")
+    
     # paises, _ = get_paises()
     # paises.insert(0, {"id" : "1", "name": "ARU"})
     # print(paises)
     # return render_template('sucursal/post.html', sucursal = empty_sucursal, error = error, paises = paises)
-    return render_template('sucursal/post.html', sucursal = empty_sucursal, error = error)
+    # return render_template('sucursal/post.html', sucursal = empty_sucursal, error = error)    
+    return render_template('sucursal/post.html', sucursal = empty_sucursal, error = error, ubicacion_config = {"id" : "01"})
 #}
 
 @sucursal_router.route('/put/<id>')
 def put(id) :#{
     sucursal, status_suc  = src.controllers.sucursal.get_id(id)
     # print(sucursal)
+    
+    ubicacion_config = {
+        "id" : "01",                
+        "location_default" : {
+            "country_name" : sucursal['country'],
+            "country_id" : sucursal['country_id'],
+            "city_name" : sucursal['city'],
+            "city_id" : sucursal['city_id']
+        }
+    }
+    
     if (status_suc == 200) :#{
         error_put = request.args.get("error")
-        return render_template('sucursal/put.html', sucursal = sucursal, error_put = True if error_put else False, error = error_put, ubicacion = True)
+        return render_template('sucursal/put.html', sucursal = sucursal, error_put = True if error_put else False, 
+                                error = error_put, ubicacion = True, ubicacion_config = ubicacion_config)
     #}
     else :#{
-        return render_template('sucursal/put.html', sucursal = {'id' : id}, error_get_suc = True ,error = sucursal["message"])
+        return render_template('sucursal/put.html', sucursal = {'id' : id}, error_get_suc = True ,error = sucursal["message"], ubicacion_config = {"id" : "01"})
     #}
 #}
 

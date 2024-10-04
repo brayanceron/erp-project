@@ -1,3 +1,5 @@
+{% from "ubicacion/ubicacion.jinja" import ubicacion %}
+
 <div class="field">
     <p class="control has-icons-left">
         <input class="input" type="text" placeholder="Nombres" name="names" />
@@ -52,10 +54,9 @@
     </div>
 </div>
 
-{# include("ubicacion/ubicacion.html") #}
 
 <div class="field" id="div_ubicacion_nacimiento">
-    {% include("ubicacion/ubicacion.html") %}
+    {{ ubicacion(id="2") }}
 </div>
 
 <div class="field">
@@ -132,6 +133,9 @@
 
 <script>
     
+    // console.log("form_usu");
+    get_paises(document.getElementById("div_ubicacion_nacimiento"))
+
     document.getElementById("btn_seleccionar").addEventListener('click', async (event) => {
         let sucursal_select_form2 = document.getElementById('sucursal_select_form').value
 

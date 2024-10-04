@@ -8,7 +8,8 @@ def get_paises() : #{
 
     try :#{
         cursor = conn.cursor()
-        cursor.execute("select * from pais")
+        # cursor.execute("select * from pais")
+        cursor.execute("select PaisCodigo, PaisNombre from pais")
         rows = cursor.fetchall()
         
         row_count = cursor.rowcount
@@ -59,7 +60,8 @@ def get_ciudades_de_pais(id_pais) :#{
     
     try :#{
         cursor = conn.cursor()
-        cursor.execute("select * from ciudad where PaisCodigo = %s order by CiudadNombre", [id_pais])
+        # cursor.execute("select * from ciudad where PaisCodigo = %s order by CiudadNombre", [id_pais])
+        cursor.execute("select CiudadID, CiudadNombre from ciudad where PaisCodigo = %s order by CiudadNombre", [id_pais])
         rows = cursor.fetchall()
         
         row_count = cursor.rowcount

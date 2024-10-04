@@ -9,8 +9,18 @@
     <title>Registrar usuario</title>
 </head>
 
-<div id="blba">
-    {% include("departamento/partials/modal_search_suc.html") %}
+<div id="div_modal_search_suc">
+
+    {% from "departamento/partials/modal_search_suc.jinja" import modal_search_suc %}
+    {{ modal_search_suc(
+        id = '1',
+        element_destino='#sucursal_select_form',
+        params_ubicacion={
+            'filter_city' : '',
+        }
+        ) 
+    }}
+
 </div>
 
 <body>
@@ -32,49 +42,18 @@
     </div>
 
 
-    <div id="test_1" name="test_i">Ho</div>
-    <div id="test_1">Ho</div>
 
 </body>
 
 
 
 <script>
-    // let test_1=document.getElementById("test_1")
-    // let divs = document.querySelectorAll("#test_1")
-    // div0 = divs[0]
-    // div1 = divs[1]
-// 
-    // let divName = document.getElementsByName("test_i")[0]
-// 
-    // console.log("Mostrando test ####");
-    // console.log(divs);
-    // console.log(div0, div1, divName);
-    // console.log("-----------");
-    // console.log(typeof div0, typeof div1, typeof divName);
-    // console.log(divName);
-// 
-    // if(div0 === divName){
-        // console.log("div0 === divName");
-    // }
-    // else{
-        // console.log("div0 !== divName");
-    // }
-    // if(div1 === divName){
-        // console.log("div1 === divName");
-    // }
-    // else{
-        // console.log("div1 !== divName");
-    // }
-// 
-    // console.log("Fin Mostrando test ####");
-
-
     let btnBuscar = document.getElementById("btnBuscar")
     btnBuscar.addEventListener('click', async (event) => {
         event.preventDefault()
         btnBuscar.classList.add("is-loading")
-        await get_paises();
+        // await get_paises(document.getElementById("div_modal_search_suc"))
+        // await get_paises();
         await set_select_sucursal_modal();
 
         let modal_sucursal = document.getElementById('modal_search_suc');

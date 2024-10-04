@@ -22,7 +22,11 @@ def get_id(id) :#{
 def post() :#{
     urls = {
         "url_pais": "/api/ubicacion/pais/get?filtrar=True",
-        "url_ciudad": """/api/ubicacion/pais/get/${select_pais.value}/ciudades?filtrar=True"""
+        # "url_pais": "/api/ubicacion/pais/get",
+        "url_ciudad": """/api/ubicacion/pais/get/${select_pais.value}/ciudades?filtrar=True""",
+        # "url_ciudad": """/api/ubicacion/pais/get/${select_pais.value}/ciudades""",
+        # "url_pais_n": "/api/ubicacion/pais/get?filtrar=True",
+        # "url_ciudad_n": """/api/ubicacion/pais/get/${select_pais.value}/ciudades?filtrar=True"""
     }
     return render_template("usuario/post.html", **urls)
 #}

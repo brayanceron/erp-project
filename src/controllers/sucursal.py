@@ -10,7 +10,7 @@ def get() :#{
     
     try :#{
         cursor = conn.cursor()
-        cursor.execute("select * from sucursal")
+        cursor.execute("select id, name, country, city, address, phone, description from sucursal")
         row_count = cursor.rowcount
         if (row_count == 0) :#{
             return {"message":"No hay sucursales registradas :("}, 404
@@ -24,16 +24,17 @@ def get() :#{
                 "name":row[1],
                 "country":row[2],
                 "city":row[3],
-                # "postalcode":row[0],
-                "address":row[5],
-                "phone":row[6],
-                "description":row[7],
+                "address":row[4],
+                "phone":row[5],
+                "description":row[6]
             })
         #}
         conn.close()
         return sucursales, 200
     #}
-    except :#{
+    # except :#{
+    except Exception as err:#{
+        print(err)
         return ERROR_500
     #}
 #}
@@ -74,8 +75,7 @@ def get_id(id) :#{
     #}
     except :#{
         return ERROR_500
-    #}
-    
+    #} 
 #}
 
 def post(name, city, country, address, description, phone) :#{
@@ -88,12 +88,15 @@ def post(name, city, country, address, description, phone) :#{
     try :#{
         id = uuid4()
         cursor = conn.cursor()
-        cursor.execute("insert into sucursal values(%s, %s, %s, %s, %s, %s, %s, %s)",[id, name, country, city, "000", address, phone, description])
+        cursor.execute("insert into sucursal(id, name, country, city, address, phone, description)"\
+            " values(%s, %s, %s, %s, %s, %s, %s)",[id, name, country, city, address, phone, description])
         conn.commit()
         conn.close()
         return {"message":"sucursal registrada exitosamente", "id" : id}, 200
     #}
-    except :#{
+    # except :#{
+    except Exception as err:#{
+        print(err)
         return ERROR_500
     #}
 #}
@@ -156,7 +159,8 @@ def get_deparatamentos(id_sucursal) :#{
     
     try :#{
         cursor = conn.cursor()
-        cursor.execute('select * from departamento where id_sucursal = %s', [id_sucursal])
+        # cursor.execute('select * from departamento where id_sucursal = %s', [id_sucursal])
+        cursor.execute('select id, id_sucursal, name, phone, email, description from departamento where id_sucursal = %s', [id_sucursal])
         rows = cursor.fetchall()
         departamentos = []
         for row in rows :#{
@@ -166,12 +170,14 @@ def get_deparatamentos(id_sucursal) :#{
                 "name" : row[2],
                 "phone" : row[3],
                 "email" : row[4],
-                "description" : row[5],
+                "description" : row[5]
             })
         #}
         return departamentos, 200
     #}
+    # except Exception as err :#{
     except :#{
+        # print(err)
         return ERROR_500;
     #}
 #}

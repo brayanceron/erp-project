@@ -1,7 +1,7 @@
 {%
     macro 
     ubicacion(
-        id,
+        id='1',
         url_pais = '/api/ubicacion/pais/get',
         filter_city = '',
         country_form = 'country',
@@ -45,7 +45,7 @@
 
     <div class="column is-12 my-0">
         <div class="select" style="width: 100%;" id="select_ciudad_div" data-id-select-ciudad-div="{{id}}">
-            <select style="width: 100%;" name="{{city_form}}" id="select_ciudad"
+            <select style="width: 100%;" name="{{city_form}}" id="select_ciudad" onchange="onChangeCiudad(event)"
                 data-id-select-ciudad="{{id}}"></select>
         </div>
     </div>
@@ -55,6 +55,12 @@
 
 <script id="id_{{id}}">    
 
+    async function onChangeCiudad(event) {
+        try { await after_onChangeCiudad(event)} 
+        catch (error) { console.log(error);}
+    }
+
+    
     // async function onChangePais(event, filtrar = '') {
     async function onChangePais(event) {
         let select_pais = event.target;
@@ -63,7 +69,8 @@
         let url_ciudad = `/api/ubicacion/pais/get/${select_pais.value}/ciudades${filtrar}`
 
         await set_select_ciudad(true, id, url_ciudad)
-        await after_onload_ubicacion()
+        try { await after_onChangePais(event)} 
+        catch (error) { console.log(error);}
     }
 
     async function set_select_ciudad(reset, id, url_ciudad) {

@@ -1,3 +1,4 @@
+{% from "ubicacion/ubicacion.jinja" import ubicacion %}
 
 <div class="columns is-multiline is-narrow">
 
@@ -12,10 +13,10 @@
         </div>
     </div>
 
-    <div class="column is-12"  style="max-width: 100%;" id="father_ubicacion_post_sucursal">
-        {% include("ubicacion/ubicacion.html") %}
-    </div>
 
+    <div class="column is-12"  style="max-width: 100%;" id="father_ubicacion_post_sucursal">
+        {{ ubicacion(**ubicacion_config) }}
+    </div>
 
     <div class="column is-12">
         <div class="field">
@@ -42,9 +43,12 @@
     </div>
 </div>
 
+
+
 <script>
-    
-    get_paises(document.getElementById("father_ubicacion_post_sucursal"))
+
+    // get_paises("01", url_pais = '/api/ubicacion/pais/get')
+    // get_paises("02", url_pais = '/api/ubicacion/pais/get')
 
     async function after_onload_ubicacion() {
         // continue;

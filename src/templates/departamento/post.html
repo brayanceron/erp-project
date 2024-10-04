@@ -53,7 +53,15 @@
 
 </body>
 
-{% include("departamento/partials/modal_search_suc.html") %}
+{% from "departamento/partials/modal_search_suc.jinja" import modal_search_suc %}
+{{ modal_search_suc(
+    id = '1',
+    element_destino='#sucursal_select_form',
+    params_ubicacion={
+        'filter_city' : '',
+    }
+    ) 
+}}
 
 <script>
     let btnBuscar=document.getElementById("btnBuscar")
