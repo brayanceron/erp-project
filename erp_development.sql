@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-09-2024 a las 00:39:50
+-- Tiempo de generación: 08-10-2024 a las 21:39:17
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -4382,7 +4382,13 @@ CREATE TABLE `departamento` (
 --
 
 INSERT INTO `departamento` (`id`, `name`, `phone`, `id_sucursal`, `description`, `email`) VALUES
-('ca742678-a1f5-4d22-97cb-41033436da4d', 'Departamento de gerencia', '3185737774', '08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'Departamento de primer nivel', 'brayan0np@gmail.com');
+('0d69d84d-bfa7-422a-b7de-a70f1c27e451', 'Departamento estrategico', '3185737774', 'cc7bb3d5-8741-497b-aad4-3557d6b2cc3a', 'Departamento de gerencia de la sucursal', 'patiportilla79@hotmail.com'),
+('25847728-cdc6-430f-a090-436d3e84ce92', 'Departamento Estrategico', '3178956483', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', 'Departamento estrategico en sede  del valle', 'test_0001@mail.com'),
+('63c27cab-7cea-4f37-a82b-0cb897dda474', 'Departamento de finanzas y contabilidad', '3143178956', 'cc7bb3d5-8741-497b-aad4-3557d6b2cc3a', 'Departamento de la plata', 'test_0001@mail.com'),
+('818b5dd4-3497-4ca7-86ff-a68daddbe665', 'Departamento de Finanzas y contabilidad', '3003436887', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', 'Sucursal de las  plata', 'userspublicos@gmail.com'),
+('c2c7e7c8-d843-45f9-9d9f-01e96bdd85a4', 'Departamento Estrategico', '3003436887', '0338e8e9-d6f8-47aa-a661-b2d8263f664f', 'Sucursal de las ordenes estrategicas', 'brayan0np@gmail.com'),
+('ca742678-a1f5-4d22-97cb-41033436da4d', 'Departamento de gerencia', '3185737774', '08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'Departamento de primer nivel', 'brayan0np@gmail.com'),
+('ea8ede37-e5f0-4337-b1c3-ce429cc9b05c', 'Departamento de marketing y comunicacion', '3185737774', 'cc7bb3d5-8741-497b-aad4-3557d6b2cc3a', 'Departamento de comunicaciones', 'userspublicos@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -4665,7 +4671,10 @@ CREATE TABLE `sucursal` (
 
 INSERT INTO `sucursal` (`id`, `name`, `country`, `city`, `address`, `phone`, `description`) VALUES
 ('0338e8e9-d6f8-47aa-a661-b2d8263f664f', 'Sucursal SurOriental Alkosto', 'COL', 2269, 'Kr 2 Brr Centro Piso 1', '3174179779', 'Sucursal de los barrios sur orientales.'),
-('08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'Sucursal Centro Exito', 'COL', 2269, 'KR 18 N26 Brr Centro', '3003436887', 'Sucursal del centron');
+('08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'Sucursal Centro Exito', 'COL', 2269, 'KR 18 N26 Brr Centro', '3003436887', 'Sucursal del centron'),
+('26e51225-97bd-4c9f-99ec-9de94605ab38', 'Sucursal Ecua', 'ECU', 602, 'Cl 18B Parque Centro', '4862647834', 'Sucursal en el Ecuador'),
+('a61e16d3-ecf8-417b-8f9a-c772bb562031', 'Sucursal Valle', 'COL', 2258, 'Av Simon Bolibar #47-12', '3003436887', 'Sucursal en el departamento del valle del cauca'),
+('cc7bb3d5-8741-497b-aad4-3557d6b2cc3a', 'Sucursal Cauca', 'COL', 2282, 'KR 6 No 73S Brr Sta Ines', '3174179779', 'Sucursal en el departamento del cauca');
 
 -- --------------------------------------------------------
 
@@ -4677,16 +4686,26 @@ CREATE TABLE `usuario` (
   `id` varchar(36) NOT NULL,
   `names` varchar(50) NOT NULL,
   `surnames` varchar(50) NOT NULL,
+  `birthdate` date NOT NULL,
   `dni` char(10) NOT NULL,
   `gender` char(1) NOT NULL,
-  `birth` date NOT NULL,
   `country_birth` char(3) NOT NULL,
   `city_birth` int(11) NOT NULL,
   `email` varchar(30) NOT NULL,
   `phone` char(10) NOT NULL,
   `role` varchar(40) NOT NULL,
-  `password` varchar(200) NOT NULL
+  `password` varchar(200) NOT NULL,
+  `id_sucursal` varchar(36) NOT NULL,
+  `id_departamento` varchar(36) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `names`, `surnames`, `birthdate`, `dni`, `gender`, `country_birth`, `city_birth`, `email`, `phone`, `role`, `password`, `id_sucursal`, `id_departamento`) VALUES
+('725b5a63-41fe-4de0-927d-15532a8592fc', 'Brayan Daniel', 'Ceron', '2024-08-28', '1085335942', 'M', 'ABW', 129, 'brayan0np@gmail.com', '3003436887', 'Developer', '123|', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', '818b5dd4-3497-4ca7-86ff-a68daddbe665'),
+('8fbb558a-0d76-40fa-84ee-316d5082f34c', 'Sandra', 'Portilla', '2024-09-02', '59805908', 'F', 'COL', 2269, 'patiportilla79@gmail.com', '3185737774', 'Servicios Generales', '123456', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', '818b5dd4-3497-4ca7-86ff-a68daddbe665');
 
 --
 -- Índices para tablas volcadas
@@ -4726,7 +4745,9 @@ ALTER TABLE `sucursal`
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`),
   ADD KEY `usuarioToCountry` (`country_birth`),
-  ADD KEY `usuarioTocity` (`city_birth`);
+  ADD KEY `usuarioTocity` (`city_birth`),
+  ADD KEY `usuarioToSucursal` (`id_sucursal`),
+  ADD KEY `usuarioToDepartamento` (`id_departamento`);
 
 --
 -- Restricciones para tablas volcadas
@@ -4750,6 +4771,8 @@ ALTER TABLE `sucursal`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `usuarioToCountry` FOREIGN KEY (`country_birth`) REFERENCES `pais` (`PaisCodigo`),
+  ADD CONSTRAINT `usuarioToDepartamento` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id`),
+  ADD CONSTRAINT `usuarioToSucursal` FOREIGN KEY (`id_sucursal`) REFERENCES `sucursal` (`id`),
   ADD CONSTRAINT `usuarioTocity` FOREIGN KEY (`city_birth`) REFERENCES `ciudad` (`CiudadID`);
 COMMIT;
 
