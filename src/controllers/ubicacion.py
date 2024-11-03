@@ -1,6 +1,6 @@
 from src.database.database import get_connection
 from src.utils.messages_errors import DB_CONNECTION_ERROR
-from src.utils.messages_errors import ERROR_500
+from src.utils.messages_errors import ERROR_500, ERROR_400
 
 def get_paises() : #{
     conn = get_connection()
@@ -108,17 +108,28 @@ def get_ciudades_de_pais_con_sucursales(id_pais) :#{
 #}
 
 def post_city(id_pais, name_ciudad) :#{
+    if(not id_pais or not name_ciudad) : return ERROR_400
+    
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
-    
+
     try :#{
         cursor = conn.cursor()
-        cursor.execute("insert into ciudad(PaisCodigo, CiudadNombre, CiudadDistrito) values()",[id_pais, name_ciudad, name_ciudad]) 
-        rowcount = cursor.rowcount
-    
-        return rowcount, 200
+        
+        cursor.execute('select count(*) from ciudad')
+        id = int(cursor.fetchone()[0]) + 1
+
+        cursor.execute("insert into ciudad(CiudadID, CiudadNombre, PaisCodigo) values(%s, %s, %s)",[id, name_ciudad, id_pais]) 
+        # rowcount = cursor.rowcount
+
+        conn.commit()
+        conn.close()
+        
+        return {"message" : "Ciudad registrada exitosamente"}, 200
     #}
-    except :#{
+    except Exception as err :#{
+    # except :#{
+        # print(err)
         return ERROR_500
     #}
 #}

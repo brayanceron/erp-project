@@ -34,7 +34,7 @@ def get() :#{
     #}
     # except :#{
     except Exception as err:#{
-        print(err)
+        # print(err)
         return ERROR_500
     #}
 #}
@@ -153,47 +153,19 @@ def delete(id) :#{
 
 # =====================================
 
-def get_deparatamentos(id_sucursal) :#{
-    conn = get_connection()
-    if (not conn) : return DB_CONNECTION_ERROR;
-    
-    try :#{
-        cursor = conn.cursor()
-        # cursor.execute('select * from departamento where id_sucursal = %s', [id_sucursal])
-        cursor.execute('select id, id_sucursal, name, phone, email, description from departamento where id_sucursal = %s', [id_sucursal])
-        rows = cursor.fetchall()
-        departamentos = []
-        for row in rows :#{
-            departamentos.append({
-                "id" : row[0],
-                "id_sucursal" : row[1],
-                "name" : row[2],
-                "phone" : row[3],
-                "email" : row[4],
-                "description" : row[5]
-            })
-        #}
-        return departamentos, 200
-    #}
-    # except Exception as err :#{
-    except :#{
-        # print(err)
-        return ERROR_500;
-    #}
-#}
-
-def get_sucursal_ubicacion(country, city) :#{
+def get_by_ubicacion(country, city = "") :#{
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
     
     try :#{
         cursor = conn.cursor()
-        cursor.execute(
-            """
-            select id, name, PaisNombre, country, CiudadNombre, city, address, phone, description
-            from sucursal join pais on (country=PaisCodigo) join ciudad on(city=CiudadID) where country=%s and city=%s
-            """, [country, city]
-        )
+        
+        query = """select id, name, PaisNombre, country, CiudadNombre, city, address, phone, description
+            from sucursal join pais on (country=PaisCodigo) join ciudad on(city=CiudadID) where country=%s """
+        params = [country]
+        if city : query += "and city=%s"; params.append(city)
+        cursor.execute(query, params)
+        
         row_count = cursor.rowcount
         if (row_count == 0) :#{
             return {"message":"No se encontraron sucursales para esta region :("}, 404
@@ -217,7 +189,9 @@ def get_sucursal_ubicacion(country, city) :#{
         #}
         return sucursales, 200
     #}
-    except :#{
+    except Exception as err :#{
+    # except :#{
+        print(err)
         return ERROR_500
     #}
 #}

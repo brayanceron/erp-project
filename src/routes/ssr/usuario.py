@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect
 import src.controllers.usuario
 
 usuario_router = Blueprint('usuario_router', __name__)
@@ -41,20 +41,31 @@ def search() :#{
 
 @usuario_router.route('/post', methods = ['POST'])
 def post_usuario() :#{
-    print(request.form)
+    # print(request.form)
 
     names = request.form.get('names')
     surnames = request.form.get('surnames')
     birthdate = request.form.get('birthdate')
     dni = request.form.get('dni')
     gender = request.form.get('gender')
-    country = request.form.get('country')
-    city = request.form.get('city')
     email = request.form.get('email')
     phone = request.form.get('phone')
     role = request.form.get('role')
     password = request.form.get('password')
+    country = request.form.get('country')
+    city = request.form.get('city')
+    
+    id_sucursal = request.form.get('id_sucursal')
+    id_departamento = request.form.get('id_departamento')
 
-    # return src.controllers.usuario.post(names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth=country, city_birth=city)
-    return "registrando usuario"
+    print(names, surnames, birthdate, dni, gender, email, phone, role, password, country, city, id_sucursal, id_departamento)
+
+    # return "registrando"
+
+    res, status= src.controllers.usuario.post(names, surnames, birthdate, dni, gender, email, phone, role, password, 
+                                                country, city, id_sucursal, id_departamento)
+    print (status)
+    if status == 200 : return redirect(f'/ssr/usuario/get/{res['id']}')
+    # return "registrando usuario"
+    return "Hubo un error"
 #}

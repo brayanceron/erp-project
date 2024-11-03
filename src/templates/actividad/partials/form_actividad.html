@@ -1,0 +1,45 @@
+<div class="columns is-multiline is-narrow">
+
+    <input type="hidden" name="id_user" value="{{id_user}}">
+
+    <div class="column is-12">
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+
+                <input class="input" type="text" placeholder="Titulo" name="title"
+                    value="{#sucursal['name']#}" />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-heading"></i>
+                </span>
+
+            </p>
+        </div>
+    </div>
+
+
+    <div class="column is-12">
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+
+                <!-- <input class="input" type="date" placeholder="Fecha" name="date" -->
+                <input class="input" type="text" placeholder="Fecha" name="date" id="date"
+                    value="Hoy" disabled />
+                <span class="icon is-small is-left">
+                    <i class="fa-solid fa-calendar-day"></i>
+                </span>
+
+            </p>
+        </div>
+    </div>
+    <script>
+        const hoy = new Date(Date.now());
+        document.getElementById('date').value =  hoy.toLocaleDateString()
+    </script>
+
+
+
+    <div class="column is-12">
+        <textarea class="textarea" placeholder="Descripción de las actividades del dia" name="description"></textarea>
+    </div>
+
+</div>

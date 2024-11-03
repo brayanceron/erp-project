@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Actividades</title>
+</head>
+
+<body>
+    {% include('partials/navbar.html') %}
+
+    <div class="container">
+        <div class="box m-2 p-5">
+
+            <div class="columns is-multiline">
+
+                <div class="column is-12 p-0 m-0">
+                    <p class="title is-5">Titulo de la tarea (7c3f0e63-5e91-4a3f-b72d-93121f1d5c59)</p>
+                </div>
+                <div class="column is-8 p-0 m-0">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-user-tie"></i></span>
+                        <span>Ramdolio Ramirez (725b5a63-41fe-4de0-927d-15532a8592fc)</span>
+                    </span>
+                </div>
+                <div class="column is-4 p-0 m-0">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
+                        <span>Sucursal Centro Exito (Pasto, Colombia)</span>
+                    </span>
+                </div>
+                <div class="column is-4 p-0 m-0">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-puzzle-piece"></i></span>
+                        <span>Departamento de Contabilidad</span>
+                    </span>
+                </div>
+                <div class="column is-4 p-0 m-0">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-calendar-days"></i></span>
+                        <span>01/01/2000</span>
+                    </span>
+                </div>
+                <div class="column is-4 p-0 m-0">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-clock"></i></span>
+                        <span>10:00 AM</span>
+                    </span>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    <div class="fixed-grid has-7-cols">
+        <div class="grid">
+            
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Lunes</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Martes</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Miercoles</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Jueves</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Viernes</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Sabado</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Domingo</p>
+            </div>
+
+
+            <div class="cell">
+
+
+                <div class="card px-1" style="height: 100%;">
+                    <p class="has-text-weight-bold has-text-centered my-3">Titulo de la tarea</p>
+
+                    <div class="box mx-1 mb-4 p-0 has-background-grey-lighter is-radiusless">
+                        <div class="columns is-multiline">
+                            <div class="column py-0 is-1">
+                                <span class="icon"><i class="fa-solid fa-square-check"
+                                        style="color: #63E6BE;"></i></span>
+                            </div>
+                            <div class="column py-0">
+                                <p class="is-size-7">Titulo de la tarea</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box mx-1 mb-4 p-0 has-background-grey-lighter is-radiusless">
+                        <div class="columns is-multiline">
+                            <div class="column py-0 is-1">
+                                <span class="icon"><i class="fa-solid fa-square-check"
+                                        style="color: #63E6BE;"></i></span>
+                            </div>
+                            <div class="column py-0">
+                                <p class="is-size-7">Tarea Segunda</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div style="height: auto; background-color: #63E6BE;"></div>
+
+                    <footer class="card-footer py-0 my-0">
+                        <span class="icon-text">
+                            <span class="icon"><i class="fa-solid fa-calendar-days"></i></span>
+                            <span class="is-size-7">01/01/2000</span>
+                        </span>
+                        <span class="icon-text">
+                            <span class="icon"><i class="fa-solid fa-clock"></i></span>
+                            <span class="is-size-7">10:00 AM</span>
+                        </span>
+                    </footer>
+                </div>
+
+
+            </div>
+
+            {% for i in [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9] %}
+            <div class="cell">
+                <div class="card" style="height: 100%;">
+                    <p class="has-text-weight-bold has-text-centered my-3">Titulo de la tarea</p>
+
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-user-tie"></i></span>
+                        <span class="is-size-7">Ramdolio Ramirez</span>
+                    </span>
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-industry"></i></span>
+                        <span class="is-size-7">Sucursal Centro Exito</span>
+                    </span>
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-square-check" style="color: #63E6BE;"></i></span>
+                        <span class="is-size-7">Pasto, Colombia</span>
+                    </span>
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-puzzle-piece"></i></span>
+                        <span class="is-size-7">Departamento de Contabilidad</span>
+                    </span>
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-calendar-days"></i></span>
+                        <span class="is-size-7">01/01/2000</span>
+                    </span>
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-clock"></i></span>
+                        <span class="is-size-7">10:00 AM</span>
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+
+
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>

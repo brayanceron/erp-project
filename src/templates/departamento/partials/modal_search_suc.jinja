@@ -160,7 +160,8 @@
             activate_btnseleccionar(id, false);
             return
         }
-        let res = await fetch(`/ssr/sucursal/get/${select_pais_modal.value}/${select_ciudad_modal.value}`)
+        //let res = await fetch(`/ssr/sucursal/get/${select_pais_modal.value}/${select_ciudad_modal.value}`)
+        let res = await fetch(`/api/sucursal/get/by/ubicacion/${select_pais_modal.value}/${select_ciudad_modal.value}`)
         let status = res.status
 
         if (status == 200) {

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Actividades por mes</title>
+</head>
+
+<body>
+    {% include('partials/navbar.html') %}
+
+
+    <div class="container box my-0 py-0">
+        <div class="columns my-0 p-0 is-multiline" id="info_user">
+            
+            <div class="column is-12-mobile is-3-tablet is-3-desktop my-0 p-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-user"></i></span>
+                    <span id="names" class="is-size-7">Nombres Apellidos</span>
+                </span>
+            </div>
+
+            <div class="column is-12-mobile is-5-tablet is-4-desktop my-0 p-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-fingerprint"></i></span>
+                    <span id="dni" class="is-size-7">0000000000</span>
+                </span>
+            </div>
+
+            <div class="column is-half-mobile is-2-tablet is-3-desktop my-0 p-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-venus-mars"></i></span>
+                    <span id="gender" class="is-size-7">U</span>
+                </span>
+            </div>
+
+            <div class="column is-half-mobile is-2-tablet is-2-desktop my-0 p-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-earth-americas"></i></span>
+                    <span id="location" class="is-size-7">0000000000</span>
+                </span>
+            </div>
+
+            <div class="column is-12-mobile is-3-tablet is-3-desktop my-0 p-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-industry"></i></span>
+                    <span id="sucursal" class="is-size-7">0000000000</span>
+                </span>
+            </div>
+
+            <div class="column is-12-mobile is-5-tablet is-4-desktop my-0 p-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-puzzle-piece"></i></span>
+                    <span id="departamento" class="is-size-7">0000000000</span>
+                </span>
+            </div>
+
+            <div class="column is-12-mobile is-4-tablet is-3-desktop my-0 p-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+                    <span id="email" class="is-size-7">0000000000</span>
+                </span>
+            </div>
+
+            <div class="column is-12-mobile is-3-tablet is-2-desktop my-0 p-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-phone"></i></span>
+                    <span id="phone" class="is-size-7">0000000000</span>
+                </span>
+            </div>
+
+            <div class="column is-12-mobile is-5-tablet is-3-desktop my-0 p-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-person-through-window"></i></span>
+                    <span id="entry_date" class="is-size-7">00/00/0000</span>
+                </span>
+            </div>
+
+            <div class="colum is-12 my-1">
+                <input class="input is-rounded is-small" type="month" placeholder="Rounded input" onchange="changeDate(event)"
+            id="inputMonth" />
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="fixed-grid has-7-cols my-2">
+        <div class="grid">
+
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Lunes</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Martes</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Miercoles</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Jueves</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Viernes</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Sabado</p>
+            </div>
+            <div class="cell">
+                <p class="has-text-centered has-text-weight-bold ">Domingo</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="fixed-grid has-7-cols my-2">
+        <div class="grid" id="calendar">
+        </div>
+    </div>
+
+
+</body>
+
+<script>
+    let id_user = '{{id_user}}'
+
+    let calendar = document.getElementById('calendar');
+    document.getElementById('inputMonth').value = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
+
+    async function info_user() {
+        let info_user = document.getElementById('info_user')
+        let res_user = await fetch(`/api/usuario/${id_user}`)
+        if (res_user.status !== 200) return
+        let data_user = await res_user.json()
+
+        let { id_sucursal, id_departamento } = data_user
+
+        let res_sucursal = await fetch(`/api/sucursal/${id_sucursal}`)
+        if (res_sucursal.status !== 200) return
+        let data_sucursal = await res_sucursal.json()
+
+        let res_departamento = await fetch(`/api/departamento/${id_departamento}`)
+        if (res_departamento.status !== 200) return
+        let data_departamento = await res_departamento.json()
+
+        // console.log("================");
+        document.getElementById('names').innerText = `${data_user.names} ${data_user.surnames}`
+        document.getElementById('dni').innerText = `${data_user.id}`
+        // document.getElementById('gender').innerText = `${data_user.gender}`
+        document.getElementById('gender').innerText = data_user.gender === 'F'? 'Femenino' : 'Masculino'
+        document.getElementById('location').innerText = `${data_user.country_birth}`
+        document.getElementById('email').innerText = `${data_user.email}`
+        document.getElementById('phone').innerText = `${data_user.phone}`
+        
+        document.getElementById('sucursal').innerText = `${data_sucursal.name}`
+        document.getElementById('departamento').innerText = `${data_departamento.name}`
+
+        let entry_date = new Date(data_user.entry_date)
+        document.getElementById('entry_date').innerText = `${entry_date.getFullYear()}/${entry_date.getMonth()}/${entry_date.getDate()}(Fecha entrada)`
+    }
+    info_user()
+
+    // -------------CALENDAR
+    async function getActividades(id_user, month = (new Date().getMonth() + 1), year = (new Date().getFullYear())) { //mes de 1 a 12
+        calendar.innerHTML = ""
+        let res = await fetch(`/api/actividad/get_by_usuario_by_mes?id_user=${id_user}&month=${month}`)
+        let data = res.status === 200 ? await res.json() : [];
+
+        let init = new Date(year, month - 1)
+        let before_days = init.getDay() == 0 ? 7 : init.getDay();
+
+        // DIAS DEL MES ANTERIOR
+        for (let j = before_days - 1; j > 0; j--) {
+            let day = new Date(year, month - 1); day.setDate(day.getDate() - j);
+
+            let resDay = await fetch(`/api/actividad/get_by_usuario_by_dia?id_user=${id_user}&date=${day.getFullYear()}/${day.getMonth() + 1}/${day.getDate()}`)
+            let actividades = resDay.status === 200 ? await resDay.json() : []
+            calendar.innerHTML += generateCardDay(day, actividades)
+        }
+
+        // DIAS DEL MES SELECCIONADO
+        for (let i = 0; i < 32; i++) {
+            if (init.getMonth() !== month - 1) break
+            calendar.innerHTML += generateCardDay(init, data)
+            init.setDate(init.getDate() + 1)
+        }
+    }
+
+    function changeDate(event) {
+        let fecha = new Date(event.target.value.replace('-', '/') + "/01")
+        let [year, month] = event.target.value.split('-')
+
+        getActividades(id_user, fecha.getMonth() + 1, year)
+    }
+
+    function generateCardDay(init, data) {
+        let card_dat = `
+            <div class="cell">
+
+                <div class="card px-1" style="min-height: 120px;">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-calendar-days"></i></span>
+                        <span class="is-size-7">${init.getDate()}/${init.getMonth() + 1}/${init.getFullYear()}</span>
+                    </span><br><br>
+        `
+        let coincidencias = 0;
+        let limit_by_day = 3
+        data.forEach(item => {
+            if (init.toDateString() === new Date(item.date).toDateString()) {
+                coincidencias++
+                if (coincidencias <= limit_by_day) {
+                    card_dat += `
+                        <div class="box mx-1 mb-4 p-0 has-background-grey-lighter is-radiusless">
+                            <div class="columns is-multiline">
+                                <div class="column py-0 is-1">
+                                    <span class="icon"><i class="fa-solid fa-square-check"
+                                            style="color: #63E6BE;"></i></span>
+                                </div>
+                                <div class="column py-0">
+                                    <a class="is-size-7" href="/ssr/actividad/${item.id}">${item.title}</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        })
+        if (coincidencias > limit_by_day) card_dat += "<a class='is-size-7' href='#'>Ver mas</a>"
+
+        card_dat += `
+            <div style="height: auto; background-color: #63E6BE;"></div>
+                </div>
+            </div>
+        `
+        return card_dat;
+    }
+
+    getActividades(id_user)
+
+</script>
+
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Registrar actividad</title>
+</head>
+
+<body>
+    {% include('partials/navbar.html') %}
+
+    <div class="container">
+        <h1 class="title is-4 has-text-centered my-2">Registrar Actividad</h1>
+
+        <form action="/ssr/actividad/post" method="post">
+            {% include('actividad/partials/form_actividad.html') %}
+            <input type="submit" class="button is-primary is-fullwidth" value="Registrar">
+        </form>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,37 +1,54 @@
 from uuid import uuid4
+import src.controllers.usuario
 from src.database.database import get_connection
-from src.utils.messages_errors import DB_CONNECTION_ERROR, ERROR_400, ERROR_500
-from src.controllers.sucursal import get_id as get_id_sucursal
+import src.controllers.sucursal
+from src.utils.messages_errors import DB_CONNECTION_ERROR, INVALID_PARAMS_PAG_ERROR, ERROR_400, ERROR_500
+from src.utils.pagination import params_pagination_check
 
-def get(page = 0, pagination_size = 10) :#{  Endpoint que nunca se usaria
-    if(not page or not pagination_size) : page = 0; pagination_size = 10;
+keys = ['id', 'id_sucursal', 'name', 'phone', 'email', 'description']
+cols = str(keys).replace("'","").replace("[","").replace("]","")
+values_cols = "%s, " * (len(keys) -1) + " %s"  
+
+def get(page : int = 0, pagination_size : int = 10) :#{  Endpoint que nunca se usaria
+    if (not params_pagination_check(page, pagination_size)) : return INVALID_PARAMS_PAG_ERROR 
+
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
     
-    cursor = conn.cursor()
-    pg = int(page)*int(pagination_size)
-    # cursor.execute("select * from departamento order by id_sucursal limit %s offset %s",[int(pagination_size), int(pg)])
-    cursor.execute("select id, id_sucursal, name, phone, email, description from departamento"\
-                    "order by id_sucursal limit %s offset %s",[int(pagination_size), int(pg)])
-    row_count = cursor.rowcount
-    if (row_count == 0) :#{
-        return {"message":"No hay sucursales registradas :("}, 404
+    try :#{
+        cursor = conn.cursor()
+        pg = int(page)*int(pagination_size)
+
+        cursor.execute(f"select {cols} from departamento \
+                        order by id_sucursal limit %s offset %s", [int(pagination_size), int(pg)])
+        
+        row_count = cursor.rowcount
+        if (row_count == 0) :#{
+            return {"message":"No se encontraron departamentos :("}, 404
+        #}
+        
+        rows = cursor.fetchall()
+        departamentos = []
+        for row in rows :#{
+            # departamentos.append(dict(zip(keys,row)))
+            departamentos.append({
+                "id" : row[0],
+                "id_sucursal" : row[1],
+                "name" : row[2],
+                "phone" : row[3],
+                "email" : row[4],
+                "description" : row[5],
+            })
+            
+        #}
+        conn.close()
+        return departamentos, 200
     #}
-    
-    rows = cursor.fetchall()
-    departamentos = []
-    for row in rows :#{
-        departamentos.append({
-            "id" : row[0],
-            "id_sucursal" : row[1],
-            "name" : row[2],
-            "phone" : row[3],
-            "email" : row[4],
-            "description" : row[5],
-        })
+    except Exception as err :#{
+    # except :#{
+        print(err)
+        return ERROR_500
     #}
-    conn.close()
-    return departamentos, 200
 #}
 
 def get_id(id) :#{
@@ -40,8 +57,7 @@ def get_id(id) :#{
         
     try :#{
         cursor = conn.cursor()
-        # cursor.execute("select * from departamento where id = %s", [id])
-        cursor.execute("select id, id_sucursal, name, phone, email, description from departamento where id = %s", [id])
+        cursor.execute(f"select {cols} from departamento where id = %s", [id])
         row_counnt = cursor.rowcount
         result = cursor.fetchone()
         
@@ -68,23 +84,29 @@ def get_id(id) :#{
 
 def post(id_sucursal, name, phone, email, description) :#{
     if (not id_sucursal or not name or not phone or not email or not description) : return ERROR_400
+    # id = uuid4()
+    
+    # params = { k : v for k, v in locals().items() if k in keys} 
+    # print(params)
+    # return {"ok" : "ok"}, 200
     
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
     
-    _, status = get_id_sucursal(id_sucursal)
+    _, status = src.controllers.sucursal.get_id(id_sucursal)
     if status != 200 : return {"message" : "La sucursal a la cual se quiere registrar el departamento no fue encontrada :("}, 404
     
     try :#{
-        id = uuid4()
         cursor = conn.cursor()
-        cursor.execute("insert into departamento(id, id_sucursal, name, phone, email, description)" \
-                    "values(%s, %s, %s, %s, %s, %s)",[id, id_sucursal, name, phone, email, description])
+        id = uuid4()
+        cursor.execute(f"insert into departamento({cols}) values({values_cols})", [ id, id_sucursal, name, phone, email, description ])
         conn.commit()
         conn.close()
         return {"message" : "Departamento registrado exitosamente", "id": id }, 200
     #}
-    except :#{
+    except Exception as err :#{
+    # except :#{
+        print(err)
         return ERROR_500
     #}
 #}
@@ -95,12 +117,17 @@ def put(id, id_sucursal, name, phone, email, description) :#{
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
     
-    _, status = get_id_sucursal(id_sucursal)
-    if (status != 200) : return {"message":"La sucursal a la cual se quiere cambiar el departamento no fue encontrada :("}, 404
+    _, status = src.controllers.sucursal.get_id(id_sucursal)
+    if (status != 200) : return {"message":"La sucursal a la cual se quiere actualizar el departamento no fue encontrada :("}, 404
     
     try :#{
         cursor = conn.cursor()
         cursor.execute("update departamento set id_sucursal = %s, name = %s, phone = %s, email = %s, description = %s where id = %s",[id_sucursal, name, phone, email, description, id])
+        rowcount = cursor.rowcount
+        if (rowcount == 0) : #{
+            return { "message" : "Departamento a actualizar no encontrado" }, 404
+        #}
+        
         conn.commit()
         conn.close()
         
@@ -132,34 +159,67 @@ def delete(id) :#{
     #}
 #}
 
-
-
+# =================================================
 
 def get_by_sucursal(id_sucursal) :#{
-    if not id_sucursal : return ERROR_500
-    
     conn = get_connection()
-    if not conn : return DB_CONNECTION_ERROR
-    
+    if (not conn) : return DB_CONNECTION_ERROR;
     
     try :#{
         cursor = conn.cursor()
-        # cursor.execute("select * from departamento where id_sucursal = %s",[id_sucursal])
-        cursor.execute("select id, name from departamento where id_sucursal = %s",[id_sucursal])
+        # cursor.execute('select * from departamento where id_sucursal = %s', [id_sucursal])
+        cursor.execute('select id, id_sucursal, name, phone, email, description from departamento where id_sucursal = %s', [id_sucursal])
         rows = cursor.fetchall()
         departamentos = []
-        for row in rows :#{            
+        for row in rows :#{
             departamentos.append({
-                "id": row[0],
-                "name": row[2]
+                "id" : row[0],
+                "id_sucursal" : row[1],
+                "name" : row[2],
+                "phone" : row[3],
+                "email" : row[4],
+                "description" : row[5]
             })
         #}
-        # validar cuando la sucursal no tiene departamentos, error 404
         return departamentos, 200
-        
     #}
+    # except Exception as err :#{
     except :#{
-        return ERROR_500
+        # print(err)
+        return ERROR_500;
     #}
 #}
+
+# def get_by_sucursal(id_sucursal) :#{
+#     # if not id_sucursal : return ERROR_500
+    
+#     conn = get_connection()
+#     if not conn : return DB_CONNECTION_ERROR
+    
+    
+#     try :#{
+#         cursor = conn.cursor()
+#         # cursor.execute("select * from departamento where id_sucursal = %s",[id_sucursal])
+#         cursor.execute("select id, name from departamento where id_sucursal = %s",[id_sucursal])
+#         rowcount = cursor.rowcount
+#         if rowcount == 0 : return {"message" : "No se encontraron departamentos para la sucursal especificada :("}, 404
+#         rows = cursor.fetchall()
+#         departamentos = []
+#         for row in rows :#{            
+#             departamentos.append({
+#                 "id": row[0],
+#                 "name": row[1]
+#             })
+#         #}
+#         # validar cuando la sucursal no tiene departamentos, error 404
+#         return departamentos, 200
+        
+#     #}
+#     except :#{
+#     # except Exception as err:#{
+#         # print (err)
+#         return ERROR_500
+#     #}
+# #}
+
 

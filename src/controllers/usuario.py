@@ -4,6 +4,49 @@ import datetime
 
 from uuid import uuid4
 
+def get() :#{
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+    
+    try :#{
+        cursor = conn.cursor()
+        cursor.execute("select names, surnames, birthdate, dni, gender, email, phone, role, password, entry_date, country_birth, city_birth, id_sucursal, id_departamento \
+            from usuario")
+        
+        rowcount = cursor.rowcount
+        if rowcount == 0 :#{
+            return {"message" : "No se encontraron usuarios registrados :("}, 404
+        #}
+
+        usuarios = []
+        rows = cursor.fetchall()
+        for row in rows :#{
+            usuarios.append({
+                'names' : row[0],
+                'surnames' : row[1],
+                'birthdate' : row[2],
+                'dni' : row[3],
+                'gender' : row[4],
+                'email' : row[5],
+                'phone' : row[6],
+                'role' : row[7],
+                'password' : row[8],
+                'entry_date' : row[9],
+                'country_birth' : row[10],
+                'city_birth' : row[11],
+                'id_sucursal' : row[12],
+                'id_departamento' : row[13],
+            })
+        #}
+        conn.close()
+        return usuarios, 200
+    #}
+    except Exception as err:#{
+    # except :#{
+        print(err)
+        return ERROR_500
+    #}
+#}
 
 def get_id(id) :#{
     conn = get_connection()
@@ -13,7 +56,7 @@ def get_id(id) :#{
     
     try :#{
         cursor = conn.cursor()
-        cursor.execute('select id, names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth \
+        cursor.execute('select id, names, surnames, birthdate, dni, gender, email, phone, role, password, entry_date, country_birth, city_birth, id_sucursal, id_departamento \
                         from usuario where id = %s',[id])
         row = cursor.fetchone()
         # print(row)
@@ -33,44 +76,89 @@ def get_id(id) :#{
             "phone":row[7],
             "role":row[8],
             "password":row[9],
-            "country_birth":row[10],
-            "city_birth":row[11],
+            "entry_date":row[10],
+            "country_birth":row[11],
+            "city_birth":row[12],
+            "id_sucursal":row[13],
+            "id_departamento":row[14]
         }
         return usuario, 200
     #}
     except :#{
-        print("error")
+        # print("error")
         return ERROR_500
     #}
 #}
 
-
-# def post(names, surnames, birthdate: str, dni, gender, email, phone, role, password, country_birth, city_birth) :#{
-def post(names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth) :#{
+def post(names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth, id_sucursal, id_departamento) :#{
     conn = get_connection()
     if not conn : return DB_CONNECTION_ERROR
     
     if (not names or not surnames or not birthdate or not dni or not country_birth or not city_birth or not email
-        or not phone or not role or not password or (gender not in ['F','M'])) :#{
+        or not phone or not role or not password or (gender not in ['F','M']) or not id_sucursal or not id_departamento) :#{
                 return ERROR_400
     #}
-    
     
     try :#{
         id = uuid4()                                
         cursor = conn.cursor()
-        cursor.execute("insert into usuario(id, names, surnames, birthdate, dni, gender, country_birth, city_birth, email, phone, role, password)"\
-                    " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",[id, names, surnames, birthdate, dni, gender, country_birth, city_birth, email, phone, role, password])
+        cursor.execute("insert into usuario(id, names, surnames, birthdate, dni, gender, country_birth, city_birth, email, phone, role, password, id_sucursal, id_departamento)"
+                    " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",[id, names, surnames, birthdate, dni, gender, country_birth, city_birth, email, phone, role, password, id_sucursal, id_departamento])
         conn.commit()
         conn.close()
         return {"message":"usuario registrado exitosamente", "id" : id}, 200
     #}
-    # except Exception as err:#{
-    except :#{
-        # print(err)
+    except Exception as err :#{
+    # except :#{
+        # print("err")
+        print(err)
         return ERROR_500
     #}       
 #}
+
+def get_by_departamento(id_departamento) :#{
+    conn = get_connection()
+    if not conn: return DB_CONNECTION_ERROR
+    
+    try :#{
+        cursor = conn.cursor()
+        cursor.execute('select id, names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth \
+                        from usuario where id_departamento = %s',[id_departamento])
+        
+        rows = cursor.fetchall()
+
+        rowcount = cursor.rowcount
+        if rowcount == 0 :#{
+            return {'message' : 'No se encontraron usuarios registrados para este departamento'}, 404
+        #}
+        
+        usuarios = []
+
+        for row in rows :#{
+            usuarios.append({
+                "id":row[0],
+                "names":row[1],
+                "surnames":row[2],
+                "birthdate":row[3],
+                "dni":row[4],
+                "gender":row[5],
+                "email":row[6],
+                "phone":row[7],
+                "role":row[8],
+                "password":row[9],
+                "country_birth":row[10],
+                "city_birth":row[11],
+            })
+        #}
+        return usuarios, 200
+    #}
+    # except :#{
+    except Exception as err :#{
+        # print(err)
+        return ERROR_500
+    #}
+#}
+
 
 def search(names = None, dni = None, email = None) :#{
     # filtros = {"name":"ana", "surnames":"perez"}
@@ -129,3 +217,4 @@ def search(names = None, dni = None, email = None) :#{
         return "error"
     #}
 #}
+

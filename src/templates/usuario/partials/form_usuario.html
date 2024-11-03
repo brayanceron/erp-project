@@ -56,7 +56,13 @@
 
 
 <div class="field" id="div_ubicacion_nacimiento">
-    {{ ubicacion(id="2") }}
+    <label class="label">Lugar de nacimiento</label>
+    <div class="control">
+        {{ ubicacion(
+        id="2"
+        )
+        }}
+    </div>
 </div>
 
 <div class="field">
@@ -132,28 +138,40 @@
 
 
 <script>
-    
+
     // console.log("form_usu");
-    get_paises(document.getElementById("div_ubicacion_nacimiento"))
+    //get_paises(document.getElementById("div_ubicacion_nacimiento"))
 
     document.getElementById("btn_seleccionar").addEventListener('click', async (event) => {
         let sucursal_select_form2 = document.getElementById('sucursal_select_form').value
 
-        // console.log(sucursal_select_form2);
+        console.log(sucursal_select_form2);
         let res = await fetch(`/api/departamento/get/by/sucursal/${sucursal_select_form2}`)
-        let data = await res.json()
+        let status = res.status
 
         let departament_select_form = document.getElementById("departament_select_form")
         departament_select_form.innerHTML = "";
+        departament_select_form.disabled = false
 
-        data.forEach(element => {
-            // console.log(element);
-            let option = document.createElement('option')
-            option.value = element.id
-            option.innerText = element.name
-            departament_select_form.appendChild(option)
-        });
+        if (status == 200) {
+            let data = await res.json()            
 
+            data.forEach(element => {
+                let option = document.createElement('option')
+                option.value = element.id
+                option.innerText = element.name
+                departament_select_form.appendChild(option)
+            });
+        }
+        else{
+                let data = await res.json()
+                console.log(data);
+                let option = document.createElement('option')
+                option.value = ""
+                option.innerText = data.message
+                departament_select_form.appendChild(option)
+                departament_select_form.disabled = true
+        }
     })
 
 </script>

@@ -21,12 +21,87 @@
         {% include('sucursal/partials/error.html') %}
     </div>
     {% else %}
-    <div class="container">
-        {% include('departamento/partials/table_departamento.html') %}
+    <div class="container box">
+        <table class="table is-bordered is-fullwidth">
+            <tr>
+                <td class="is-dark">Id</td>
+                <td>{{departamento["id"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Nombre</td>
+                <td>{{departamento["name"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Correo eléctronico</td>
+                <td>{{departamento["email"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Teléfono</td>
+                <td>{{departamento["phone"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Descripción</td>
+                <td>{{departamento["description"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Id sucursal</td>
+                <td><a href="/ssr/sucursal/get/{{sucursal['id']}}">{{sucursal["id"]}}</a></td>
+            </tr>
+            <tr>
+                <td class="is-dark">Nombre</td>
+                <td>{{sucursal["name"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Ubicación</td>
+                <td>{{sucursal["country"]}}, {{sucursal["city"]}}</td>
+            </tr>
+            <tr>
+                <td class="is-dark">Dirección</td>
+                <td>{{sucursal["address"]}}</td>
+            </tr>
+        </table>
     </div>
 
-    <div class="container">
-        <p>Sucursal asociada: <a href="/ssr/sucursal/get/{{departamentos[0]['id_sucursal']}}">{{departamentos[0]['id_sucursal']}}</a></p>
+
+    <!-- EMPLEADOS -->
+    <div class="contanier ">
+        <h1 class="title is-6 has-text-centered">Empleados</h1>
+    </div>
+
+    <div class="container box">
+        {% if lenght > 0 %}
+        <table class="table is-bordered is-fullwidth">
+            <!-- <thead>
+                <th class="is-dark">ID</th>
+                <th class="is-dark">Nombres</th>
+            </thead> -->
+            <tr>
+                <th class="is-light">ID</th>
+                <th class="is-light">Nombres</th>
+                <th class="is-light">Genero</th>
+                <th class="is-light">DNI</th>
+                <th class="is-light">País</th>
+                <th class="is-light">Correo</th>
+                <th class="is-light">Teléfono</th>
+                <th class="is-light">Cargo</th>
+            </tr>
+
+            {% for usuario in usuarios %}
+                <tr>
+                    <td><a href="/ssr/usuario/get/{{usuario['id']}}">{{usuario['id']}}</a></td>
+                    <td>{{usuario['names']}} {{usuario['surnames']}}</td>
+                    <td>{{usuario['gender']}}</td>
+                    <td>{{usuario['dni']}}</td>
+                    <td>{{usuario['country_birth']}}</td>
+                    <td>{{usuario['email']}}</td>
+                    <td>{{usuario['phone']}}</td>
+                    <td>{{usuario['role']}}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+        {% endif %}
+        <p class="has-text-centered">{{lenght}} usuario(s) registrado(s)</p>
     </div>
     {% endif %}
 

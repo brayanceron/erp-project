@@ -1,7 +1,7 @@
 from flask import Blueprint,request, render_template, redirect
 import src.controllers.sucursal
 import src.controllers.departamento
-
+import src.controllers.usuario
 
 departamento_router = Blueprint('departamento_router', __name__)
 
@@ -13,10 +13,9 @@ urls = {
 
 @departamento_router.route('/get')
 def get() :#{ Endpoints que nunca se usaria
-    page = request.args.get("page")
-    pagination_size = request.args.get("pagination_size")
-    
-    departamentos, status = src.controllers.departamento.get(page, pagination_size)
+    keys_params = ['page', 'pagination_size'] 
+    params = { k : v for k, v in request.args.items() if k in keys_params}    
+    departamentos, status = src.controllers.departamento.get(**params)
     
     return render_template('departamento/get.html', departamentos = departamentos)
 #}
@@ -24,11 +23,16 @@ def get() :#{ Endpoints que nunca se usaria
 @departamento_router.route('/get/<id>')
 def get_id(id) :#{
     departamento, status = src.controllers.departamento.get_id(id)
-    if (status == 200) :#{
-        return render_template("departamento/get_id.html", departamentos = [departamento])
+    sucursal, status_suc = src.controllers.sucursal.get_id(departamento.get('id_sucursal'))
+
+    if (status == 200 and status_suc == 200) :#{
+        usuarios, status_usu = src.controllers.usuario.get_by_departamento(departamento.get('id'))
+        if status_usu != 200 : usuarios = []
+        return render_template("departamento/get_id.html", departamento = departamento, sucursal = sucursal, usuarios = usuarios, lenght = len(usuarios))
     #}
     else :#{
-        return render_template("departamento/get_id.html", departamentos = [departamento], error = departamento['message'])
+        error = departamento.get('message') or sucursal.get('message')
+        return render_template("departamento/get_id.html", departamento = departamento, error = error)
     #}
 #}
 

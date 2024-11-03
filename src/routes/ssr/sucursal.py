@@ -24,8 +24,8 @@ def get() :#{
 def get_id(id) :#{
     sucursal, status  = src.controllers.sucursal.get_id(id)
     if (status == 200) :#{
-        departamentos, status_dep = src.controllers.sucursal.get_deparatamentos(id) # ver cuando el estatus de esto no es 200
-        print(departamentos)
+        departamentos, status_dep = src.controllers.departamento.get_by_sucursal(id) # ver cuando el estatus de esto no es 200
+        # print(departamentos)
         return render_template('sucursal/get_id.html', sucursal = sucursal, departamentos = departamentos, lenght = len(departamentos))
     #}
     elif (status == 404) :#{
@@ -130,10 +130,4 @@ def put_sucursal(id) :#{
     else :#{
         return redirect(f'/ssr/sucursal/put/{id}?error={res.get('message')}')
     #}   
-#}
-
-@sucursal_router.route('/get/<country>/<city>')
-def get_sucursal_ubicacion_route(country, city) :#{
-    sucursales, status = src.controllers.sucursal.get_sucursal_ubicacion(country, city)
-    return sucursales, status
 #}
