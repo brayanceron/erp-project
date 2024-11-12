@@ -16,7 +16,7 @@
     <form action="/ssr/sucursal/post" method="post">
         <div class="is-flex is-justify-content-center is-align-items-center" style="width: 100vw;">
 
-            
+
             <div class="fixed-grid has-1-cols" style="width: 32%;">
 
                 <div class="grid">
@@ -27,10 +27,14 @@
                     <div class="cell">
                         {% include("sucursal/partials/form_sucursal.html")%}
                         <div class="">
-                            <input type="submit" class="button is-primary is-fullwidth" value="Registrar">
+                            <!-- <button type="submit" class="button is-primary is-fullwidth is-inverted" value="Registrar"> -->
+                            <button type="submit" class="button is-dark is-fullwidth" value="Registrar">
+                                <span class="icon"><i class="fa-solid fa-circle-check" style="color: lime;"></i></span>
+                                <span>Registrar</span>
+                            </button>
+
                         </div>
                     </div>
-
 
 
                     {% if error %}
@@ -39,9 +43,9 @@
                     </div>
                     {% endif %}
 
-                    
+
                 </div>
-                
+
             </div>
 
 

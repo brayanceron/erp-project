@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-10-2024 a las 21:27:19
+-- Tiempo de generación: 10-11-2024 a las 16:41:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,48 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `erp_development`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `actividad`
+--
+
+CREATE TABLE `actividad` (
+  `id` varchar(36) NOT NULL,
+  `id_user` varchar(36) NOT NULL,
+  `date` datetime NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `actividad`
+--
+
+INSERT INTO `actividad` (`id`, `id_user`, `date`, `title`, `description`) VALUES
+('0c91289c-20a4-4121-a609-09df93d1aa71', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-01 10:58:30', 'Actividad III', 'descripcion random III'),
+('159b602b-1c78-44eb-b408-842cb9761c7f', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-10-21 15:38:56', 'Task II', '         Task II \r\n\r\nthis is a test task\r\n'),
+('236dde5e-ec12-4ab1-9d51-82e1ec12113c', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-02 10:21:08', 'Trabajo sabado', 'Hoy se trabajo medio tiempo'),
+('2c943d34-a159-4053-b5c7-4053fe4ebaae', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-10-26 21:20:17', 'tarea nocturna', 'Tarea registrada en las horas de la noche'),
+('2ff0d03a-1f59-4089-9edb-2bb9007f4594', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-05 16:02:20', 'Actividades de la tarde', 'Este es el registro de las actividades de la tarde'),
+('33c4a4fb-07a5-45b7-a93f-dc90e20ed3b7', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-09 10:31:59', 'Actividades sabado', 'Se trabajo el sabado hasta medio tiempo'),
+('419dbb14-bcc1-4d9f-8b6e-a9441e7e9815', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-06 14:09:52', 'Inicio de tarde II', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'),
+('4f73e2f4-39fb-4f19-9b05-d82f8b71f0fe', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-01 10:58:15', 'Actividad II', 'descripcion random'),
+('69ad7d68-9d44-4a9d-b63d-04e098af283a', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-08 11:09:59', 'Actividades del viernes', 'Actividades normales'),
+('6f32afc0-52a6-44b0-9310-b6081554c152', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-06 14:37:36', 'Actividad de las 2:30', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\r\n\r\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \r\n\r\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'),
+('7c060cd0-394b-4085-acc2-c4da7e76405c', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-06 14:26:14', 'Clima nubado', 'Luego de una mañana soleada, la tarde empezo a ponerse nubada'),
+('7c3f0e63-5e91-4a3f-b72d-93121f1d5c59', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-10-29 14:03:13', 'Tarea I', 'Descripcion de la tarea I'),
+('7d1da9c6-7211-4b8f-a4c7-5c530485a6cf', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-03 13:27:13', 'Horas extra', 'Horas extras de día domingo'),
+('8e8c2ffe-c046-4d50-8fa0-886e4dd77cc0', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-10-25 12:06:38', 'Actividades regulares del día', 'Actividades normales del día'),
+('ab1f1761-a7ba-4f06-9279-7a2ad731c61c', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-06 14:08:09', 'Inicio de la tarde', 'Actividades del inicio de la tarde:\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n'),
+('add743bd-0dff-4264-94ae-1187ae79ad52', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-10-26 15:38:45', 'Task I', '         Task I \r\n\r\nthis is a test task\r\n'),
+('ba8690fc-461f-469d-bf61-6fa549a5bf12', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-01 11:01:29', 'Actividad IV', 'ramdom'),
+('c405b95c-b7ce-4d75-8a24-3aa81d729ccf', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-05 11:29:04', 'Actividades Diarias', 'Actividades regulares del día'),
+('cf1361c5-6643-4b23-b31f-9fedf3d3869d', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-09 14:55:03', 'Sabado Tarde', 'Toco tambien trabajar en la tarde'),
+('d2710366-6fd3-45fc-ae39-1a18c80124b6', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-01 10:27:56', 'Actvidades diarias', 'Actividades diarias de siempre'),
+('e97c761b-b66c-4371-be0e-0e8d4c34e6e8', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-11-06 11:10:45', 'Actividades Diarias', 'Actividades normales del día'),
+('f976a66a-1582-4cdf-8db4-43b47bc37ff3', '8fbb558a-0d76-40fa-84ee-316d5082f34c', '2024-09-21 14:14:02', 'Mantenimiento de Puertas', '    MANTENIMIENTO DE PUERTAS\nSe realizaron mantenimiento las puertas de toda la empresa, esto conllevo realizar las siguientes actividades:\n   1. Contratar un conserje\n   2. Comprar aceite para puertas\n   ');
 
 -- --------------------------------------------------------
 
@@ -4357,7 +4399,9 @@ INSERT INTO `ciudad` (`CiudadID`, `CiudadNombre`, `PaisCodigo`) VALUES
 (4315, 'Otra', 'YUG'),
 (4316, 'Otra', 'ZAF'),
 (4317, 'Otra', 'ZMB'),
-(4318, 'Otra', 'ZWE');
+(4318, 'Otra', 'ZWE'),
+(4319, 'Tumaco', 'COL'),
+(4320, 'Ipiales', 'COL');
 
 -- --------------------------------------------------------
 
@@ -4380,11 +4424,13 @@ CREATE TABLE `departamento` (
 
 INSERT INTO `departamento` (`id`, `name`, `phone`, `id_sucursal`, `description`, `email`) VALUES
 ('0d69d84d-bfa7-422a-b7de-a70f1c27e451', 'Departamento estrategico', '3185737774', 'cc7bb3d5-8741-497b-aad4-3557d6b2cc3a', 'Departamento de gerencia de la sucursal', 'patiportilla79@hotmail.com'),
+('203f0f34-12da-4cec-820d-bdc827c7a592', 'test dep', '0000000000', '26e51225-97bd-4c9f-99ec-9de94605ab38', 'test', 'email@email.com'),
 ('25847728-cdc6-430f-a090-436d3e84ce92', 'Departamento Estrategico', '3178956483', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', 'Departamento estrategico en sede  del valle', 'test_0001@mail.com'),
-('5c011add-0690-4358-8781-885bd3f6b691', 'test dep', '0000000000', '26e51225-97bd-4c9f-99ec-9de94605ab38', 'test description', 'email@email.com'),
+('3b15edf0-ebdf-40ee-8d03-98618c20c4f5', 'test dep', '0000000000', '26e51225-97bd-4c9f-99ec-9de94605ab38', 'test', 'email@email.com'),
+('4c1f506f-7dc2-448f-80ad-23daa6300808', 'test dep', '0000000000', '26e51225-97bd-4c9f-99ec-9de94605ab38', 'test', 'email@email.com'),
 ('63c27cab-7cea-4f37-a82b-0cb897dda474', 'Departamento de finanzas y contabilidad', '3143178956', 'cc7bb3d5-8741-497b-aad4-3557d6b2cc3a', 'Departamento de la plata', 'test_0001@mail.com'),
 ('818b5dd4-3497-4ca7-86ff-a68daddbe665', 'Departamento de Finanzas y contabilidad', '3003436887', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', 'Sucursal de las  plata', 'userspublicos@gmail.com'),
-('8d32d7fd-a30f-4597-9f57-bebe1cdae9d5', 'test dep', '0000000000', '26e51225-97bd-4c9f-99ec-9de94605ab38', 'test', 'email@email.com'),
+('af4ddea1-31d9-48f3-8f33-a28a05f02e8b', 'test dep', '0000000000', '26e51225-97bd-4c9f-99ec-9de94605ab38', 'test', 'email@email.com'),
 ('c2c7e7c8-d843-45f9-9d9f-01e96bdd85a4', 'Departamento Estrategico', '3003436887', '0338e8e9-d6f8-47aa-a661-b2d8263f664f', 'Sucursal de las ordenes estrategicas', 'brayan0np@gmail.com'),
 ('ca742678-a1f5-4d22-97cb-41033436da4d', 'Departamento de gerencia', '3185737774', '08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'Departamento de primer nivel', 'brayan0np@gmail.com'),
 ('ea8ede37-e5f0-4337-b1c3-ce429cc9b05c', 'Departamento de marketing y comunicacion', '3185737774', 'cc7bb3d5-8741-497b-aad4-3557d6b2cc3a', 'Departamento de comunicaciones', 'userspublicos@gmail.com');
@@ -4673,6 +4719,7 @@ INSERT INTO `sucursal` (`id`, `name`, `country`, `city`, `address`, `phone`, `de
 ('08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'Sucursal Centro Exito', 'COL', 2269, 'KR 18 N26 Brr Centro', '3003436887', 'Sucursal del centron'),
 ('26e51225-97bd-4c9f-99ec-9de94605ab38', 'Sucursal Ecua', 'ECU', 602, 'Cl 18B Parque Centro', '4862647834', 'Sucursal en el Ecuador'),
 ('3f8da33f-e44d-4061-9b33-36e30d330aa8', 'test I*', 'COL', 2269, 'test 1', '0000000000', 'test 1'),
+('97266ab9-b684-4da2-a385-861a7104889a', 'Sucursal Nubes Verdes', 'COL', 4320, 'Kr 5 Cl 12 Br La Estancia', '3007864619', 'Sucursal de Ipiales'),
 ('a61e16d3-ecf8-417b-8f9a-c772bb562031', 'Sucursal Valle', 'COL', 2258, 'Av Simon Bolibar #47-12', '3003436887', 'Sucursal en el departamento del valle del cauca'),
 ('cc7bb3d5-8741-497b-aad4-3557d6b2cc3a', 'Sucursal Cauca', 'COL', 2282, 'KR 6 No 73S Brr Sta Ines', '3174179779', 'Sucursal en el departamento del cauca');
 
@@ -4695,6 +4742,7 @@ CREATE TABLE `usuario` (
   `phone` char(10) NOT NULL,
   `role` varchar(40) NOT NULL,
   `password` varchar(200) NOT NULL,
+  `entry_date` datetime NOT NULL DEFAULT current_timestamp(),
   `id_sucursal` varchar(36) NOT NULL,
   `id_departamento` varchar(36) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -4703,13 +4751,27 @@ CREATE TABLE `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `names`, `surnames`, `birthdate`, `dni`, `gender`, `country_birth`, `city_birth`, `email`, `phone`, `role`, `password`, `id_sucursal`, `id_departamento`) VALUES
-('725b5a63-41fe-4de0-927d-15532a8592fc', 'Brayan Daniel', 'Ceron', '2024-08-28', '1085335942', 'M', 'ABW', 129, 'brayan0np@gmail.com', '3003436887', 'Developer', '123|', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', '818b5dd4-3497-4ca7-86ff-a68daddbe665'),
-('8fbb558a-0d76-40fa-84ee-316d5082f34c', 'Sandra', 'Portilla', '2024-09-02', '59805908', 'F', 'COL', 2269, 'patiportilla79@gmail.com', '3185737774', 'Servicios Generales', '123456', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', '818b5dd4-3497-4ca7-86ff-a68daddbe665');
+INSERT INTO `usuario` (`id`, `names`, `surnames`, `birthdate`, `dni`, `gender`, `country_birth`, `city_birth`, `email`, `phone`, `role`, `password`, `entry_date`, `id_sucursal`, `id_departamento`) VALUES
+('1e9b1e66-9ff5-444d-806c-82792b6d687d', 'Maria Isabel', 'Ceron Portilla', '2013-03-18', '7845238916', 'F', 'COL', 2269, 'test_0001@mail.com', '00000000', 'Admin', '123', '2024-10-29 11:05:12', '0338e8e9-d6f8-47aa-a661-b2d8263f664f', 'c2c7e7c8-d843-45f9-9d9f-01e96bdd85a4'),
+('2b0c79ca-bec8-4e2f-b69f-ee5b05dd2b72', 'Pruebaldo', 'Ramirez', '0000-00-00', '0000000000', 'M', 'COL', 2269, 'pruebaldor@', '3000000000', 'employee', '123', '2024-10-09 11:05:12', '08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'ca742678-a1f5-4d22-97cb-41033436da4d'),
+('3ef639ed-0070-42ac-9055-9c65d84589fc', 'Pruebaldo', 'Ramirez', '0000-00-00', '0000000000', 'M', 'COL', 2269, 'pruebaldor@', '3000000000', 'employee', '123', '2024-10-21 11:05:12', '08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'ca742678-a1f5-4d22-97cb-41033436da4d'),
+('4a20438a-0d19-47d3-b759-cf58e689b130', 'Pruebaldo', 'Ramirez', '0000-00-00', '0000000000', 'M', 'COL', 2269, 'pruebaldor@', '3000000000', 'employee', '123', '2024-10-01 11:05:12', '08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'ca742678-a1f5-4d22-97cb-41033436da4d'),
+('725b5a63-41fe-4de0-927d-15532a8592fc', 'Brayan Daniel', 'Ceron', '2024-08-28', '1085335942', 'M', 'ABW', 129, 'brayan0np@gmail.com', '3003436887', 'Developer', '123|', '2024-10-21 11:05:12', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', '818b5dd4-3497-4ca7-86ff-a68daddbe665'),
+('8fbb558a-0d76-40fa-84ee-316d5082f34c', 'Sandra', 'Portilla', '2024-09-02', '59805908', 'F', 'COL', 2269, 'patiportilla79@gmail.com', '3185737774', 'Servicios Generales', '123456', '2024-08-22 11:05:12', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', '818b5dd4-3497-4ca7-86ff-a68daddbe665'),
+('ce7501ec-7d2e-40ad-b2d0-69c4c2bb5537', 'Angel David', 'Ceron Rosero', '2000-09-30', '7856231298', 'M', 'COL', 2269, 'test_0001@mail.com', '3148956785', 'Conductor', '123', '2024-10-29 11:22:33', 'a61e16d3-ecf8-417b-8f9a-c772bb562031', '818b5dd4-3497-4ca7-86ff-a68daddbe665'),
+('da840ae0-1434-4dea-9654-925073078c73', 'Pruebaldo', 'Ramirez', '0000-00-00', '0000000000', 'M', 'COL', 2269, 'pruebaldor@', '3000000000', 'employee', '123', '2024-10-04 11:05:12', '08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'ca742678-a1f5-4d22-97cb-41033436da4d'),
+('ec60deb7-7938-4be0-8ceb-9825676a3aeb', 'Pruebaldo', 'Ramirez', '0000-00-00', '0000000000', 'M', 'COL', 2269, 'pruebaldor@', '3000000000', 'employee', '123', '2024-09-02 11:05:12', '08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', 'ca742678-a1f5-4d22-97cb-41033436da4d');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `actividad`
+--
+ALTER TABLE `actividad`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `actividadTousuario` (`id_user`);
 
 --
 -- Indices de la tabla `ciudad`
@@ -4754,10 +4816,22 @@ ALTER TABLE `usuario`
 --
 
 --
+-- Filtros para la tabla `actividad`
+--
+ALTER TABLE `actividad`
+  ADD CONSTRAINT `actividadTousuario` FOREIGN KEY (`id_user`) REFERENCES `usuario` (`id`);
+
+--
 -- Filtros para la tabla `ciudad`
 --
 ALTER TABLE `ciudad`
   ADD CONSTRAINT `paisTociudad` FOREIGN KEY (`PaisCodigo`) REFERENCES `pais` (`PaisCodigo`);
+
+--
+-- Filtros para la tabla `departamento`
+--
+ALTER TABLE `departamento`
+  ADD CONSTRAINT `sucursaltTodeparatementos` FOREIGN KEY (`id_sucursal`) REFERENCES `sucursal` (`id`);
 
 --
 -- Filtros para la tabla `sucursal`

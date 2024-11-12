@@ -1,0 +1,122 @@
+{% macro info_user(
+type_input_date = 'date',
+id_input_date = "inputDate"
+) %}
+<div class="container box mb-0 mt-2 py-0">
+    <div class="columns my-0 p-0 is-multiline" id="info_user">
+
+        <div class="column is-12-mobile is-3-tablet is-3-desktop my-0 p-0">
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-user"></i></span>
+                <span id="names" class="is-size-7"></span>
+            </span>
+        </div>
+
+        <div class="column is-12-mobile is-5-tablet is-4-desktop my-0 p-0">
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-fingerprint"></i></span>
+                <span id="dni" class="is-size-7"></span>
+            </span>
+        </div>
+
+        <div class="column is-half-mobile is-2-tablet is-3-desktop my-0 p-0">
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-venus-mars"></i></span>
+                <span id="gender" class="is-size-7"></span>
+            </span>
+        </div>
+
+        <div class="column is-half-mobile is-2-tablet is-2-desktop my-0 p-0">
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-earth-americas"></i></span>
+                <span id="location" class="is-size-7"></span>
+            </span>
+        </div>
+
+        <div class="column is-12-mobile is-3-tablet is-3-desktop my-0 p-0">
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-industry"></i></span>
+                <span id="sucursal" class="is-size-7"></span>
+            </span>
+        </div>
+
+        <div class="column is-12-mobile is-5-tablet is-4-desktop my-0 p-0">
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-puzzle-piece"></i></span>
+                <span id="departamento" class="is-size-7"></span>
+            </span>
+        </div>
+
+        <div class="column is-12-mobile is-4-tablet is-3-desktop my-0 p-0">
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+                <span id="email" class="is-size-7"></span>
+            </span>
+        </div>
+
+        <div class="column is-12-mobile is-3-tablet is-2-desktop my-0 p-0">
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-phone"></i></span>
+                <span id="phone" class="is-size-7"></span>
+            </span>
+        </div>
+
+        <div class="column is-12-mobile is-5-tablet is-3-desktop my-0 p-0">
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-person-through-window"></i></span>
+                <span id="entry_date" class="is-size-7"></span>
+            </span>
+        </div>
+
+        <div class="colum is-12 my-1">
+            <input class="input is-rounded is-small" type="{{type_input_date}}" placeholder="Rounded input"
+                id="{{id_input_date}}" />
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    async function info_user(id_user) {
+        let info_user = document.getElementById('info_user')
+        let res_user = await fetch(`/api/usuario/${id_user}`)
+        if (res_user.status !== 200) return
+        let data_user = await res_user.json()
+
+        let { id_sucursal, id_departamento } = data_user
+
+        let res_sucursal = await fetch(`/api/sucursal/${id_sucursal}`)
+        if (res_sucursal.status !== 200) return
+        let data_sucursal = await res_sucursal.json()
+
+        let res_departamento = await fetch(`/api/departamento/${id_departamento}`)
+        if (res_departamento.status !== 200) return
+        let data_departamento = await res_departamento.json()
+
+        // console.log("================");
+        document.getElementById('names').innerText = `${data_user.names} ${data_user.surnames}`
+        document.getElementById('dni').innerText = `${data_user.id}`
+        // document.getElementById('gender').innerText = `${data_user.gender}`
+        document.getElementById('gender').innerText = data_user.gender === 'F' ? 'Femenino' : 'Masculino'
+        document.getElementById('location').innerText = `${data_user.country_birth}`
+        document.getElementById('email').innerText = `${data_user.email}`
+        document.getElementById('phone').innerText = `${data_user.phone}`
+
+        document.getElementById('sucursal').innerText = `${data_sucursal.name}`
+        document.getElementById('departamento').innerText = `${data_departamento.name}`
+
+        let entry_date = new Date(data_user.entry_date)
+        document.getElementById('entry_date').innerText = `${entry_date.getFullYear()}/${entry_date.getMonth()}/${entry_date.getDate()}(Fecha entrada)`
+    }
+
+    function add_info_user_event(typeEvent, listener) {
+        if (typeEvent === 'onLoad') {
+            listener(document.querySelector('input'))
+            return
+        }
+        document.querySelector('input').addEventListener(typeEvent, listener)
+    }
+
+</script>
+{% endmacro %}

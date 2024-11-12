@@ -8,7 +8,7 @@ import datetime
 
 # date_time = datetime
 
-def get(page : int = 0, pagination_sie : int = 0) :#{
+def get(page : int = 0, pagination_sie : int = 10) :#{
     if (not params_pagination_check(page, pagination_sie)) : return INVALID_PARAMS_PAG_ERROR
     
     conn = get_connection()
@@ -27,7 +27,8 @@ def get(page : int = 0, pagination_sie : int = 0) :#{
             actividades.append({
                 "id" : row[0],
                 "id_user" : row[1],
-                "date" : row[2],
+                "date" : row[2].strftime('%Y/%m/%d'),
+                "time" : row[2].strftime('%H:%M:%S'),
                 "title" : row[3],
                 "description" : row[4]
             })
@@ -55,7 +56,8 @@ def get_id(id) :#{ Esto es solamente para ver la informacion de una unica tarea
         actividad = {
             'id':row[0],
             'id_user':row[1],
-            'date':row[2],
+            "date" : row[2].strftime('%Y/%m/%d'),
+            "time" : row[2].strftime('%H:%M:%S'),
             'title':row[3],
             'description' : row[4]
         }
@@ -134,7 +136,7 @@ def get_by_usuario_by_mes(id_user : str, month : str = str(datetime.datetime.now
     #}
 #}
 
-def get_by_usuario_by_dia(id_user : str, date : str = str(datetime.datetime.now().strftime("%Y-%m-%d"))) :#{ Esto es para ver todas las tareas hechas por un empleado en un solo dia
+def get_by_usuario_by_fecha(id_user : str, date : str = str(datetime.datetime.now().strftime("%Y-%m-%d"))) :#{ Esto es para ver todas las tareas hechas por un empleado en un solo dia
     if (not id_user or not date) : return ERROR_400
     # print(date)
     conn = get_connection()

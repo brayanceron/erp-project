@@ -1,0 +1,23 @@
+{% macro card_day(
+fecha,
+tareas
+) %}
+
+
+
+<div class="cell">
+
+    <div class="card px-1" style="min-height: 150px;">
+        <span class="icon-text mb-2">
+            <span class="icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="is-size-7">{{fecha}}</span>
+        </span>
+
+        {{tareas}}
+
+        <div style="height: auto; background-color: #63E6BE;"></div>
+    </div>
+
+</div>
+
+{% endmacro %}

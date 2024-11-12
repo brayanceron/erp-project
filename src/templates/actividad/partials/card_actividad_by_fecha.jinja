@@ -1,0 +1,40 @@
+{% macro card_actividad_by_fecha(
+    title,
+    id,
+    time
+)%}
+<div class="column is-auto  box m-1 p-2">
+    <div class='columns is-multiline'>
+
+        <div class='column is-12 m-1 p-0'>
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-heading"></i></span>
+                <span id="dni" class="is-size-5">
+                    {# <p>${item.title}</p> #}
+                    <p>{{title}}</p>
+                </span>
+            </span>
+        </div>
+
+        <div class='column is-12 m-1 p-0'>
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-fingerprint"></i></span>
+                <span id="dni" class="is-size-7"><a href="/ssr/actividad/get/{{id}}">{{id}}</a> </span>
+            </span>
+        </div>
+
+        <div class='column is-12 m-1 p-0'>
+            <span class="icon-text">
+                <span class="icon"><i class="fa-solid fa-clock"></i></span>
+                <span id="dni" class="is-size-7">
+                    <p>{{time}}</p>
+                </span>
+            </span>
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endmacro %}

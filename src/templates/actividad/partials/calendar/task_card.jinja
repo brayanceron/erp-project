@@ -1,0 +1,10 @@
+{% macro task_card(
+id,
+title
+) %}
+<a href="/ssr/actividad/get/{{id}}" class="button is-dark is-rounded is-inverted is-smalll is-fullwidth py-0 px-2 mt-1 is-justify-content-start">
+    <span class="icon is-size-6"><i class="fa-solid fa-circle-check " style="color: black;"></i></span>
+    <span class="is-size-7">{{title}}</span>
+</a>
+
+{% endmacro %}

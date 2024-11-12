@@ -1,0 +1,103 @@
+{% from 'actividad/partials/info_user.jinja' import info_user %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Actividad</title>
+</head>
+
+<body>
+
+    {% include('partials/navbar.html') %}
+
+    <!-- INFO USER -->
+    {{ info_user() }}
+    <!-- INFO USER -->
+
+
+    <br>
+    <div class="container my-2">
+        <div class="columns box is-multiline is-justify-content-center" id="divActividad">
+            <!-- <div class="is-"></div> -->
+        </div>
+    </div>
+
+</body>
+<script>
+    let id = `{{id}}`
+    let id_user = ""
+
+    // -------------ACTIVIDADES
+    async function getActividad() {
+        let divActividad = document.getElementById('divActividad')
+        divActividad.innerHTML = ""
+        // alert(id)
+        let res = await fetch(`/api/actividad/${id}`)
+        let data = await res.json()
+
+        console.log(data);
+
+        if (res.status === 200) {
+            id_user = data.id_user
+            // ----------- INFO_USER
+            add_info_user_event('onLoad', element =>  info_user(id_user))
+
+            let content = `
+                <div class="column is-12">
+                    <p class="title is-size-3">${data.title}</p>
+                </div>
+
+                <div class="column my-0 mr-1 p-0 has-background-dark" style="border-radius:8px">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-fingerprint" style="color: white;"></i></span>
+                        <span id="dni" class="is-size-7 has-text-white">${data.id}</span>
+                    </span>
+                </div>
+
+                <div class="column my-0 p-0 has-background-dark" style="border-radius:8px">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-regular fa-calendar-check" style="color: white;"></i></span>
+                        <span id="dni" class="is-size-7 has-text-white">${data.date}</span>
+                    </span>
+                </div>
+
+                <div class="column my-0 ml-1 p-0 has-background-dark" style="border-radius:8px">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-regular fa-clock" style="color: white;"></i></span>
+                        <span id="dni" class="is-size-7 has-text-white">${data.time}</span>
+                    </span>
+                </div>
+
+                <div class="column is-12 mt-5 mb-1 p-0">
+                    <span class="icon-text">
+                        <span class="icon"><i class="fa-solid fa-align-left"></i></span>
+                        <span id="dni" class="is-size-7">Descripción</span>
+                    </span>
+                </div>
+
+                <div class="column is-12" style="border-style: dashed; border-color : gray;">
+                    <p class="title is-5">${data.title}</p>
+                    <p>${data.description}</p>
+                </div>
+
+            `
+            divActividad.innerHTML = content
+
+        }
+        else {
+            alert("error")
+        }
+    }
+
+    getActividad()
+
+
+
+
+</script>
+
+</html>

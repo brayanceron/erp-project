@@ -1,0 +1,85 @@
+{% from 'actividad/partials/info_user.jinja' import  info_user %}
+{% from 'sucursal/partials/error_alert.jinja' import error %}
+{% from 'actividad/partials/card_actividad_by_fecha.jinja' import card_actividad_by_fecha %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/582e7c74d2.js" crossorigin="anonymous"></script>
+    <title>Actividades por día</title>
+</head>
+
+<body>
+    <div id="error_comoponent" style="display: none; width: auto;">
+        {{ error(descripcion='${data.message}') }}
+    </div>
+
+
+    {% include('partials/navbar.html') %}
+
+    <!-- INFO USER -->
+    {{ info_user() }}
+    <!-- INFO USER -->
+
+    <br><br>
+    
+    <div class="container my-2 has-text-centered">
+        <p class="title is-5">Actividades del día {{date}}</p>
+    </div>
+
+    <br>
+    <div class="container my-2">
+        <div class="columns is-multiline is-justify-content-center" id="divActividades">
+            <!-- <div class="is-"></div> -->
+        </div>
+    </div>
+
+</body>
+
+<script>
+    let error_comoponent = document.getElementById('error_comoponent')
+    let error_comoponent_html = document.getElementById('error_comoponent').children[0]
+    let error_comoponent_css = document.getElementById('error_comoponent').children[1]
+    console.log(error_comoponent_html);
+    console.log(error_comoponent_css);
+
+
+
+
+    let id_user = `{{id_user}}`
+    let date = `{{date}}`
+
+
+    // -------------ACTIVIDADES
+    async function getActividadesByDate() {
+        let divActividades = document.getElementById('divActividades')
+        divActividades.innerHTML = ""
+        let res = await fetch(`/api/actividad/get/by/usuario/by/fecha?id_user=${id_user}&date=${date}`)
+        let data = await res.json()
+        if (res.status === 200) {
+            data.forEach(item => {
+                 // divActividades.appendChild(error_comoponent_html.cloneNode(true)) // divActividades.appendChild(error_comoponent_css)
+                divActividades.innerHTML += `{{ card_actividad_by_fecha('${item.title}', '${item.id}', '${item.time}') }}`
+            });
+            // console.log(data);
+        }
+        else {
+            divActividades.innerHTML = `{{ error(descripcion='${data.message}') }}` // divActividades.innerHTML = `{# include('sucursal/partials/error.html') #}`
+        }
+
+    }
+
+    getActividadesByDate()
+
+    // ----------- INFO_USER
+    add_info_user_event('onLoad', (element) =>{
+        info_user(id_user)
+    })
+
+
+</script>
+
+</html>
