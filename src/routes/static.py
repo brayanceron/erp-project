@@ -18,3 +18,9 @@ def home() :#{
 def lab() :#{
     return render_template("lab.html")
 #}
+
+@static_router.route("/error/403")
+def error_403() :#{
+    return render_template("partials/error403.html")
+#}
+

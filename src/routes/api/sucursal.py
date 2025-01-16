@@ -1,10 +1,18 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, redirect
 import src.controllers.sucursal
+import src.controllers.auth
 
 
 sucursal_api_router = Blueprint('sucursal_api_router', __name__)
 keys = ['name','city','country','address','description','phone']
 
+# --- AUTH MIDDLEWARE ---
+@sucursal_api_router.before_request
+def before() :#{
+    # if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
+    # if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))[0]['auth']) : return {'error' : "error en ..."} 
+    if (not (is_auth := src.controllers.auth.auth_api_middleware(request.endpoint))[0]['auth']) : return is_auth[0], is_auth[1]
+#}
 
 @sucursal_api_router.route('/')
 def get() :#{

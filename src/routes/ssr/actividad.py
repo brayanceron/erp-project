@@ -3,6 +3,14 @@ import src.controllers.actividad
 
 actividad_router = Blueprint('actividad_router', __name__)
 
+
+# --- AUTH MIDDLEWARE ---
+@actividad_router.before_request
+def before() :#{
+    if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
+#}
+
+
 @actividad_router.route('/get')
 def get() :#{
     return render_template('/actividad/get.html')
@@ -13,14 +21,12 @@ def get_id(id) :#{
     return render_template("actividad/get_id.html", id = id)
 #}
 
-
 @actividad_router.route('/post')
 def post() :#{
     error = request.args.get('error')
     id_user = "8fbb558a-0d76-40fa-84ee-316d5082f34c"
     return render_template('actividad/post.html', error = error, id_user = id_user)
 #}
-
 
 @actividad_router.route('/get/by/usuario/by/mes')
 def get_by_usuario_by_mes() :#{
@@ -40,7 +46,7 @@ def get_by_usuario_by_fecha() :#{
 
 # ===============================================
 @actividad_router.route('/post', methods = ['POST'])
-def post_actividad() :#{
+def POST() :#{
     title = request.form.get('title')
     date = request.form.get('date')
     id_user = request.form.get('id_user')

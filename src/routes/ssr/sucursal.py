@@ -1,9 +1,16 @@
 from flask import render_template, Blueprint, request, redirect
 import src.controllers.departamento
 import  src.controllers.sucursal
-# from src.controllers.ubicacion import get_paises
+
+import src.controllers.auth
 
 sucursal_router = Blueprint('sucursal_router', __name__)
+
+# --- AUTH MIDDLEWARE ---
+@sucursal_router.before_request
+def before() :#{
+    if (not (is_auth := src.controllers.auth.auth_ssr_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
+#}
 
 
 # SSR
@@ -82,10 +89,6 @@ def delete(id) :#{
     # return render_template('sucursal/delete.html', error = message, status = status)
 #}
 
-@sucursal_router.route('/get/<id>/departamento')
-def get_id_departamento(id) :#{
-    return "ok"
-#}
 @sucursal_router.route('/search')
 def search() :#{
     return render_template('sucursal/search.html')
@@ -96,7 +99,7 @@ def search() :#{
 
 
 @sucursal_router.route('/post', methods = ['POST'])
-def post_sucursal() :#{
+def POST() :#{
     name = request.form.get('name')
     country = request.form.get('country')
     city = request.form.get('city')
@@ -114,7 +117,7 @@ def post_sucursal() :#{
 #}
 
 @sucursal_router.route('/put/<id>', methods = ['POST'])
-def put_sucursal(id) :#{
+def PUT(id) :#{
     # id = request.form.get('id')
     name = request.form.get('name')
     country = request.form.get('country')

@@ -3,6 +3,15 @@ import src.controllers.usuario
 
 usuario_router = Blueprint('usuario_router', __name__)
 
+# --- AUTH MIDDLEWARE ---
+@usuario_router.before_request
+def before() :#{
+    if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
+#}
+
+
+
+
 @usuario_router.route('/')
 @usuario_router.route('/get')
 def get() :#{
@@ -16,7 +25,6 @@ def get_id(id) :#{
     return render_template("usuario/get_id.html", usuario = usuario)
     # return "getting user", 200
 #}
-
 
 @usuario_router.route('/post')
 def post() :#{
@@ -40,7 +48,7 @@ def search() :#{
 # ------------------------------------------
 
 @usuario_router.route('/post', methods = ['POST'])
-def post_usuario() :#{
+def POST() :#{
     # print(request.form)
 
     names = request.form.get('names')

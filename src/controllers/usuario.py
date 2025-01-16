@@ -218,3 +218,35 @@ def search(names = None, dni = None, email = None) :#{
     #}
 #}
 
+
+def get_by_email(email) :#{
+    conn = get_connection()
+    if (not conn) : return DB_CONNECTION_ERROR
+    
+    try :#{
+        cursor = conn.cursor()
+        cursor.execute('select names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth, id_sucursal, id_departamento from usuario where email = %s limit 1', [email])
+        row = cursor.fetchone()
+        usuario = {
+            "names" : row[0],
+            "surnames" : row[1],
+            "birthdate" : row[2],
+            "dni" : row[3],
+            "gender" : row[4],
+            "email" : row[5],
+            "phone" : row[6],
+            "role" : row[7],
+            "password" : row[8],
+            "country_birth" : row[9],
+            "city_birth" : row[10],
+            "id_sucursal" : row[11],
+            "id_departamento" : row[12]
+        }
+        return usuario, 200
+    #}
+    except :#{
+        return ERROR_500
+    #}
+    
+    
+#}

@@ -1,7 +1,9 @@
-from flask import Blueprint,request, render_template, redirect
+from flask import Blueprint, request, render_template, redirect
 import src.controllers.sucursal
 import src.controllers.departamento
 import src.controllers.usuario
+
+import src.controllers.auth
 
 departamento_router = Blueprint('departamento_router', __name__)
 
@@ -9,6 +11,12 @@ urls = {
     "url_pais": "/api/ubicacion/pais/get?filtrar=True",
     "url_ciudad": """/api/ubicacion/pais/get/${select_pais.value}/ciudades?filtrar=True"""
 }
+
+# --- AUTH MIDDLEWARE ---
+@departamento_router.before_request
+def before() :#{
+    if (not (is_auth := src.controllers.auth.auth_ssr_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
+#}
 
 
 @departamento_router.route('/get')
@@ -79,7 +87,7 @@ def delete(id) :#{
 
 
 @departamento_router.route('/post', methods = ['POST'])
-def post_departamento() :#{
+def POST() :#{
     name = request.form.get('name')
     phone = request.form.get('phone')
     email = request.form.get('email')
@@ -96,7 +104,7 @@ def post_departamento() :#{
     
 #}
 @departamento_router.route('/put/<id>', methods = ['POST'])
-def put_departamento(id) :#{
+def PUT(id) :#{
     name = request.form.get('name')
     phone = request.form.get('phone')
     email = request.form.get('email')
