@@ -225,7 +225,7 @@ def get_by_email(email) :#{
     
     try :#{
         cursor = conn.cursor()
-        cursor.execute('select names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth, id_sucursal, id_departamento from usuario where email = %s limit 1', [email])
+        cursor.execute('select names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth, id_sucursal, id_departamento, id from usuario where email = %s limit 1', [email])
         row = cursor.fetchone()
         usuario = {
             "names" : row[0],
@@ -240,13 +240,12 @@ def get_by_email(email) :#{
             "country_birth" : row[9],
             "city_birth" : row[10],
             "id_sucursal" : row[11],
-            "id_departamento" : row[12]
+            "id_departamento" : row[12],
+            "id" : row[13]
         }
         return usuario, 200
     #}
     except :#{
         return ERROR_500
     #}
-    
-    
 #}

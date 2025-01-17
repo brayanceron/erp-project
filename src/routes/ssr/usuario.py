@@ -1,13 +1,14 @@
 from flask import Blueprint, render_template, request, redirect
 import src.controllers.usuario
+import src.controllers.auth
 
 usuario_router = Blueprint('usuario_router', __name__)
 
 # --- AUTH MIDDLEWARE ---
-@usuario_router.before_request
-def before() :#{
-    if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
-#}
+# @usuario_router.before_request
+# def before() :#{
+#     if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
+# #}
 
 
 
@@ -15,14 +16,14 @@ def before() :#{
 @usuario_router.route('/')
 @usuario_router.route('/get')
 def get() :#{
-    return render_template("usuario/get.html")
+    return render_template("usuario/get.html", session_data = src.controllers.auth.get_sesion_data())
 #}
 
 @usuario_router.route('/get/<id>')
 def get_id(id) :#{
     # return src.controllers.usuario.get_id(id)
     usuario, status =src.controllers.usuario.get_id(id)
-    return render_template("usuario/get_id.html", usuario = usuario)
+    return render_template("usuario/get_id.html", usuario = usuario, session_data = src.controllers.auth.get_sesion_data())
     # return "getting user", 200
 #}
 
@@ -36,12 +37,12 @@ def post() :#{
         # "url_pais_n": "/api/ubicacion/pais/get?filtrar=True",
         # "url_ciudad_n": """/api/ubicacion/pais/get/${select_pais.value}/ciudades?filtrar=True"""
     }
-    return render_template("usuario/post.html", **urls)
+    return render_template("usuario/post.html", **urls, session_data = src.controllers.auth.get_sesion_data())
 #}
 
 @usuario_router.route('/search')
 def search() :#{
-    return render_template("usuario/search.html")
+    return render_template("usuario/search.html", session_data = src.controllers.auth.get_sesion_data())
 #}
 
 

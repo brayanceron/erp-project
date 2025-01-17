@@ -60,24 +60,31 @@
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link" href="/ssr/usuario/search"> Actividades </a>
                 <div class="navbar-dropdown">
-                    <a class="navbar-item" href="/ssr/actividad/get"> Ver </a>
+                    <a class="navbar-item" href="/ssr/actividad/get/by/usuario/by/mes"> Este mes </a>
                     <a class="navbar-item" href="/ssr/actividad/post"> Registrar </a>
+                    <a class="navbar-item" href="/ssr/actividad/get"> Ver Ant</a>
                 </div>
             </div>
 
         </div>
 
         <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light" href="/ssr/auth/logout">
-                        Log out
-                    </a>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link" href="/ssr/usuario/get/{{session_data['id']}}">
+                    <span class="icon-text ">
+                        <span class="icon is-large">
+                            <i class="fas fa-circle-user fa-2x"></i>
+                        </span>
+                    </span>
+                    <span>{{session_data['names']}}</span>
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" href="/ssr/usuario/get/{{session_data['id']}}"> Perfil </a>
+                    <a class="navbar-item" href="/ssr/auth/logout"> Cerrar Sesion </a>
                 </div>
             </div>
+            <div class="navbar-item"></div>
+
         </div>
 
 

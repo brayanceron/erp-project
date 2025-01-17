@@ -20,10 +20,10 @@ def get() :#{
     sucursales, status = src.controllers.sucursal.get()
     
     if (status == 200) :#{
-        return render_template('sucursal/get.html',sucursales = sucursales, lenght = len(sucursales))
+        return render_template('sucursal/get.html',sucursales = sucursales, lenght = len(sucursales), session_data = src.controllers.auth.get_sesion_data())
     #}
     else :#{
-        return render_template('sucursal/get.html', sucursales=[], error = sucursales["message"], lenght=0)
+        return render_template('sucursal/get.html', sucursales=[], error = sucursales["message"], lenght=0, session_data = src.controllers.auth.get_sesion_data())
     #}
 #}
 
@@ -33,13 +33,13 @@ def get_id(id) :#{
     if (status == 200) :#{
         departamentos, status_dep = src.controllers.departamento.get_by_sucursal(id) # ver cuando el estatus de esto no es 200
         # print(departamentos)
-        return render_template('sucursal/get_id.html', sucursal = sucursal, departamentos = departamentos, lenght = len(departamentos))
+        return render_template('sucursal/get_id.html', sucursal = sucursal, departamentos = departamentos, lenght = len(departamentos), session_data = src.controllers.auth.get_sesion_data())
     #}
     elif (status == 404) :#{
-        return render_template('sucursal/get_id.html', sucursales=[], error = sucursal["message"], lenght = 0)
+        return render_template('sucursal/get_id.html', sucursales=[], error = sucursal["message"], lenght = 0, session_data = src.controllers.auth.get_sesion_data())
     #}
     else :#{
-        return render_template('sucursal/get_id.html', sucursales=[], error = sucursal["message"], lenght = 0)
+        return render_template('sucursal/get_id.html', sucursales=[], error = sucursal["message"], lenght = 0, session_data = src.controllers.auth.get_sesion_data())
     #}
 #}
 
@@ -53,7 +53,7 @@ def post() :#{
     # print(paises)
     # return render_template('sucursal/post.html', sucursal = empty_sucursal, error = error, paises = paises)
     # return render_template('sucursal/post.html', sucursal = empty_sucursal, error = error)    
-    return render_template('sucursal/post.html', sucursal = empty_sucursal, error = error, ubicacion_config = {"id" : "01"})
+    return render_template('sucursal/post.html', sucursal = empty_sucursal, error = error, ubicacion_config = {"id" : "01"}, session_data = src.controllers.auth.get_sesion_data())
 #}
 
 @sucursal_router.route('/put/<id>')
@@ -74,10 +74,10 @@ def put(id) :#{
     if (status_suc == 200) :#{
         error_put = request.args.get("error")
         return render_template('sucursal/put.html', sucursal = sucursal, error_put = True if error_put else False, 
-                                error = error_put, ubicacion = True, ubicacion_config = ubicacion_config)
+                                error = error_put, ubicacion = True, ubicacion_config = ubicacion_config, session_data = src.controllers.auth.get_sesion_data())
     #}
     else :#{
-        return render_template('sucursal/put.html', sucursal = {'id' : id}, error_get_suc = True ,error = sucursal["message"], ubicacion_config = {"id" : "01"})
+        return render_template('sucursal/put.html', sucursal = {'id' : id}, error_get_suc = True ,error = sucursal["message"], ubicacion_config = {"id" : "01"}, session_data = src.controllers.auth.get_sesion_data())
     #}
 #}
 
@@ -85,13 +85,13 @@ def put(id) :#{
 def delete(id) :#{
     res, status = src.controllers.sucursal.delete(id)
     message = res["message"]
-    return render_template('sucursal/delete.html', message = message, error = message, status = status)
+    return render_template('sucursal/delete.html', message = message, error = message, status = status, session_data = src.controllers.auth.get_sesion_data())
     # return render_template('sucursal/delete.html', error = message, status = status)
 #}
 
 @sucursal_router.route('/search')
 def search() :#{
-    return render_template('sucursal/search.html')
+    return render_template('sucursal/search.html', session_data = src.controllers.auth.get_sesion_data())
 #}
 
 

@@ -25,7 +25,7 @@ def get() :#{ Endpoints que nunca se usaria
     params = { k : v for k, v in request.args.items() if k in keys_params}    
     departamentos, status = src.controllers.departamento.get(**params)
     
-    return render_template('departamento/get.html', departamentos = departamentos)
+    return render_template('departamento/get.html', departamentos = departamentos, session_data = src.controllers.auth.get_sesion_data())
 #}
 
 @departamento_router.route('/get/<id>')
@@ -36,11 +36,11 @@ def get_id(id) :#{
     if (status == 200 and status_suc == 200) :#{
         usuarios, status_usu = src.controllers.usuario.get_by_departamento(departamento.get('id'))
         if status_usu != 200 : usuarios = []
-        return render_template("departamento/get_id.html", departamento = departamento, sucursal = sucursal, usuarios = usuarios, lenght = len(usuarios))
+        return render_template("departamento/get_id.html", departamento = departamento, sucursal = sucursal, usuarios = usuarios, lenght = len(usuarios), session_data = src.controllers.auth.get_sesion_data())
     #}
     else :#{
         error = departamento.get('message') or sucursal.get('message')
-        return render_template("departamento/get_id.html", departamento = departamento, error = error)
+        return render_template("departamento/get_id.html", departamento = departamento, error = error, session_data = src.controllers.auth.get_sesion_data())
     #}
 #}
 
@@ -53,8 +53,8 @@ def post(id_sucursal = None) :#{
     # if not id_sucursal : return render_template("departamento/post.html",departamento = empty_departamento, error = error)
     sucursal, status = src.controllers.sucursal.get_id(id_sucursal)
     
-    if status == 200 : return render_template("departamento/post.html", departamento = empty_departamento, sucursales = [sucursal], error = error, **urls)
-    else : return render_template("departamento/post.html",departamento = empty_departamento, error = error, **urls)
+    if status == 200 : return render_template("departamento/post.html", departamento = empty_departamento, sucursales = [sucursal], error = error, **urls, session_data = src.controllers.auth.get_sesion_data())
+    else : return render_template("departamento/post.html",departamento = empty_departamento, error = error, **urls, session_data = src.controllers.auth.get_sesion_data())
 #}
 
 @departamento_router.route('/put/<id>')
@@ -64,10 +64,10 @@ def put(id) :#{
     if (status_dep == 200) :#{
         error_put = request.args.get('error')
         sucursal_selected, status_suc = src.controllers.sucursal.get_id(departamento['id_sucursal'])
-        return render_template("departamento/put.html", departamento = departamento, sucursales = [sucursal_selected], error = error_put, **urls)
+        return render_template("departamento/put.html", departamento = departamento, sucursales = [sucursal_selected], error = error_put, **urls, session_data = src.controllers.auth.get_sesion_data())
     #}
     else :#{
-        return render_template("departamento/put.html", departamento = {'id' : id}, error_get = True, error = departamento["message"], **urls)
+        return render_template("departamento/put.html", departamento = {'id' : id}, error_get = True, error = departamento["message"], **urls, session_data = src.controllers.auth.get_sesion_data())
     #}
 #}
 
@@ -78,7 +78,7 @@ def delete(id) :#{
     res, status = src.controllers.departamento.delete(id)
     message = res['message']
     
-    return render_template("departamento/delete.html", error = message, message = message, status = status)
+    return render_template("departamento/delete.html", error = message, message = message, status = status, session_data = src.controllers.auth.get_sesion_data())
 #}
 
 

@@ -104,6 +104,7 @@ def get_by_usuario_by_mes(id_user : str, month : str = str(datetime.datetime.now
     if not conn : return DB_CONNECTION_ERROR
 
     year = str(datetime.datetime.now().year)
+    # year = "2024"
     fecha = f"{year}/{month}/"
     # print(year)
     try :#{
@@ -145,7 +146,7 @@ def get_by_usuario_by_fecha(id_user : str, date : str = str(datetime.datetime.no
     date = f"%{date.replace('/','-')}%"
     try :#{
         cursor = conn.cursor()
-        cursor.execute("select id, id_user, date, title, description from actividad where date like %s ",[ date])
+        cursor.execute("select id, id_user, date, title, description from actividad where date like %s and id_user = %s",[ date, id_user])
         rows = cursor.fetchall()
         rowcount = cursor.rowcount
         if rowcount == 0 :#{

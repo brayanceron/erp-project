@@ -4,7 +4,7 @@ static_router = Blueprint('static_router', __name__)
 
 @static_router.route('/')
 def index() :#{
-    return "<h1>Welcome CRM Project</h1>"
+    return "<h1>Welcome ERP Project</h1>"
 #}
 
 @static_router.route("/ssr/home")

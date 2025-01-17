@@ -1,5 +1,6 @@
-from flask import Blueprint, request, render_template, redirect
+from flask import Blueprint, request, render_template, redirect, session
 import src.controllers.actividad
+import src.controllers.auth
 
 actividad_router = Blueprint('actividad_router', __name__)
 
@@ -7,40 +8,40 @@ actividad_router = Blueprint('actividad_router', __name__)
 # --- AUTH MIDDLEWARE ---
 @actividad_router.before_request
 def before() :#{
-    if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
+    if (not (is_auth := src.controllers.auth.auth_ssr_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
 #}
 
 
 @actividad_router.route('/get')
 def get() :#{
-    return render_template('/actividad/get.html')
+    return render_template('/actividad/get.html', session_data = src.controllers.auth.get_sesion_data())
 #}
 
 @actividad_router.route('/get/<id>')
 def get_id(id) :#{
-    return render_template("actividad/get_id.html", id = id)
+    return render_template("actividad/get_id.html", id = id, session_data = src.controllers.auth.get_sesion_data())
 #}
 
 @actividad_router.route('/post')
 def post() :#{
     error = request.args.get('error')
-    id_user = "8fbb558a-0d76-40fa-84ee-316d5082f34c"
-    return render_template('actividad/post.html', error = error, id_user = id_user)
+    id_user = session.get('id') #id_user = "8fbb558a-0d76-40fa-84ee-316d5082f34c"
+    return render_template('actividad/post.html', error = error, id_user = id_user, session_data = src.controllers.auth.get_sesion_data())
 #}
 
 @actividad_router.route('/get/by/usuario/by/mes')
 def get_by_usuario_by_mes() :#{
-    id_user = "8fbb558a-0d76-40fa-84ee-316d5082f34c"
+    id_user = session.get('id') # id_user = "8fbb558a-0d76-40fa-84ee-316d5082f34c"
     # actividades, status = src.controllers.actividad.get_by_usuario_by_mes(id_user, month=10)
-    return render_template("actividad/get_by_usuario_by_mes.html", id_user = id_user)
+    return render_template("actividad/get_by_usuario_by_mes.html", id_user = id_user, session_data = src.controllers.auth.get_sesion_data())
 #}
 
 @actividad_router.route('/get/by/usuario/by/date/')
 def get_by_usuario_by_fecha() :#{
-    id_user = "8fbb558a-0d76-40fa-84ee-316d5082f34c"
+    id_user = session.get('id') #id_user = "8fbb558a-0d76-40fa-84ee-316d5082f34c"
     date = request.args.get('date')
     
-    return render_template('/actividad/get_by_usuario_by_fecha.html', id_user = id_user, date = date)
+    return render_template('/actividad/get_by_usuario_by_fecha.html', id_user = id_user, date = date, session_data = src.controllers.auth.get_sesion_data())
 #}
 
 

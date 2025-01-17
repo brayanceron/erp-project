@@ -11,6 +11,7 @@ def login(email : str, password : str) :#{
     if (user.get('password') != str(password)) : return {"message" : "Usuario o contraseña invalidos"}, 400 #403 #Password invalid
     
     # CREATING SESSION
+    session['id'] = user.get('id')
     session['email'] = user.get('email')
     session['names'] = user.get('names')
     session['surnames'] = user.get('surnames')
@@ -40,6 +41,9 @@ def is_allow(url : str, auth_urls : list) :#{
     return {"message" : "Acceso denegado a esta url"}, 403
 #}
 
+def get_sesion_data() :#{
+    return  dict(session)
+#}
 
 BASIC_URLS = [
     # ".get",
