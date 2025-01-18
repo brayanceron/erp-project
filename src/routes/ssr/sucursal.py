@@ -15,6 +15,7 @@ def before() :#{
 
 # SSR
 @sucursal_router.route('/')
+@sucursal_router.route('/get/by/continent/<continent>')
 @sucursal_router.route('/get')
 def get() :#{
     sucursales, status = src.controllers.sucursal.get()

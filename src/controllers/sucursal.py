@@ -163,7 +163,7 @@ def get_by_ubicacion(country, city = "") :#{
         query = """select id, name, PaisNombre, country, CiudadNombre, city, address, phone, description
             from sucursal join pais on (country=PaisCodigo) join ciudad on(city=CiudadID) where country=%s """
         params = [country]
-        if city : query += "and city=%s"; params.append(city)
+        if city : query += "and (city=%s or CiudadNombre = %s)"; params.append(city); params.append(city)
         cursor.execute(query, params)
         
         row_count = cursor.rowcount

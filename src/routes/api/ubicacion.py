@@ -12,6 +12,23 @@ def get_paises() :#{
     else       :  return src.controllers.ubicacion.get_paises()
 #}
 
+@ubicacion_router.route('/continente/get')
+def get_continentes() :#{
+    filtrar = request.args.get('filtrar')
+
+    if filtrar  : return src.controllers.ubicacion.get_continentes_con_sucursales()
+    else        : return src.controllers.ubicacion.get_continentes()
+#}
+
+# @ubicacion_router.route('/continente/<continente>/get/paises')
+@ubicacion_router.route('/pais/get/by/continente/<continente>')
+def get_paises_by_continent(continente) :#{
+    filtrar = request.args.get('filtrar')
+    if filtrar : return src.controllers.ubicacion.get_paises_by_continent_con_sucursales(continente)
+    else       : return src.controllers.ubicacion.get_paises_by_continent(continente)
+#}
+
+
 # @ubicacion_router.route('/pais/sucursales/get')
 # @ubicacion_router.route('/pais/get/paisesConSucursales')
 # def get_paises_con_sucursales_route() :#{

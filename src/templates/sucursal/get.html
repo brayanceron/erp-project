@@ -1,3 +1,4 @@
+{% from 'sucursal/partials/search_sucursal.jinja' import search_sucursal %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,36 +13,44 @@
 <body>
 
     {% include("partials/navbar.html") %}
-
-
-    <div class="container my-5">
-        <h1 class="title is-4 has-text-centered my-2">Sucursales</h1>
-    </div>
-
-    {% if error %}
-    <div class="container">
-        {% include('sucursal/partials/error.html') %}
-    </div>
-    {% else %}
+    {{ search_sucursal() }}
 
     <div class="container">
-        <div class="columns is-multiline">
 
-            {% for sucursal in sucursales %}
-            {% include('sucursal/partials/card_sucursal.html') %}
-            {% endfor %}
 
+        
+        <div class="container my-5">
+            <h1 class="title is-4 has-text-centered my-2">Sucursales</h1>
         </div>
+
+        {% if error %}
+        <div class="container">
+            {% include('sucursal/partials/error.html') %}
+        </div>
+        {% else %}
+
+        <div class="container">
+            <div class="columns is-multiline">
+
+                {% for sucursal in sucursales %}
+                {% include('sucursal/partials/card_sucursal.html') %}
+                {% endfor %}
+
+            </div>
+        </div>
+
+        {% endif %}
+
+
+        <div class="container my-2">
+            <p class="has-text-centered">{{lenght}} resultado(s) encontrado(s)</p>
+        </div>
+
+
+
     </div>
 
-    {% endif %}
-
-    <div class="container my-2">
-        <p class="has-text-centered">{{lenght}} resultado(s) encontrado(s)</p>
-    </div>
-
-
-
+    <br><br><br><br><br><br>
 
     <div class="container">
 
@@ -233,7 +242,7 @@
                 </div>
             </div>
 
-            
+
 
         </div>
 

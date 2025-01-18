@@ -1,0 +1,148 @@
+{% macro search_sucursal() %}
+<nav class="breadcrumb my-2" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="#">
+                <span class="icon is-small">
+                    <i class="fa-solid fa-earth-americas"></i>
+                </span>
+                <span>America</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <span class="icon is-small">
+                    <i class="fa-solid fa-flag"></i>
+                </span>
+                <span>Colombia</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <span class="icon is-small">
+                    <i class="fa-solid fa-mountain-city"></i>
+                </span>
+                <span>Pasto</span>
+            </a>
+        </li>
+        <li class="is-active">
+            <a href="#">
+                <span class="icon is-small">
+                    <i class="fa-solid fa-industry"></i>
+                </span>
+                <span>Sucursal Centro</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<div class="field has-addons has-addons-centered my-2">
+    <p class="control">
+        <span class="select" id="spanSelectContinente">
+            <select id="selectContinente">
+
+            </select>
+        </span>
+    </p>
+    <p class="control">
+        <span class="select" id="spanSelectPais">
+            <select id="selectPais">
+
+            </select>
+        </span>
+    </p>
+    <p class="control">
+        <span class="select" id="spanSelectCiudad">
+            <select id="selectCiudad">
+
+            </select>
+        </span>
+    </p>
+    <p class="control">
+        <button class="button is-dark">
+            Buscar
+        </button>
+    </p>
+</div>
+
+
+<script>
+    let selectContinente = document.getElementById('selectContinente')
+    let selectPais = document.getElementById('selectPais')
+    let selectCiudad = document.getElementById('selectCiudad')
+
+    selectContinente.addEventListener('change', (event) => {
+        getPaisesByContinente(selectContinente.value)
+    })
+    selectPais.addEventListener('change', (event) => {
+        getCiudadesByPais(selectPais.value)
+    })
+
+    async function getContientes() {
+        selectContinente.innerHTML = ""
+        document.getElementById('spanSelectContinente').classList.add('is-loading')
+
+        let res = await fetch('/api/ubicacion/continente/get?filtrar=True')
+
+        if (res.status == 200) {
+            let data = await res.json()
+            let continentes = data.continents
+            //console.log(continentes)
+            continentes.forEach(item => {
+                let option = document.createElement('option')
+                option.innerText = item
+                option.value = item
+                selectContinente.appendChild(option)
+            })
+
+            await getPaisesByContinente(selectContinente.value)
+        }
+
+        document.getElementById('spanSelectContinente').classList.remove('is-loading')
+    }
+
+    async function getPaisesByContinente(contient) {
+        selectPais.innerHTML = ""
+        document.getElementById('spanSelectPais').classList.add('is-loading')
+
+        let res = await fetch(`/api/ubicacion/pais/get/by/continente/${contient}?filtrar=True`)
+
+        if (res.status == 200) {
+            let paises = await res.json()
+
+            paises.forEach(item => {
+                let option = document.createElement('option')
+                option.innerText = item.name
+                option.value = item.id
+                selectPais.appendChild(option)
+            })
+
+            await getCiudadesByPais(selectPais.value)
+        }
+
+        document.getElementById('spanSelectPais').classList.remove('is-loading')
+    }
+
+    async function getCiudadesByPais(pais) {
+        selectCiudad.innerHTML = ""
+        document.getElementById('spanSelectCiudad').classList.add('is-loading')
+
+        let res = await fetch(`/api/ubicacion/pais/get/${pais}/ciudades?filtrar=True`)
+        if (res.status == 200) {
+            let ciudades = await res.json()
+
+            ciudades.forEach(item => {
+                let option = document.createElement('option')
+                option.innerText = item.name
+                option.value = item.id
+                selectCiudad.appendChild(option)
+            })
+        }
+
+        document.getElementById('spanSelectCiudad').classList.remove('is-loading')
+    }
+
+    getContientes()
+</script>
+
+{% endmacro %}

@@ -134,3 +134,95 @@ def post_city(id_pais, name_ciudad) :#{
     #}
 #}
 
+def get_continentes() :#{
+    conn = get_connection()
+    if (not conn) : return DB_CONNECTION_ERROR
+    try :#{
+        cursor = conn.cursor()
+        cursor.execute('select distinct PaisContinente from pais')
+        rows = cursor.fetchall()
+        continens = []
+        for row in rows :#{
+            continens.append(row[0])
+        #}
+        # return { "continents" : list(rows)}, 200
+        return { "continents" : continens}, 200
+    #}
+    except :#{
+        return ERROR_500
+    #}
+    
+#}
+
+def get_continentes_con_sucursales() :#{
+    conn = get_connection()
+    if (not conn) : return DB_CONNECTION_ERROR
+    try :#{
+        cursor = conn.cursor()
+        # cursor.execute('select distinct PaisContinente from pais')
+        cursor.execute('select distinct PaisContinente from sucursal join pais on country=PaisCodigo')
+        rows = cursor.fetchall()
+        
+        row_count = cursor.rowcount
+        if (row_count == 0) : return {"message" : "No se encontraron continentes que tengan sucursales registradas"}, 404
+
+        continens = []
+        for row in rows :#{
+            continens.append(row[0])
+        #}
+        return { "continents" : continens}, 200
+    #}
+    except Exception as err :#{
+        print(err)
+        return ERROR_500
+    #}
+    
+#}
+
+def get_paises_by_continent(nombre_continente) :#{
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+    
+    try :#{
+        cursor = conn.cursor()
+        cursor.execute('select PaisCodigo, PaisNombre from pais where PaisContinente = %s', [nombre_continente])
+        rows = cursor.fetchall()
+        paises = []
+        for row in rows :#{
+            paises.append({"id" : row[0], "name" : row[1]})
+        #}
+        # return list(rows),200
+        return paises, 200
+    #}
+    except :#{
+        return ERROR_500
+    #}
+    
+#}
+
+def get_paises_by_continent_con_sucursales(nombre_continente) :#{
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+    
+    try :#{
+        cursor = conn.cursor()
+        cursor.execute('select distinct PaisCodigo, PaisNombre from sucursal join pais on country = PaisCodigo where PaisContinente = %s', [nombre_continente])
+        rows = cursor.fetchall()
+        
+        row_count = cursor.rowcount
+        if (row_count == 0) : return {"message" : "No se encontraron paises para ese continente que tengan sucursales registradas"}, 400
+        
+        paises = []
+        for row in rows :#{
+            paises.append({"id" : row[0], "name" : row[1]})
+        #}
+
+        # return list(rows),200
+        return paises, 200
+    #}
+    except :#{
+        return ERROR_500
+    #}
+    
+#}
+
