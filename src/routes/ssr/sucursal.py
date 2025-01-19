@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, redirect
+from flask import render_template, Blueprint, request, redirect, session
 import src.controllers.departamento
 import  src.controllers.sucursal
 
@@ -18,7 +18,10 @@ def before() :#{
 @sucursal_router.route('/get/by/continent/<continent>')
 @sucursal_router.route('/get')
 def get() :#{
-    sucursales, status = src.controllers.sucursal.get()
+    sucursal_usuario, status_user = src.controllers.sucursal.get_id(session.get('id_sucursal'))
+    if status_user != 200 : return render_template('sucursal/get.html', sucursales=[], error = "Este usuario No esta registrado a ninguan sucursal!", lenght=0, session_data = src.controllers.auth.get_sesion_data())
+
+    sucursales, status = src.controllers.sucursal.get_by_ubicacion(country=sucursal_usuario["country_id"], city=sucursal_usuario["city_id"])
     
     if (status == 200) :#{
         return render_template('sucursal/get.html',sucursales = sucursales, lenght = len(sucursales), session_data = src.controllers.auth.get_sesion_data())
