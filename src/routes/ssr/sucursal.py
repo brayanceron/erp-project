@@ -19,15 +19,19 @@ def before() :#{
 @sucursal_router.route('/get')
 def get() :#{
     sucursal_usuario, status_user = src.controllers.sucursal.get_id(session.get('id_sucursal'))
-    if status_user != 200 : return render_template('sucursal/get.html', sucursales=[], error = "Este usuario No esta registrado a ninguan sucursal!", lenght=0, session_data = src.controllers.auth.get_sesion_data())
+    if status_user != 200 : return render_template('sucursal/get.html', error = "Este usuario No esta registrado a ninguan sucursal!", session_data = src.controllers.auth.get_sesion_data())
 
-    sucursales, status = src.controllers.sucursal.get_by_ubicacion(country=sucursal_usuario["country_id"], city=sucursal_usuario["city_id"])
-    
+    sucursales_region_usuario, status = src.controllers.sucursal.get_by_ubicacion(country=sucursal_usuario["country_id"], city=sucursal_usuario["city_id"])
     if (status == 200) :#{
-        return render_template('sucursal/get.html',sucursales = sucursales, lenght = len(sucursales), session_data = src.controllers.auth.get_sesion_data())
+        return render_template(
+            'sucursal/get.html',
+            id_pais_usuario = sucursal_usuario["country_id"], 
+            id_ciudad_usuario = sucursal_usuario["city_id"], 
+            name_continent_usuario = sucursales_region_usuario[0]["continent"], 
+            session_data = src.controllers.auth.get_sesion_data())
     #}
     else :#{
-        return render_template('sucursal/get.html', sucursales=[], error = sucursales["message"], lenght=0, session_data = src.controllers.auth.get_sesion_data())
+        return render_template('sucursal/get.html', error = sucursales_region_usuario["message"], session_data = src.controllers.auth.get_sesion_data())
     #}
 #}
 
@@ -36,7 +40,6 @@ def get_id(id) :#{
     sucursal, status  = src.controllers.sucursal.get_id(id)
     if (status == 200) :#{
         departamentos, status_dep = src.controllers.departamento.get_by_sucursal(id) # ver cuando el estatus de esto no es 200
-        # print(departamentos)
         return render_template('sucursal/get_id.html', sucursal = sucursal, departamentos = departamentos, lenght = len(departamentos), session_data = src.controllers.auth.get_sesion_data())
     #}
     elif (status == 404) :#{

@@ -1,42 +1,43 @@
-{% macro search_sucursal() %}
-<nav class="breadcrumb my-2" aria-label="breadcrumbs">
+{% macro search_sucursal(
+    name_continent_usuario,
+    id_pais_usuario,
+    id_ciudad_usuario,
+    container_sucursales,
+    tag_num_results 
+    ) 
+%}
+<nav class="breadcrumb my-4" aria-label="breadcrumbs">
     <ul>
         <li>
-            <a href="#">
+            <a href="#" class="has-text-black">
                 <span class="icon is-small">
                     <i class="fa-solid fa-earth-americas"></i>
                 </span>
-                <span>America</span>
+                <span id="brcContinent">America</span>
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="#" class="has-text-black">
                 <span class="icon is-small">
                     <i class="fa-solid fa-flag"></i>
                 </span>
-                <span>Colombia</span>
+                <span id="brcPais">Colombia</span>
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="#" class="has-text-black">
                 <span class="icon is-small">
                     <i class="fa-solid fa-mountain-city"></i>
                 </span>
-                <span>Pasto</span>
+                <span id="brcCiudad">Pasto</span>
             </a>
         </li>
-        <li class="is-active">
-            <a href="#">
-                <span class="icon is-small">
-                    <i class="fa-solid fa-industry"></i>
-                </span>
-                <span>Sucursal Centro</span>
-            </a>
-        </li>
+        
     </ul>
 </nav>
 
-<div class="field has-addons has-addons-centered my-2">
+
+<div class="field has-addons has-addons-centered my-3">
     <p class="control">
         <span class="select" id="spanSelectContinente">
             <select id="selectContinente">
@@ -58,11 +59,6 @@
             </select>
         </span>
     </p>
-    <p class="control">
-        <button class="button is-dark">
-            Buscar
-        </button>
-    </p>
 </div>
 
 
@@ -77,6 +73,38 @@
     selectPais.addEventListener('change', (event) => {
         getCiudadesByPais(selectPais.value)
     })
+    selectCiudad.addEventListener('change', async (event) => {
+        await generar_cards()
+        updateBreadcumb()
+    })
+    async function generar_cards(){
+        let container_sucursales = document.getElementById('{{container_sucursales}}')
+        container_sucursales.innerHTML = `<progress class="progress is-small is-primary" max="100">15%</progress>`
+        let res = await fetch(`/api/sucursal/get/by/ubicacion/${selectPais.value}/${selectCiudad.value}`)
+        container_sucursales.innerHTML = ""
+        if(res.status == 200){
+            let data = await res.json()
+            let results = 0;
+            data.forEach( item => {
+                let card_sucursal = `{% include('sucursal/partials/card_sucursal.html') %}`
+                container_sucursales.innerHTML += card_sucursal
+                results++
+            })
+            document.getElementById('{{tag_num_results}}').innerText = `${results} resultado(s) encontrado(s)`
+        }
+
+    }
+
+    function updateBreadcumb(){
+        let brcContinent = document.getElementById('brcContinent')
+        let brcPais = document.getElementById('brcPais')
+        let brcCiudad = document.getElementById('brcCiudad')
+
+        brcContinent.innerText = selectContinente.options[selectContinente.selectedIndex].text
+        brcPais.innerText = selectPais.options[selectPais.selectedIndex].text
+        brcCiudad.innerText = selectCiudad.options[selectCiudad.selectedIndex].text
+    }
+
 
     async function getContientes() {
         selectContinente.innerHTML = ""
@@ -87,11 +115,13 @@
         if (res.status == 200) {
             let data = await res.json()
             let continentes = data.continents
-            //console.log(continentes)
+            let continente_usuario = "{{name_continent_usuario}}"
+            console.log(continente_usuario)
             continentes.forEach(item => {
                 let option = document.createElement('option')
                 option.innerText = item
                 option.value = item
+                if(item == continente_usuario) { option.selected = true}
                 selectContinente.appendChild(option)
             })
 
@@ -109,11 +139,13 @@
 
         if (res.status == 200) {
             let paises = await res.json()
+            let id_pais_usuario = "{{id_pais_usuario}}"
 
             paises.forEach(item => {
                 let option = document.createElement('option')
                 option.innerText = item.name
                 option.value = item.id
+                if(item.id == id_pais_usuario) { option.selected = true}
                 selectPais.appendChild(option)
             })
 
@@ -130,15 +162,19 @@
         let res = await fetch(`/api/ubicacion/pais/get/${pais}/ciudades?filtrar=True`)
         if (res.status == 200) {
             let ciudades = await res.json()
+            let id_ciudad_usuario = "{{id_ciudad_usuario}}"
 
             ciudades.forEach(item => {
                 let option = document.createElement('option')
                 option.innerText = item.name
                 option.value = item.id
+                if(item.id == id_ciudad_usuario) { option.selected = true}
                 selectCiudad.appendChild(option)
             })
         }
 
+        updateBreadcumb()
+        await generar_cards()
         document.getElementById('spanSelectCiudad').classList.remove('is-loading')
     }
 

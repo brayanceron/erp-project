@@ -13,8 +13,11 @@
 <body>
 
     {% include("partials/navbar.html") %}
-    {{ search_sucursal() }}
 
+    <div class="container">
+        {{ search_sucursal(name_continent_usuario, id_pais_usuario, id_ciudad_usuario, "container_sucursales", "numResults") }}
+    </div>
+    
     <div class="container">
 
 
@@ -30,20 +33,15 @@
         {% else %}
 
         <div class="container">
-            <div class="columns is-multiline">
-
-                {% for sucursal in sucursales %}
-                {% include('sucursal/partials/card_sucursal.html') %}
-                {% endfor %}
-
+            <div class="columns is-multiline" id="container_sucursales">                
             </div>
         </div>
 
         {% endif %}
 
-
-        <div class="container my-2">
-            <p class="has-text-centered">{{lenght}} resultado(s) encontrado(s)</p>
+        <br><br>
+        <div class="container">
+            <p class="has-text-centered" id="numResults"></p>
         </div>
 
 

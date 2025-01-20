@@ -3,10 +3,10 @@
     <div class="card">
         <div class="card-content">
             <div class="container pb-2">
-                <h1 class="title is-5 has-text-centered">{{sucursal["name"]}}</h1>
+                <h1 class="title is-5 has-text-centered">${item["name"]}</h1>
             </div>
             <div class="content has-text-justified">
-                {{sucursal["description"]}}
+                ${item["description"]}
             </div>
 
 
@@ -18,42 +18,37 @@
                         <span class="icon">
                             <i class="fas fa-globe"></i>
                         </span>
-                        <span>{{sucursal["country"]}}, {{sucursal["city"]}}</span>
+                        <span>${item["country"]}, ${item["city"]}</span>
                     </span>
                 </div>
-                <!-- <div class="column is-full-mobile is-half-desktop"> -->
                 <div class="column is-full py-0">
                     <span class="icon-text">
                         <span class="icon">
                             <i class="fas fa-location-dot"></i>
                         </span>
-                        <span>{{sucursal["address"]}}</span>
+                        <span>${item["address"]}</span>
                     </span>
                 </div>
 
             </div>
-            <!-- </div> -->
 
             <!-- Botones -->
             <div class="is-flex is-justify-content-start mt-3" style="width: 100%;">
 
-                <a class="button is-dark is-small mx-1" href="/ssr/sucursal/get/{{sucursal['id']}}">
+                <a class="button is-dark is-small mx-1" href="/ssr/sucursal/get/${item['id']}">
                     <span class="icon" style="color: aqua;">
                         <i class="fa-solid fa-up-right-from-square"></i>
                     </span>
-                    <!-- <span>Ver</span> -->
                 </a>
-                <a class="button is-dark is-small mx-1" href="/ssr/sucursal/put/{{sucursal['id']}}">
+                <a class="button is-dark is-small mx-1" href="/ssr/sucursal/put/${item['id']}">
                     <span class="icon">
                         <i class="fa-solid fa-pen-to-square" style="color: yellow;"></i>
                     </span>
-                    <!-- <span>Editar</span> -->
                 </a>
-                <a class="button is-dark is-small mx-1" href="/ssr/sucursal/delete/{{sucursal['id']}}">
+                <a class="button is-dark is-small mx-1" href="/ssr/sucursal/delete/${item['id']}">
                     <span class="icon" style="color: orangered;">
                         <i class="fa-solid fa-trash-can"></i>
                     </span>
-                    <!-- <span>Eliminar</span> -->
                 </a>
 
             </div>

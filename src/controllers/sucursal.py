@@ -160,7 +160,7 @@ def get_by_ubicacion(country, city = "") :#{
     try :#{
         cursor = conn.cursor()
         
-        query = """select id, name, PaisNombre, country, CiudadNombre, city, address, phone, description
+        query = """select id, name, PaisNombre, country, CiudadNombre, city, PaisContinente, address, phone, description
             from sucursal join pais on (country=PaisCodigo) join ciudad on(city=CiudadID) where country=%s """
         params = [country]
         if city : query += "and (city=%s or CiudadNombre = %s)"; params.append(city); params.append(city)
@@ -182,9 +182,10 @@ def get_by_ubicacion(country, city = "") :#{
                 "city":row[4],
                 "city_id":row[5],
                 # "postalcode":row[4],
-                "address":row[6],
-                "phone":row[7],
-                "description":row[8]
+                "continent" : row[6],
+                "address":row[7],
+                "phone":row[8],
+                "description":row[9]
             })
         #}
         return sucursales, 200
