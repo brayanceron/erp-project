@@ -47,3 +47,12 @@ def delete(id) :#{
 def get_by_ubicacion(country, city = "") :#{
     return src.controllers.sucursal.get_by_ubicacion(country, city)
 #}
+
+@sucursal_api_router.route('/sucursalstatistics')
+def sucursalstatistics() :#{
+    continent = request.args.get('continent')
+    country = request.args.get('country')
+    city = request.args.get('city')
+    
+    return src.controllers.sucursal.sucursalstatistics(continent, country, city)
+#}

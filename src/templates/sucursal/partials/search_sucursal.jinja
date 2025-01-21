@@ -6,7 +6,7 @@
     tag_num_results 
     ) 
 %}
-<nav class="breadcrumb my-4" aria-label="breadcrumbs">
+<nav class="breadcrumb mt-4 mb-0 ml-1" aria-label="breadcrumbs">
     <ul>
         <li>
             <a href="#" class="has-text-black">
@@ -36,6 +36,29 @@
     </ul>
 </nav>
 
+<div class="is-size-7 my-0">
+
+    <span class="icon-text">
+        <span class="icon"><i class="fa-solid fa-square-poll-vertical"></i></span>
+        <span id="spanSucByCont">Continente</span>
+    </span>
+
+    <span class="icon-text">
+        <span class="icon"><i class="fa-solid fa-square-poll-horizontal"></i></span>
+        <span id="spanSucByPa">Pais</span>
+    </span>
+
+    <span class="icon-text">
+        <span class="icon"><i class="fa-solid fa-chart-simple"></i></span>
+        <span id="spanSucByCiu">Ciudad</span>
+    </span>
+
+    <span class="icon-text">
+        <span class="icon"><i class="fa-solid fa-user"></i></span>
+        <span id="spanUsuByCiu">Usuarios</span>
+    </span>
+
+</div>
 
 <div class="field has-addons has-addons-centered my-3">
     <p class="control">
@@ -76,6 +99,7 @@
     selectCiudad.addEventListener('change', async (event) => {
         await generar_cards()
         updateBreadcumb()
+        await updateStatistics()
     })
     async function generar_cards(){
         let container_sucursales = document.getElementById('{{container_sucursales}}')
@@ -103,6 +127,30 @@
         brcContinent.innerText = selectContinente.options[selectContinente.selectedIndex].text
         brcPais.innerText = selectPais.options[selectPais.selectedIndex].text
         brcCiudad.innerText = selectCiudad.options[selectCiudad.selectedIndex].text
+    }
+
+    async function updateStatistics(){
+        let spanSucByCont = document.getElementById('spanSucByCont')
+        let spanSucByPa  = document.getElementById('spanSucByPa')
+        let spanSucByCiu = document.getElementById('spanSucByCiu')
+        let spanUsuByCiu = document.getElementById('spanUsuByCiu')
+
+        let url = `/api/sucursal/sucursalstatistics?continent=${selectContinente.value}&country=${selectPais.value}&city=${selectCiudad.value}`
+        let res = await fetch(url)
+
+        if(res.status == 200){
+            let data = await res.json()
+            console.log(data)
+
+            let continenteText = selectContinente.options[selectContinente.selectedIndex].text
+            let paisText = selectPais.options[selectPais.selectedIndex].text
+            let ciudadText= selectCiudad.options[selectCiudad.selectedIndex].text
+
+            spanSucByCont.innerText = `${data["suc_by_cont"]} sucursal(es) en ${continenteText}`
+            spanSucByPa.innerText = `${data["suc_by_pa"]} sucursal(es) en ${paisText}`
+            spanSucByCiu.innerText = `${data["suc_by_ciu"]} sucursal(es) en ${ciudadText}`
+            spanUsuByCiu.innerText = `${data["usu_by_ciu"]} usuario(s) en ${ciudadText}`
+        }
     }
 
 
@@ -175,6 +223,7 @@
 
         updateBreadcumb()
         await generar_cards()
+        await updateStatistics()
         document.getElementById('spanSelectCiudad').classList.remove('is-loading')
     }
 

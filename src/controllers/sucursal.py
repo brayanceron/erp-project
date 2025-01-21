@@ -196,3 +196,42 @@ def get_by_ubicacion(country, city = "") :#{
         return ERROR_500
     #}
 #}
+
+def sucursalstatistics(continent, country, city) :#{
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+    if (not continent or not country or not city) : return { "message" : "Debe proporcionar todos los datos"}, 400
+    
+    try :#{
+        cursor = conn.cursor()
+
+        # Sucursales en un continente
+        cursor.execute('SELECT COUNT(*) FROM sucursal JOIN pais ON country=PaisCodigo WHERE PaisContinente = %s ', [continent]) 
+        suc_by_cont = cursor.fetchone()[0]
+        
+        # Sucursales en un pais
+        cursor.execute('SELECT COUNT(*) FROM sucursal JOIN pais ON country=PaisCodigo WHERE (PaisNombre = %s OR PaisCodigo = %s)', [country, country])
+        suc_by_pa = cursor.fetchone()[0]
+
+        # Sucursales en una ciudad
+        cursor.execute('SELECT COUNT(*) FROM sucursal join ciudad on sucursal.city = ciudad.CiudadID WHERE (CiudadNombre = %s OR CiudadID = %s)', [city, city])
+        suc_by_ciu = cursor.fetchone()[0]
+
+        # Usuarios en una ciudad
+        cursor.execute('SELECT COUNT(*) FROM usuario join sucursal on id_sucursal = sucursal.id join ciudad on sucursal.city = ciudad.CiudadID where (ciudad.CiudadNombre = %s OR ciudad.CiudadID = %s)', [city, city])
+        usu_by_ciu = cursor.fetchone()[0]
+
+        data = {
+            "suc_by_cont" : suc_by_cont,
+            "suc_by_pa" : suc_by_pa,
+            "suc_by_ciu" : suc_by_ciu,
+            "usu_by_ciu" : usu_by_ciu
+            
+        }
+        return data, 200
+    #}
+    except :#{
+        return ERROR_500
+    #}
+    
+#}

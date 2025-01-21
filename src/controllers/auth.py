@@ -86,7 +86,8 @@ urls_dict = {
 
     "sucursal_api_router" : [
         *BASIC_URLS,
-        "get_by_ubicacion"
+        "get_by_ubicacion",
+        "sucursalstatistics"
     ]
 }
 
