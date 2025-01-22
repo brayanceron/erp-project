@@ -12,6 +12,17 @@ def get_paises() :#{
     else       :  return src.controllers.ubicacion.get_paises()
 #}
 
+@ubicacion_router.route('/pais/get/<id>')
+def get_pais_id(id) :#{
+    return src.controllers.ubicacion.get_pais_id(id)
+#}
+
+@ubicacion_router.route('/ciudad/get/<id>')
+def get_ciudad_id(id) :#{
+    return src.controllers.ubicacion.get_ciudad_id(id)
+#}
+
+
 @ubicacion_router.route('/continente/get')
 def get_continentes() :#{
     filtrar = request.args.get('filtrar')

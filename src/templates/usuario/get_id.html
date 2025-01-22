@@ -13,6 +13,12 @@
 
     {% include("partials/navbar.html") %}
 
+    <br>
+    {% if error %}
+    <div class="container" style="width: 32%;">
+        {% include('sucursal/partials/error.html') %}
+    </div>
+    {% else %}
 
     <div class="container">
         <h1 class="title is-4 has-text-centered">Perfil de usuario</h1>
@@ -22,6 +28,7 @@
 
 
         <div class="columns is-multiline">
+
             <div class="column is-12">
                 <div class="is-flex is-justify-content-center">
                     <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngall.com%2Fwp-content%2Fuploads%2F5%2FUser-Profile-PNG.png&f=1&nofb=1&ipt=012389a2ca3994f485cc4f0b8ba61bdfeb839fddf9b26bb82c2e3421cd025174&ipo=images"
@@ -33,7 +40,7 @@
                 <p class="title is-6 has-text-centered">{{usuario['names']}} {{usuario['surnames']}}</p>
             </div>
 
-            <div class="column is-12">
+            <div class="column is-12 my-0 py-0">
                 <span class="icon-text">
                     <span class="icon"><i class="fa-solid fa-fingerprint"></i></span>
                     <span>{{usuario['id']}}</span>
@@ -41,14 +48,14 @@
             </div>
 
 
-            <div class="column is-6">
+            <div class="column is-6 my-0 py-0">
                 <span class="icon-text">
                     <span class="icon"><i class="fa-solid fa-id-card"></i></span>
                     <span>{{usuario['dni']}} (DNI)</span>
                 </span>
             </div>
 
-            <div class="column is-6">
+            <div class="column is-6 my-0 py-0">
                 <span class="icon-text">
                     <span class="icon"><i class="fa-solid fa-venus-mars"></i></span>
                     {% if usuario['gender']=='F' %}
@@ -59,14 +66,14 @@
                 </span>
             </div>
 
-            <div class="column is-6">
+            <div class="column is-6 my-0 py-0">
                 <span class="icon-text">
                     <span class="icon"><i class="fa-solid fa-cake-candles"></i></span>
                     <span>{{usuario['birthdate']}}</span>
                 </span>
             </div>
 
-            <div class="column is-6">
+            <div class="column is-6 my-0 py-0">
                 <span class="icon-text">
                     <span class="icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
                     <span>{{usuario['phone']}}</span>
@@ -74,31 +81,74 @@
             </div>
 
 
-            <div class="column is-6">
-                <span class="icon-text">
-                    <span class="icon"><i class="fa-solid fa-user-tie"></i></span>
-                    <span>{{usuario['role']}}</span>
-                </span>
-            </div>
-
-            <div class="column is-6">
+            <div class="column is-6 my-0 py-0">
                 <span class="icon-text">
                     <span class="icon"><i class="fas fa-envelope"></i></span>
                     <span>{{usuario['email']}}</span>
                 </span>
             </div>
 
-            <div class="column is-12">
+            <div class="column is-12 my-0 py-0">
                 <span class="icon-text">
                     <span class="icon"><i class="fa-solid fa-location-crosshairs"></i></span>
-                    <span>Lugar de nacimiento: {{usuario['country_birth']}}, {{usuario['city_birth']}}</span>
+                    
+                    <span>{{ pais_nacimiento }}, {{ ciudad_nacimiento }}</span>
                 </span>
             </div>
+
+
+
+            <div class="column is-12 my-0 py-0">
+                <hr >
+            </div>
+
+
+
+
+            <div class="column is-12">
+                <p class="title is-6 has-text-centered">Información Laboral</p>
+            </div>
+
+            <div class="column is-6 my-0 py-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-user-tie"></i></span>
+                    <span>{{usuario['role']}}</span>
+                </span>
+            </div>
+
+            <div class="column is-6 my-0 py-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-industry"></i></span>
+                    <span>{{sucursal['name']}}</span>
+                </span>
+            </div>
+
+            <div class="column is-6 my-0 py-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
+                    <span> {{sucursal['country']}}, {{sucursal['city']}}</span>
+                </span>
+            </div>
+
+            <div class="column is-6 my-0 py-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-map-location-dot"></i></span>
+                    <span> {{sucursal['address']}}</span>
+                </span>
+            </div>
+
+            <div class="column is-12 mt-0 pt-0">
+                <span class="icon-text">
+                    <span class="icon"><i class="fa-solid fa-puzzle-piece"></i></span>
+                    <span>{{departamento['name']}}</span>
+                </span>
+            </div>
+
 
         </div>
     </div>
 
-
+    {% endif %}
 
 </body>
 

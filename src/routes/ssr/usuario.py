@@ -1,4 +1,7 @@
 from flask import Blueprint, render_template, request, redirect
+import src.controllers.departamento
+import src.controllers.sucursal
+import src.controllers.ubicacion
 import src.controllers.usuario
 import src.controllers.auth
 
@@ -21,10 +24,26 @@ def get() :#{
 
 @usuario_router.route('/get/<id>')
 def get_id(id) :#{
-    # return src.controllers.usuario.get_id(id)
     usuario, status =src.controllers.usuario.get_id(id)
-    return render_template("usuario/get_id.html", usuario = usuario, session_data = src.controllers.auth.get_sesion_data())
-    # return "getting user", 200
+
+    if status == 200 :#{
+        sucursal, _ = src.controllers.sucursal.get_id(usuario['id_sucursal'])
+        departamento, _ = src.controllers.departamento.get_id(usuario['id_departamento'])
+    
+        pais_nacimiento, _ = src.controllers.ubicacion.get_pais_id(usuario['country_birth'])
+        ciudad_nacimiento,_  = src.controllers.ubicacion.get_ciudad_id(usuario['city_birth'])
+        return render_template("usuario/get_id.html",
+                            usuario = usuario,
+                            pais_nacimiento = pais_nacimiento.get('name', 'No registra'),
+                            ciudad_nacimiento = ciudad_nacimiento.get('name', 'No registra'),
+                            sucursal = sucursal,
+                            departamento = departamento,
+                            session_data = src.controllers.auth.get_sesion_data()
+                        )
+    #}
+    else :#{
+        return render_template("usuario/get_id.html", error = usuario["message"], session_data = src.controllers.auth.get_sesion_data())
+    #}
 #}
 
 @usuario_router.route('/post')

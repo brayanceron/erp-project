@@ -26,6 +26,59 @@ def get_paises() : #{
     #}
 #}
 
+def get_pais_id(id) :#{
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+    
+    try :#{
+        cursor = conn.cursor()
+        cursor.execute("select PaisCodigo, PaisNombre, PaisContinente from pais where PaisCodigo = %s", [id])
+
+        row_count = cursor.rowcount
+        if row_count == 0 : return {"message" : "No se encontro ningun paises con ese id"}, 404
+        
+        row = cursor.fetchone()
+        pais = {
+            "id" : row[0],
+            "name" : row[1],
+            "continent" : row[2],
+            # "i" : row[3],
+        }
+        return pais, 200
+    #}
+    except Exception as err:#{
+        print(err)
+        return ERROR_500
+    #}
+    
+#}
+
+def get_ciudad_id(id) :#{
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+    
+    try :#{
+        cursor = conn.cursor()
+        cursor.execute('select CiudadID, CiudadNombre, PaisCodigo from ciudad where CiudadID = %s', [id])
+        
+        row_count = cursor.rowcount
+        if row_count == 0 : return {"message" : "No se encontro ninguna ciudad con ese id"}, 404
+
+        row = cursor.fetchone()
+        ciudad = {
+            "id" : row[0],
+            "name" : row[1],
+            "id_country" : row[2]
+        }
+        return ciudad, 200
+    #}
+    except Exception as err:#{
+        print(err)
+        return ERROR_500
+    #}
+    
+#}
+
 def get_paises_con_sucursales() : #{
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
