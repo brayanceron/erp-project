@@ -5,11 +5,9 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
     console.log("=============== RENDER =============================");
 
     const [countries, setCountries] = useState([])
-    // const [countrySelected, setCountrySelected] = useState({ id: '', name: '' })
     const [countrySelected, setCountrySelected] = useState('')
 
     const [cities, setCities] = useState([])
-    // const [citySelected, setCitySelected] = useState({ id: '', name: '' })
     const [citySelected, setCitySelected] = useState('')
 
 
@@ -20,9 +18,8 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
                 const data = await res.json()
                 setCountries(data)
 
-                // const val = countryDefault ? countryDefault : data[0]
-                const val = countryDefault ? countryDefault['id'] : data[0]['id']
-                setCountrySelected(val) //********** */
+                const val = countryDefault ? countryDefault : data[0] // verify cityDefault?
+                setCountrySelected(val['id'])
                 setCountry(val)
                 return
             }
@@ -34,14 +31,15 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
     const getCitiesByCountry = async () => {
         setCities([])
         try {
-            const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${countrySelected}/ciudades`)
-            // const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${countrySelected['id']}/ciudades`)
+            const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${countrySelected}/ciudades`) // const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${countrySelected['id']}/ciudades`)
+            
             if (res.status == 200) {
+                console.log("ok");
                 const data = await res.json()
                 setCities(data)
 
-                const val = cityDefault ? cityDefault['id'] : data[0]['id']
-                setCitySelected(val)
+                const val = cityDefault ? cityDefault : data[0] // verify cityDefault?
+                setCitySelected(val['id'])
                 setCity(val)
                 return
             }
@@ -58,14 +56,15 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
 
     //--------------------------------------------
     const onChangeCountry = (event: any) => {
+        const itemSelected = countries.find(item => item['id'] == event.target.value) // not found?
         setCountrySelected(event.target.value) //********** */
-        setCountry(event.target.value)
+        setCountry(itemSelected) // setCountry(event.target.value)
     }
 
     const onChangeCity = (event: any) => {
-        // const itemSelected = cities.find(item => item['id'] == event.target.value)
+        const itemSelected = cities.find(item => item['id'] == event.target.value) // not found?
         setCitySelected(event.target.value) ////********* */
-        setCity(event.target.value)
+        setCity(itemSelected) // setCity(event.target.value)
     }
 
 
@@ -89,7 +88,6 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
                             id="country"
                             onChange={onChangeCountry}
 
-                            // value={countrySelected['id']}
                             value={countrySelected}
                         >
                             {countries.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)}
@@ -118,7 +116,6 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
                             id="city"
                             onChange={onChangeCity}
 
-                            // value={citySelected['id']}
                             value={citySelected}
                         >
                             {cities.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)}
