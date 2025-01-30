@@ -18,9 +18,10 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
                 const data = await res.json()
                 setCountries(data)
 
-                const val = countryDefault ? countryDefault : data[0] // verify cityDefault?
+                let val = countryDefault? data.find((item: any) => item['id'] == countryDefault['id']) : data[0]
+                if (!val) { val = data[0] } 
                 setCountrySelected(val['id'])
-                setCountry(val)
+                setCountry(val) 
                 return
             }
         } catch (error) {
@@ -32,15 +33,16 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
         setCities([])
         try {
             const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${countrySelected}/ciudades`) // const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${countrySelected['id']}/ciudades`)
-            
+
             if (res.status == 200) {
                 console.log("ok");
                 const data = await res.json()
                 setCities(data)
 
-                const val = cityDefault ? cityDefault : data[0] // verify cityDefault?
+                let val = cityDefault ? data.find((item: any) => item['id'] == cityDefault['id']) : data[0]
+                if (!val) { val = data[0] }
                 setCitySelected(val['id'])
-                setCity(val)
+                setCity(val) 
                 return
             }
         } catch (error) {
@@ -56,13 +58,15 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
 
     //--------------------------------------------
     const onChangeCountry = (event: any) => {
-        const itemSelected = countries.find(item => item['id'] == event.target.value) // not found?
+        const itemSelected = countries.find(item => item['id'] == event.target.value)
+        if (!itemSelected) return;
         setCountrySelected(event.target.value) //********** */
         setCountry(itemSelected) // setCountry(event.target.value)
     }
 
     const onChangeCity = (event: any) => {
-        const itemSelected = cities.find(item => item['id'] == event.target.value) // not found?
+        const itemSelected = cities.find(item => item['id'] == event.target.value)
+        if (!itemSelected) return;
         setCitySelected(event.target.value) ////********* */
         setCity(itemSelected) // setCity(event.target.value)
     }

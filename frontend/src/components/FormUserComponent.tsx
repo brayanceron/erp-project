@@ -124,12 +124,13 @@ export function FormUserComponent({ defaultValues = formEmptyFields }: { default
                     <LocationComponent 
                         setCity={setCity} 
                         setCountry={setCountry} 
-                        countryDefault={false} 
-                        cityDefault={false} 
+                        countryDefault={{}} 
+                        cityDefault={{}} 
                     />
                     {/* <LocationComponent setCity={setCity} setCountry={setCountry} countryDefault={'ARG'} cityDefault={'69'} /> */}
 
                     {/* <LocationComponent setCity={setCity} setCountry={setCountry} countryDefault={{id:'ARG',name:"argentus"}} cityDefault={{id:'69',name:'Guenos vientos'}} /> */}
+                    {/* <LocationComponent setCity={setCity} setCountry={setCountry} countryDefault={{id:'xxx',name:"xxx"}} cityDefault={{id:'xx',name:'xx'}} /> */}
 
                     {/* <LocationComponent country={formData['country']} city={formData['city']} setCityFather={setCityFather} setCountryFather={setCountryFather} /> */}
                     {/* <LocationComponent formData={formData} setCityFather={setCityFather} setCountryFather={setCountryFather} /> */}
