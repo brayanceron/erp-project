@@ -1,37 +1,31 @@
 import { useForm } from "../hooks/useForm"
 import { LocationComponent } from "./LocationComponent"
-// import { useState } from 'react'
 
-const formEmptyFields = {
-    names: '',
-    lastnames: '',
-    birthday: '',
-    dni: '',
-    gender: '',
-    email: '',
-    phone: '',
-    role: '',
-    password: '',
-
-    // country: '',
-    country: {id:'', name:''},
-    // city:  '',
-    city:  {id:'', name:''},
+type FormFields = {
+    names?: string,
+    lastnames?: string,
+    birthday?: string,
+    dni?: string,
+    gender?: string,
+    email?: string,
+    phone?: string,
+    role?: string,
+    password?: string,
+    country?: { id: string, name: string },
+    city?: { id: string, name: string },
 }
 
-// export function FormUserComponent({ defaultValues : { names : string} = formEmptyFields2 }  ) {
-export function FormUserComponent({ defaultValues = formEmptyFields }: { defaultValues: any }) {
+export function FormUserComponent({ defaultValues }: { defaultValues?: FormFields }) {
 
-    // const { formData, onChangeField, setField } = useForm({ ...formEmptyFields, ...defaultValues })
-    const { formData, onChangeField } = useForm({ ...formEmptyFields, ...defaultValues })
+    const { formData, onChangeField } = useForm({ ...defaultValues }) // const { formData, onChangeField } = useForm({ ...formEmptyFields, ...defaultValues })
 
 
-    function setCountry(value : string){
-        onChangeField({target: {id : 'country', value }})
+    function setCountry(value: string) {
+        onChangeField({ target: { id: 'country', value } })
         // setField('country', value) 
     }
-    function setCity(value : string){
-        onChangeField({target: {id : 'city', value }})
+    function setCity(value: string) {
+        onChangeField({ target: { id: 'city', value } })
         // setField('city', value)
     }
 
@@ -39,8 +33,12 @@ export function FormUserComponent({ defaultValues = formEmptyFields }: { default
 
     function onSubmitForm(event: any) {
         event.preventDefault()
-        console.log(formData);
-        // console.log(event);
+        const formEmptyFields: FormFields = {
+            names: '', lastnames: '', birthday: '', dni: '', gender: '', email: '', phone: '', role: '', password: '', country: { id: '', name: '' },
+            city: { id: '', name: '' },
+        }
+        let sendData = { ...formEmptyFields, ...formData }
+        console.log(sendData);
     }
 
     return (
@@ -118,23 +116,20 @@ export function FormUserComponent({ defaultValues = formEmptyFields }: { default
                         </div>
                     </div>
 
-
-                    {/* <LocationComponent title={'Location'} setCityFather={setCityFather} setCountryFather={setCountryFather} /> */}
-
-                    <LocationComponent 
-                        setCity={setCity} 
-                        setCountry={setCountry} 
-                        countryDefault={{}} 
-                        cityDefault={{}} 
-                    />
-                    {/* <LocationComponent setCity={setCity} setCountry={setCountry} countryDefault={'ARG'} cityDefault={'69'} /> */}
-
-                    {/* <LocationComponent setCity={setCity} setCountry={setCountry} countryDefault={{id:'ARG',name:"argentus"}} cityDefault={{id:'69',name:'Guenos vientos'}} /> */}
-                    {/* <LocationComponent setCity={setCity} setCountry={setCountry} countryDefault={{id:'xxx',name:"xxx"}} cityDefault={{id:'xx',name:'xx'}} /> */}
-
-                    {/* <LocationComponent country={formData['country']} city={formData['city']} setCityFather={setCityFather} setCountryFather={setCountryFather} /> */}
-                    {/* <LocationComponent formData={formData} setCityFather={setCityFather} setCountryFather={setCountryFather} /> */}
-
+                    {
+                        (defaultValues?.country || defaultValues?.city) ?
+                            <LocationComponent
+                                setCity={setCity}
+                                setCountry={setCountry}
+                                countryDefault={defaultValues?.country}
+                                cityDefault={defaultValues?.city}
+                            />
+                            :
+                            <LocationComponent
+                                setCity={setCity}
+                                setCountry={setCountry}
+                            />
+                    }
 
                     <div className="w-auto">
                         <label className="label label-text" htmlFor="email"> Email </label>

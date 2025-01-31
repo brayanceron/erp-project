@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 
-export function LocationComponent({ setCountry, setCity, countryDefault = {}, cityDefault = {} }: { setCountry: any, setCity: any, countryDefault: any, cityDefault: any }) {
+type LocationProps = {
+    setCountry: (value: string) => void,
+    setCity: (value: string) => void,
+    countryDefault?: { id: string, name: string },
+    cityDefault?: { id: string, name: string },
+}
+
+export function LocationComponent({ setCountry, setCity, countryDefault, cityDefault }: LocationProps) {
 
     console.log("=============== RENDER =============================");
 
@@ -18,10 +25,10 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
                 const data = await res.json()
                 setCountries(data)
 
-                let val = countryDefault? data.find((item: any) => item['id'] == countryDefault['id']) : data[0]
-                if (!val) { val = data[0] } 
+                let val = countryDefault ? data.find((item: any) => item['id'] == countryDefault['id']) : data[0]
+                if (!val) { val = data[0] }  // alert  countryDefault not found 
                 setCountrySelected(val['id'])
-                setCountry(val) 
+                setCountry(val)
                 return
             }
         } catch (error) {
@@ -40,9 +47,9 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
                 setCities(data)
 
                 let val = cityDefault ? data.find((item: any) => item['id'] == cityDefault['id']) : data[0]
-                if (!val) { val = data[0] }
+                if (!val) { val = data[0] } // alert  cityDefault not found 
                 setCitySelected(val['id'])
-                setCity(val) 
+                setCity(val)
                 return
             }
         } catch (error) {
@@ -91,11 +98,9 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
                             name="country"
                             id="country"
                             onChange={onChangeCountry}
-
                             value={countrySelected}
                         >
                             {countries.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)}
-
                         </select>
                         : <span className="loading loading-infinity loading-lg"></span>
                     }
@@ -119,12 +124,10 @@ export function LocationComponent({ setCountry, setCity, countryDefault = {}, ci
                             name="city"
                             id="city"
                             onChange={onChangeCity}
-
                             value={citySelected}
                         >
                             {cities.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)}
                         </select>
-
                         : <span className="loading loading-infinity loading-lg"></span>
                     }
                     {/* : <option>Error</option>// : <option disabled selected>Error</option> */}
