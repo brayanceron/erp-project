@@ -15,9 +15,19 @@ export function useForm(fields : any) {
         setFormData({...formData, [field] : value})
     }
 
+    function setFields(fields : {field: any , value : any}[]) {
+        let forDataTemp = formData
+        fields.forEach(item => {
+            forDataTemp = {...forDataTemp, [item.field] : item.value }
+        })
+
+        setFormData({...forDataTemp})
+    }
+
     return{
         formData,
         onChangeField,
-        setField
+        setField,
+        setFields
     }
 }

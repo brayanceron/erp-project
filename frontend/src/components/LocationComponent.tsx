@@ -1,22 +1,20 @@
 import { useEffect, useState } from "react";
+import { useForm } from "../hooks/useForm";
 
 type LocationProps = {
-    setCountry: (value: string) => void,
-    setCity: (value: string) => void,
+    getData: (country: string, city : string) => void,
     countryDefault?: { id: string, name: string },
     cityDefault?: { id: string, name: string },
 }
 
-export function LocationComponent({ setCountry, setCity, countryDefault, cityDefault }: LocationProps) {
+export function LocationComponent({ getData, countryDefault, cityDefault }: LocationProps) {
 
-    console.log("=============== RENDER =============================");
+    console.log("=============== RENDER  Location =============================");
 
     const [countries, setCountries] = useState([])
-    const [countrySelected, setCountrySelected] = useState('')
-
     const [cities, setCities] = useState([])
-    const [citySelected, setCitySelected] = useState('')
 
+    const {formData, onChangeField, setField} = useForm({country : '', city : '' }) // const {formData, onChangeField, setField} = useForm({country : {id:'', name:''}, city : {id:'', name:''} })
 
     const getCountries = async () => {
         try {
@@ -27,8 +25,9 @@ export function LocationComponent({ setCountry, setCity, countryDefault, cityDef
 
                 let val = countryDefault ? data.find((item: any) => item['id'] == countryDefault['id']) : data[0]
                 if (!val) { val = data[0] }  // alert  countryDefault not found 
-                setCountrySelected(val['id'])
-                setCountry(val)
+                // setCountrySelected(val['id'])
+                // setCountry(val)
+                setField('country', val['id'])
                 return
             }
         } catch (error) {
@@ -39,17 +38,16 @@ export function LocationComponent({ setCountry, setCity, countryDefault, cityDef
     const getCitiesByCountry = async () => {
         setCities([])
         try {
-            const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${countrySelected}/ciudades`) // const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${countrySelected['id']}/ciudades`)
-
+            const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${formData.country}/ciudades`) // const res = await fetch(`http://localhost:5000/api/ubicacion/pais/get/${countrySelected['id']}/ciudades`)
             if (res.status == 200) {
-                console.log("ok");
                 const data = await res.json()
                 setCities(data)
 
                 let val = cityDefault ? data.find((item: any) => item['id'] == cityDefault['id']) : data[0]
                 if (!val) { val = data[0] } // alert  cityDefault not found 
-                setCitySelected(val['id'])
-                setCity(val)
+                // setCitySelected(val['id'])
+                // setCity(val)
+                setField('city', val['id'])
                 return
             }
         } catch (error) {
@@ -60,23 +58,17 @@ export function LocationComponent({ setCountry, setCity, countryDefault, cityDef
     useEffect(() => { getCountries() }, [])
 
     useEffect(() => {
-        if (countries.length > 0 && countrySelected) getCitiesByCountry()
-    }, [countrySelected])
+        console.log("VEZ ::: ", countries.length );
+        if (countries.length > 0 && formData.country) { getCitiesByCountry(); }
+    }, [formData.country])
 
-    //--------------------------------------------
-    const onChangeCountry = (event: any) => {
-        const itemSelected = countries.find(item => item['id'] == event.target.value)
-        if (!itemSelected) return;
-        setCountrySelected(event.target.value) //********** */
-        setCountry(itemSelected) // setCountry(event.target.value)
-    }
+    useEffect(()=>{
+        const itemSelectedCountries = countries.find(item => item['id'] == formData.country)
+        const itemSelectedCity = cities.find(item => item['id'] == formData.city)
 
-    const onChangeCity = (event: any) => {
-        const itemSelected = cities.find(item => item['id'] == event.target.value)
-        if (!itemSelected) return;
-        setCitySelected(event.target.value) ////********* */
-        setCity(itemSelected) // setCity(event.target.value)
-    }
+        if (!itemSelectedCountries || !itemSelectedCity) return;
+        getData(itemSelectedCountries, itemSelectedCity)
+    }, [formData.city])
 
 
     return (
@@ -97,8 +89,8 @@ export function LocationComponent({ setCountry, setCity, countryDefault, cityDef
                             aria-label="select"
                             name="country"
                             id="country"
-                            onChange={onChangeCountry}
-                            value={countrySelected}
+                            onChange={onChangeField}
+                            value={formData.country}
                         >
                             {countries.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)}
                         </select>
@@ -123,8 +115,8 @@ export function LocationComponent({ setCountry, setCity, countryDefault, cityDef
                             aria-label="select"
                             name="city"
                             id="city"
-                            onChange={onChangeCity}
-                            value={citySelected}
+                            onChange={onChangeField}
+                            value={formData.city}
                         >
                             {cities.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)}
                         </select>
@@ -136,7 +128,8 @@ export function LocationComponent({ setCountry, setCity, countryDefault, cityDef
 
             <button className="btn btn-primary my-5 py-1" onClick={event => {
                 event.preventDefault()
-                console.log(countrySelected, citySelected);
+                console.log(">>>>", formData);
+                // console.log(countrySelected, citySelected);
             }}>
                 ok
             </button>

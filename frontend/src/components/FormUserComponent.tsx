@@ -17,18 +17,17 @@ type FormFields = {
 
 export function FormUserComponent({ defaultValues }: { defaultValues?: FormFields }) {
 
-    const { formData, onChangeField } = useForm({ ...defaultValues }) // const { formData, onChangeField } = useForm({ ...formEmptyFields, ...defaultValues })
+    const { formData, onChangeField, setFields } = useForm({ ...defaultValues }) // const { formData, onChangeField } = useForm({ ...formEmptyFields, ...defaultValues })
 
-
-    function setCountry(value: string) {
-        onChangeField({ target: { id: 'country', value } })
-        // setField('country', value) 
+    function getData(country: any, city : any) {
+        const CountryAndCity = [
+            {field: 'city', value :city},
+            {field: 'country', value :country},
+        ]
+        setFields(CountryAndCity)
+        // onChangeField({ target: { id: 'city', city } })
+        // onChangeField({ target: { id: 'country', country } })
     }
-    function setCity(value: string) {
-        onChangeField({ target: { id: 'city', value } })
-        // setField('city', value)
-    }
-
 
 
     function onSubmitForm(event: any) {
@@ -119,15 +118,13 @@ export function FormUserComponent({ defaultValues }: { defaultValues?: FormField
                     {
                         (defaultValues?.country || defaultValues?.city) ?
                             <LocationComponent
-                                setCity={setCity}
-                                setCountry={setCountry}
+                                getData={getData}
                                 countryDefault={defaultValues?.country}
                                 cityDefault={defaultValues?.city}
                             />
                             :
                             <LocationComponent
-                                setCity={setCity}
-                                setCountry={setCountry}
+                                getData={getData}
                             />
                     }
 
