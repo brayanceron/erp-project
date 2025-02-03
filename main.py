@@ -2,11 +2,9 @@ from src.app import app
 from dotenv import load_dotenv
 from src.config import config, PORT, DEBUG
 from src.database.database import get_connection
-from flask_cors import CORS
 
 load_dotenv()
 
-CORS(app)
 # exit()
 if __name__ == "__main__"  :#{
     

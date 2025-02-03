@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_cors import CORS
+
 from src.routes.ssr.sucursal import sucursal_router
 from src.routes.ssr.departamentos import departamento_router
 from src.routes.ssr.usuario import usuario_router
@@ -16,8 +18,8 @@ from src.routes.static import static_router, error_403
 
 
 app = Flask(__name__)
-
-# app.register_error_handler(403, error_403)
+app.url_map.strict_slashes= False
+CORS(app, supports_credentials=True)
 
 # Routes SSR
 app.register_blueprint(static_router, url_prefix = '/')
