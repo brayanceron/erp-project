@@ -9,7 +9,7 @@ type FormSucursal = {
     address?: string,
     description?: string
 }
-export function FormSucursalComponent({ defaultValues }: { defaultValues?: FormSucursal }) {
+export function FormSucursalComponent({ defaultValues, title = "Registrar" }: { defaultValues?: FormSucursal, title?: string }) {
 
     const { formData, onChangeField, setFields } = useForm({ ...defaultValues })
 
@@ -23,34 +23,36 @@ export function FormSucursalComponent({ defaultValues }: { defaultValues?: FormS
 
     async function onSubmitForm(event: any) {
         event.preventDefault()
-        // console.log(formData);
         const dataSend = { ...formData, country: formData.country.id, city: formData.city.id }
-        console.log(dataSend);
+        // console.log(formData);
+        // console.log(dataSend);
 
         try {
             // const res = await fetch('http://localhost:8081/api/sucursal/', {
             const res = await fetch('http://localhost:5000/api/sucursal/', { // const res = await fetch('/api/sucursal/', {
-                    body: JSON.stringify(dataSend),
-                    method: 'post',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                })
-                // console.log(res);
-                const resdata = await res.json()
-                console.log(resdata);
+                body: JSON.stringify(dataSend),
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            })
+            // console.log(res);
+            const resdata = await res.json()
+            console.log(resdata);
         } catch (error) {
             console.log("ERRor");
             console.log(error);
 
         }
-        
+
     }
 
     return (
         <form action="" onSubmit={onSubmitForm}>
             <div className="container card p-7 m-3 sm:w-full md:w-[55%] lg:w-[35%] xl:w-[28%]">
+
+                <h3 className="text-2xl font-bold text-center">{title} </h3>
 
                 <div className="w-auto">
                     {/* <div className=" inline-block md:w-1/2"> */}
@@ -63,7 +65,16 @@ export function FormSucursalComponent({ defaultValues }: { defaultValues?: FormS
                     </div>
                 </div>
 
-                <LocationComponent getData={getData} />
+
+                {
+                    (defaultValues?.country && defaultValues?.city) ?
+                        <LocationComponent
+                            getData={getData}
+                            countryDefault={defaultValues.country}
+                            cityDefault={defaultValues.city} />
+                        :
+                        <LocationComponent getData={getData} />
+                }
 
                 <div className="w-auto">
                     <label className="label label-text" htmlFor="phone"> Phone </label>
@@ -98,7 +109,7 @@ export function FormSucursalComponent({ defaultValues }: { defaultValues?: FormS
                 </div>
 
                 <div className="w-auto my-3">
-                    <button type="submit" className="btn btn-block bg-black text-white hover:bg-black">Registrar</button>
+                    <button type="submit" className="btn btn-block bg-black text-white hover:bg-black">{title}</button>
                 </div>
 
             </div>

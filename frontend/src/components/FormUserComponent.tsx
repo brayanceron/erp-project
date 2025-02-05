@@ -15,7 +15,7 @@ type FormFields = {
     city?: { id: string, name: string },
 }
 
-export function FormUserComponent({ defaultValues }: { defaultValues?: FormFields }) {
+export function FormUserComponent({ defaultValues, title = "Registrar" }: { defaultValues?: FormFields, title? : string }) {
 
     const { formData, onChangeField, setFields } = useForm({ ...defaultValues }) // const { formData, onChangeField } = useForm({ ...formEmptyFields, ...defaultValues })
 
@@ -46,7 +46,7 @@ export function FormUserComponent({ defaultValues }: { defaultValues?: FormField
             <form action="" onSubmit={onSubmitForm}>
                 <div className="container card p-7 m-3 sm:w-full md:w-[55%] lg:w-[35%] xl:w-[28%]">
 
-                    {/* <h3 className="text-2xl font-bold text-center">{titleForm} </h3> */}
+                    <h3 className="text-2xl font-bold text-center">{title} </h3>
 
                     <div className="w-auto">
                         {/* <div className=" inline-block md:w-1/2"> */}
@@ -116,7 +116,7 @@ export function FormUserComponent({ defaultValues }: { defaultValues?: FormField
                     </div>
 
                     {
-                        (defaultValues?.country || defaultValues?.city) ?
+                        (defaultValues?.country && defaultValues?.city) ?
                             <LocationComponent
                                 getData={getData}
                                 countryDefault={defaultValues?.country}
@@ -169,7 +169,7 @@ export function FormUserComponent({ defaultValues }: { defaultValues?: FormField
                     </div>
 
                     <div className="w-auto my-3">
-                        <button type="submit" className="btn btn-block bg-black text-white">Registrar</button>
+                        <button type="submit" className="btn btn-block bg-black text-white hover:bg-black">{title}</button>
                     </div>
 
                 </div>
