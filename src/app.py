@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 
 from src.routes.ssr.sucursal import sucursal_router
@@ -20,6 +20,12 @@ from src.routes.static import static_router, error_403
 app = Flask(__name__)
 app.url_map.strict_slashes= False
 CORS(app, supports_credentials=True)
+
+@app.before_request
+def cors() :#{
+    if request.method == "OPTIONS":
+        return "", 200
+#}
 
 # Routes SSR
 app.register_blueprint(static_router, url_prefix = '/')
