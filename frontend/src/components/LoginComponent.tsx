@@ -1,4 +1,6 @@
+import { useState } from "react"
 import { useForm } from "../hooks/useForm"
+import { AlertComponent } from "./AlertComponent"
 
 /* type loginForm = {
     email : string,
@@ -7,24 +9,30 @@ import { useForm } from "../hooks/useForm"
 export function LoginComponent() {
 
     const { formData, onChangeField } = useForm({ email: '', password: '' })
+    const [messageAlert, setMessageAlert] = useState("")
 
-    async function onSubmitForm(event : any){
+    const alertCode = AlertComponent({message : "Esta alerta fue creada desde codigo", initialHidden :""})
+    async function onSubmitForm(event: any) {
         event.preventDefault()
-        // console.log(formData);
 
         const res = await fetch('http://localhost:5000/api/auth/login',
             {
-                method : 'POST',
-                headers : { 'Content-Type' : 'application/json'},
-                body : JSON.stringify(formData),
-                credentials : 'include'
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+                credentials: 'include'
             }
         )
         const data = await res.json()
-        console.log(res);
-        console.log(res.formData);
-        console.log(res.headers);
-        console.log(data);
+        if (res.status == 200) {
+            console.log(res.headers);
+            console.log(data);
+            // setMessageModal("") // PARA QUITAR EL ALERT
+        }
+        else {
+            setMessageAlert(data.message === messageAlert ? data.message+" ": data.message)
+        }
+
     }
 
     return (
@@ -66,6 +74,16 @@ export function LoginComponent() {
 
 
             </div>
+
+            {alertCode}
+
+            <div className="sm:w-full md:w-1/2 max-w-[380px] m-2">
+                <AlertComponent message={messageAlert} />
+            </div>
+
         </>
     )
 }
+
+
+
