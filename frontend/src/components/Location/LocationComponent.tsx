@@ -1,4 +1,4 @@
-import { useLocation, LocationProps } from "./Location/useLocation";
+import { useLocation, LocationProps } from "./useLocation";
 
 
 export function LocationComponent({ getData, countryDefault, cityDefault }: LocationProps) {
