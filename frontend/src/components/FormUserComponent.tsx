@@ -1,5 +1,5 @@
 import { useForm } from "../hooks/useForm"
-import { LocationComponent } from "./LocationComponent"
+import { LocationComponent } from "./Location/LocationComponent"
 
 type FormFields = {
     names?: string,

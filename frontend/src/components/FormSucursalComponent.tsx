@@ -1,5 +1,7 @@
+import { useState } from "react"
 import { useForm } from "../hooks/useForm"
-import { LocationComponent } from "./LocationComponent"
+import { LocationComponent } from "./Location/LocationComponent"
+import { ModalComponent, openModal } from "./ModalComponent"
 
 type FormSucursal = {
     name?: string,
@@ -12,6 +14,7 @@ type FormSucursal = {
 export function FormSucursalComponent({ defaultValues, title = "Registrar" }: { defaultValues?: FormSucursal, title?: string }) {
 
     const { formData, onChangeField, setFields } = useForm({ ...defaultValues })
+    const [messageModal, setMessageModal] = useState('')
 
     function getData(country: any, city: any) {
         const CountryAndCity = [
@@ -40,6 +43,16 @@ export function FormSucursalComponent({ defaultValues, title = "Registrar" }: { 
             // console.log(res);
             const resdata = await res.json()
             console.log(resdata);
+            if(res.status == 200){
+                console.log("Oook");
+                setMessageModal(resdata.message)
+                openModal(event,'modalFormSucursal')
+            }
+            else{
+                console.log("BAD");
+                setMessageModal(resdata.message)
+                openModal(event, 'modalFormSucursal')
+            }
         } catch (error) {
             console.log("ERRor");
             console.log(error);
@@ -113,6 +126,7 @@ export function FormSucursalComponent({ defaultValues, title = "Registrar" }: { 
                 </div>
 
             </div>
+            <ModalComponent id="modalFormSucursal" message={messageModal} vertical="middle"/>
         </form>
 
     )
