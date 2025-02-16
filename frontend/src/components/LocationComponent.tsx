@@ -1,53 +1,12 @@
-import { useEffect, useState } from "react";
-import { useForm } from "../hooks/useForm";
-import { useFetch } from '../hooks/useFetch'
+import { useLocation, LocationProps } from "./Location/useLocation";
 
-type LocationProps = {
-    getData: (country: string, city: string) => void,
-    countryDefault?: { id: string, name: string },
-    cityDefault?: { id: string, name: string },
-}
 
 export function LocationComponent({ getData, countryDefault, cityDefault }: LocationProps) {
 
     console.log("=============== RENDER  Location =============================");
 
-    const { formData, onChangeField, setField } = useForm({ country: '', city: '' }) // const {formData, onChangeField, setField} = useForm({country : {id:'', name:''}, city : {id:'', name:''} })
-    const [urlCities, setUrlCities] = useState("")
-    const { data: countries, isLoading: isLoadingCountries, error: errorCountries } = useFetch("http://localhost:5000/api/ubicacion/pais/get")
-    const { data: cities, error: errorCities, isLoading: isLoadingCities } = useFetch(urlCities)
-
-    useEffect(() => {
-        if (errorCountries === null && isLoadingCountries === false) {
-            let val = countryDefault ? countries.find((item: any) => item['id'] == countryDefault['id']) : countries[0]
-            if (!val) { val = countries[0] }  // alert  countryDefault not found 
-            setField('country', val['id'])
-        }
-    }, [countries])
-
-    useEffect(() => {
-        if (!formData.country) return
-        setUrlCities(`http://localhost:5000/api/ubicacion/pais/get/${formData.country}/ciudades`)
-    }, [formData.country])
-
-    useEffect(() => {
-        if (errorCities === null && isLoadingCities === false && formData.country) { // if (cities && formData.country) {
-            let val = cityDefault ? cities.find((item: any) => item['id'] == cityDefault['id']) : cities[0]
-            if (!val) { val = cities[0] } // alert  cityDefault not found 
-            setField('city', val['id'])
-        }
-    }, [cities])
-
-    useEffect(() => {
-        if (!countries || !cities) return
-
-        const itemSelectedCountries = countries.find((item: any) => item['id'] == formData.country) // const itemSelectedCountries = countries.find(item => item['id'] == formData.country)
-        const itemSelectedCity = cities.find((item: any) => item['id'] == formData.city) // const itemSelectedCity = cities.find(item => item['id'] == formData.city)
-
-        if (!itemSelectedCountries || !itemSelectedCity) return;
-        getData(itemSelectedCountries, itemSelectedCity)
-    }, [formData.city])
-
+    const { isLoadingCountries, isLoadingCities, errorCountries, errorCities, formData,
+        onChangeField, countries, cities } = useLocation({ getData, countryDefault, cityDefault })
 
     return (
         <div className="my-2">
@@ -74,7 +33,6 @@ export function LocationComponent({ getData, countryDefault, cityDefault }: Loca
                                     onChange={onChangeField}
                                     value={formData.country}
                                 >
-                                    {/* {countries.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)} */}
                                     {countries.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)}
                                 </select>
                     }
