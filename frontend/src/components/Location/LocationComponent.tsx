@@ -1,12 +1,12 @@
 import { useLocation, LocationProps } from "./useLocation";
 
 
-export function LocationComponent({ getData, countryDefault, cityDefault }: LocationProps) {
+export function LocationComponent({ getData, countryDefault, cityDefault, filter = false }: LocationProps) {
 
     console.log("=============== RENDER  Location =============================");
 
     const { isLoadingCountries, isLoadingCities, errorCountries, errorCities, formData,
-        onChangeField, countries, cities } = useLocation({ getData, countryDefault, cityDefault })
+        onChangeField, countries, cities } = useLocation({ getData, countryDefault, cityDefault, filter })
 
     return (
         <div className="my-2">

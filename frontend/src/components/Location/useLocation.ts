@@ -6,14 +6,15 @@ export type LocationProps = {
     getData: (country: string, city: string) => void,
     countryDefault?: { id: string, name: string },
     cityDefault?: { id: string, name: string },
+    filter? : boolean
 }
 
-export function useLocation({ getData, countryDefault, cityDefault }: LocationProps) {
+export function useLocation({ getData, countryDefault, cityDefault, filter = false }: LocationProps) {
 
 
     const { formData, onChangeField, setField } = useForm({ country: '', city: '' }) // const {formData, onChangeField, setField} = useForm({country : {id:'', name:''}, city : {id:'', name:''} })
     const [urlCities, setUrlCities] = useState("")
-    const { data: countries, isLoading: isLoadingCountries, error: errorCountries } = useFetch("http://localhost:5000/api/ubicacion/pais/get")
+    const { data: countries, isLoading: isLoadingCountries, error: errorCountries } = useFetch(`http://localhost:5000/api/ubicacion/pais/get${filter?"?filtrar=true":""}`)
     const { data: cities, error: errorCities, isLoading: isLoadingCities } = useFetch(urlCities)
 
     useEffect(() => {
@@ -26,7 +27,7 @@ export function useLocation({ getData, countryDefault, cityDefault }: LocationPr
 
     useEffect(() => {
         if (!formData.country) return
-        setUrlCities(`http://localhost:5000/api/ubicacion/pais/get/${formData.country}/ciudades`)
+        setUrlCities(`http://localhost:5000/api/ubicacion/pais/get/${formData.country}/ciudades${filter?"?filtrar=true":""}`)
     }, [formData.country])
 
     useEffect(() => {
