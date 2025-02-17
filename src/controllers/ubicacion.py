@@ -240,6 +240,10 @@ def get_paises_by_continent(nombre_continente) :#{
         cursor = conn.cursor()
         cursor.execute('select PaisCodigo, PaisNombre from pais where PaisContinente = %s', [nombre_continente])
         rows = cursor.fetchall()
+
+        row_count = cursor.rowcount
+        if (row_count == 0) : return {"message" : "No se encontraron paises para ese continente"}, 404
+        
         paises = []
         for row in rows :#{
             paises.append({"id" : row[0], "name" : row[1]})
@@ -263,7 +267,7 @@ def get_paises_by_continent_con_sucursales(nombre_continente) :#{
         rows = cursor.fetchall()
         
         row_count = cursor.rowcount
-        if (row_count == 0) : return {"message" : "No se encontraron paises para ese continente que tengan sucursales registradas"}, 400
+        if (row_count == 0) : return {"message" : "No se encontraron paises para ese continente que tengan sucursales registradas"}, 404
         
         paises = []
         for row in rows :#{
