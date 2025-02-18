@@ -42,13 +42,13 @@ export function useLocation({ getData, countryDefault, cityDefault, continent = 
     }, [cities])
 
     useEffect(() => {
-        if (!countries || !cities) return
+        if (!countries || !cities) { getData('', ''); return }
 
-        const itemSelectedCountries = countries.find((item: any) => item['id'] == formData.country) // const itemSelectedCountries = countries.find(item => item['id'] == formData.country)
-        const itemSelectedCity = cities.find((item: any) => item['id'] == formData.city) // const itemSelectedCity = cities.find(item => item['id'] == formData.city)
+        const selectedCountry = countries.find((item: any) => item['id'] == formData.country) // const itemSelectedCountries = countries.find(item => item['id'] == formData.country)
+        const selectedCity = cities.find((item: any) => item['id'] == formData.city) // const itemSelectedCity = cities.find(item => item['id'] == formData.city)
 
-        if (!itemSelectedCountries || !itemSelectedCity) return;
-        getData(itemSelectedCountries, itemSelectedCity)
+        // if (!itemSelectedCountries || !itemSelectedCity) return;
+        getData(selectedCountry, selectedCity)
     }, [formData.city])
 
 
