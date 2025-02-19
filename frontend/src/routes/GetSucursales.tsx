@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { CardSucursal, CardSucursalType } from "../components/CardSucursal"
 import { useLocation } from "../components/Location/useLocation"
 import { useFetch } from "../hooks/useFetch"
@@ -6,29 +6,27 @@ import { useFetch } from "../hooks/useFetch"
 
 
 export function GetSucursales() {
-    const [sucursales, setSucursales] = useState([])
+    const [urlSucursal, setUrlSucursal] = useState(``)    // const { data : sucursales ,error: errorSucursal, isLoading:  isLoadingSucursal } = useFetch(`http://localhost:5000/api/sucursal`)
+    const { data: sucursales, error: errorSucursal, isLoading: isLoadingSucursal } = useFetch(urlSucursal)
 
-    async function getData() {
-        const res = await fetch('http://localhost:5000/api/sucursal')
-        const data = await res.json()
-        if (res.ok) {
-            setSucursales(data)
-        }
-        // console.log(data);
+    function updateUrlSucursales(country: any, city: any, allSucursales : boolean) {
+        if(allSucursales) { setUrlSucursal((`http://localhost:5000/api/sucursal`)); return}
+        setUrlSucursal(`http://localhost:5000/api/sucursal/get/by/ubicacion/${country.id || 'bad'}/${city.id || 'bad'}`) //url = `http://localhost:5000/api/sucursal/get/by/ubicacion/${country.id ? country.id : 'bad'}/${city.id ? city.id : 'bad'}`
     }
-    useEffect(() => {
-        getData()
-    }, [])
 
     return (
         <>
-            <ZoneSelector />
+            <ZoneSelector updateUrlSucursales={updateUrlSucursales} />
 
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 p-3">
                 {
-                    sucursales.map((item: CardSucursalType, index) => {
-                        return <CardSucursal key={index} name={item.name} country={item.country} city={item.city} phone={item.phone} address={item.address} />
-                    })
+                    isLoadingSucursal ?
+                        <p>cargando...</p> :
+                        errorSucursal ?
+                            <p>Error...</p> :
+                            sucursales.map((item: CardSucursalType, index: number) => {
+                                return <CardSucursal key={index} name={item.name} country={item.country} city={item.city} phone={item.phone} address={item.address} />
+                            })
                 }
             </div>
 
@@ -40,23 +38,27 @@ export function GetSucursales() {
 }
 
 
-function ZoneSelector() {
+function ZoneSelector({ updateUrlSucursales }: { updateUrlSucursales: (country: any, city: any, continentSelected : boolean) => void }) {
 
     const { data: continents, error: errorContinent,
         isLoading: isLoadingContinent } = useFetch("http://localhost:5000/api/ubicacion/continente/get")
+    const [filter, setFilter] = useState(false)
 
     const [continentSelected, setContinentSelected] = useState('')
     const onChangeContinent = (event: any) => { setContinentSelected(event.target.value) }
 
 
     const { isLoadingCountries, isLoadingCities, errorCountries, errorCities, formData,
-        onChangeField, countries, cities } = useLocation({ getData: () => { }, continent: continentSelected })
+        onChangeField, countries, cities } = useLocation({ getData: (country, city) => updateUrlSucursales(country, city, continentSelected === 'noContinent'? true : false), continent: continentSelected, filter: filter })
 
 
     return (
 
         <>
             <div className="join drop-shadow mt-3 w-full justify-center">
+                <input type="radio" name="continent" aria-label="All Branch" value={'noContinent'} onChange={onChangeContinent}
+                    className="join-item btn btn-sm hover:bg-black hover:text-white"
+                />
                 {
                     isLoadingContinent ? <h1>Loading...</h1> :
                         errorContinent !== null ? <h1>{"Error :("}</h1> :
@@ -68,11 +70,8 @@ function ZoneSelector() {
                                 )
                             })
                 }
-                <input type="radio" name="continent" aria-label="NoExist" value={"NoExist"} onChange={onChangeContinent}
-                    className="join-item btn btn-sm hover:bg-black hover:text-white"
-                />
                 <input type="radio" name="continent" aria-label="All" value={''} onChange={onChangeContinent}
-                    className="join-item btn btn-sm hover:bg-black hover:text-white"
+                    className="join-item btn btn-sm hover:bg-black hover:text-white" defaultChecked={true}
                 />
             </div>
 
@@ -89,12 +88,13 @@ function ZoneSelector() {
                     id="country"
                     onChange={onChangeField}
                     value={formData.country}
+                    disabled={formData.country ? false : true}
                 >
                     {
                         isLoadingCountries ?
                             <option>Cargando...</option>
                             : errorCountries !== null ?
-                                <option>{"Error :("}</option> :
+                                <option value={"bad"}>{"Error :("}</option> :
                                 countries.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)
                     }
                 </select>
@@ -105,20 +105,23 @@ function ZoneSelector() {
                     id="city"
                     onChange={onChangeField}
                     value={formData.city}
+                    disabled={formData.city ? false : true}
                 >
                     {
                         isLoadingCities || isLoadingCountries ?
                             <option>Cargando...</option>
                             : errorCities !== null ?
-                                <option>{"Error :("}</option> :
+                                <option value={"bad"}>{"Error :("}</option> :
                                 cities.map((item: any) => <option key={item.id} value={item.id}>{item.name}</option>)
                     }
                 </select>
             </div>
 
             <div className="flex px-3 justify-end mt-0 mx-0">
-                
-                <button className="btn btn-square btn-sm btn-secondary" aria-label="Icon Button">
+
+                <button aria-label="Icon Button"
+                    className={`btn btn-square btn-sm ${filter ? 'bg-black text-white' : 'btn-outline'}`}
+                    onClick={_ => setFilter(!filter)}>
                     <span className="icon-[tabler--filter]"></span>
                 </button>
 
