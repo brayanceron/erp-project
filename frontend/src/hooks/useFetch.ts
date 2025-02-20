@@ -7,11 +7,7 @@ type Params = {
 }
 
 export function useFetch(url: string) {
-    const [req, setReq] = useState<Params>({
-        data : null,
-        isLoading : true,
-        error : null
-    })
+    const [req, setReq] = useState<Params>({ data: null, isLoading: true, error: null })
 
     // const {data, isLoading, error} = req;
 
@@ -39,6 +35,7 @@ export function useFetch(url: string) {
             setReq({ data: null, isLoading: false, error: Error("Invalid Url") })
             return
         }
+        setReq({ data: null, isLoading: true, error: null }) // reset isLoading
         getData()
     }, [url])
 
