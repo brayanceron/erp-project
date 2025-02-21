@@ -3,12 +3,12 @@ import { useEffect, useState } from "react"
 type Params = {
     data: any, // data : {} | null | [],
     isLoading: boolean,
-    error: any // error : Error | null
+    error : Error | null // error: any
+    res: Response | null // res: any
 }
 
 export function useFetch(url: string) {
-    const [req, setReq] = useState<Params>({ data: null, isLoading: true, error: null })
-
+    const [req, setReq] = useState<Params>({ data: null, isLoading: true, error: null, res: null })
     // const {data, isLoading, error} = req;
 
     async function getData() {
@@ -18,24 +18,27 @@ export function useFetch(url: string) {
             setReq({
                 data,
                 isLoading: false,
-                error: res.ok ? null : Error(data)
+                error: res.ok ? null : Error(data.message), // error: res.ok ? null : Error(data),
+                res
             })
         } catch (error) {
             setReq({
                 data: null,
                 isLoading: false,
-                error: error
+                error: new Error(error instanceof Error ? error.message : `Se ha presentado un error: ${error}`), // error: error,
+                res: null
             })
         }
 
     }
 
     useEffect(() => {
+        setReq({ data: null, isLoading: true, error: null, res: null }) // reset isLoading
         if (!url) {
-            setReq({ data: null, isLoading: false, error: Error("Invalid Url") })
+            setReq({ data: null, isLoading: false, error: Error("Invalid Url"), res: null })
             return
         }
-        setReq({ data: null, isLoading: true, error: null }) // reset isLoading
+        // setReq({ data: null, isLoading: true, error: null, res: null }) // reset isLoading
         getData()
     }, [url])
 
