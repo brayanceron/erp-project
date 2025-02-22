@@ -50,7 +50,7 @@ export function UserProfile({ idUser }: { idUser: string }) {
     const [user, setUser] = useState<User>(emptyUser)
 
     async function getUserData() {
-        const res = await fetch(`http://localhost:5000/api/usuario/${idUser}`)
+        const res = await fetch(`http://localhost:5000/api/usuario/${idUser}?extended=1`)
         // console.log(res);
 
         if (res.status == 200) {

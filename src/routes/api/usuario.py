@@ -12,6 +12,8 @@ def get() :#{
 
 @usuario_api_router.route('/<id>') # @usuario_api_router.route('/get/<id>')
 def get_id(id) :#{
+    extended = request.args.get('extended')
+    if extended : return src.controllers.usuario.get_id_extended(id)
     return src.controllers.usuario.get_id(id)
 #}
 

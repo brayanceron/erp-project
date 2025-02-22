@@ -1,5 +1,8 @@
 from src.database.database import get_connection
 from src.utils.messages_errors import DB_CONNECTION_ERROR, ERROR_400, ERROR_500
+import src.controllers.ubicacion
+import src.controllers.sucursal
+import src.controllers.departamento
 import datetime
 
 from uuid import uuid4
@@ -248,4 +251,51 @@ def get_by_email(email) :#{
     except :#{
         return ERROR_500
     #}
+#}
+
+
+def get_id_extended(id : str) :#{
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+
+    try :#{
+        # cursor = conn.cursor()
+
+        usuario, _ = get_id(id)
+
+        country_birth, _ = src.controllers.ubicacion.get_pais_id(usuario['country_birth'])
+        city_birth, _ = src.controllers.ubicacion.get_ciudad_id(usuario['city_birth'])
+
+        sucursal_user, _ = src.controllers.sucursal.get_id(usuario['id_sucursal'])
+        departamento_user, _ = src.controllers.departamento.get_id(usuario['id_departamento'])
+
+        usuario = { 
+            **usuario,
+            "id_country_birth" : country_birth['id'],
+            "name_country_birth" : country_birth['name'],
+
+            "id_city_birth" : city_birth['id'],
+            "name_city_birth" : city_birth['name'],
+
+            "name_sucursal" : sucursal_user['name'],
+            "id_country_sucursal" : sucursal_user['country_id'],
+            "name_country_sucursal" : sucursal_user['country'],
+            "id_city_sucursal" : sucursal_user['city_id'],
+            "name_city_sucursal" : sucursal_user['city'],
+            "address_sucursal" : sucursal_user['address'],
+            "phone_sucursal" : sucursal_user['phone'],
+
+            "name_departamento" : departamento_user['name'],
+            "phone_departamento" : departamento_user['phone'],
+            "email_departamento" : departamento_user['email'],
+            "phone_departamento" : departamento_user['phone'],
+            
+        }
+        return usuario, 200
+    #}
+    except Exception as err :#{
+        print(err)
+        return ERROR_500
+    #}
+    
 #}
