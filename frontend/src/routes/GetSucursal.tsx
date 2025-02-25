@@ -12,26 +12,33 @@ export function GetSucursal({ id }: { id: string }) {
             </div>
 
             {
-                isLoadingSucursal ? <p>Cargando...</p> :
-                    errorSucursal ? <p>Error!</p> :
+                // isLoadingSucursal ? <p>Cargando...</p> :
+                isLoadingSucursal ? <div className="flex justify-center pt-5"><span className="loading loading-bars loading-lg"></span></div>
+                    : errorSucursal ? <p>Error!</p>
+                        :
                         <>
                             <div className="text-center text-3xl font-bold">
                                 <h1>{sucursal.name}</h1>
                             </div>
 
-                            <div>
-                                <p>id:  {sucursal.id}</p>
-                                <p>Name:  {sucursal.name}</p>
-                                <p>Phone:  {sucursal.phone}</p>
-                                <p>Address:  {sucursal.address}</p>
-                                <p>Country:  {sucursal.country}</p>
-                                <p>City:  {sucursal.city}</p>
-                                <p>Description:  {sucursal.description}</p>
+                            <div className="text-center w-full flex justify-center mt-2">
+                                <ItemInfo text={sucursal.id} icon="fingerprint" classContainer="text-center" />
                             </div>
+
+
+                            <div className="w-full flex justify-center">
+                                <div className="sm:w-full md:w-1/2 mt-5 mb-8 grid sm:grid-cols-1 md:grid-cols-3">
+                                    <ItemInfo text={sucursal.name} icon="text-spellcheck" />
+                                    <ItemInfo text={sucursal.phone} icon="phone" />
+                                    <ItemInfo text={sucursal.address} icon="map-pin" />
+                                    <ItemInfo text={sucursal.country} icon="world" />
+                                    <ItemInfo text={sucursal.city} icon="building-estate" />
+                                    <ItemInfo text={sucursal.description} icon="text-recognition" />
+                                </div>
+                            </div>
+
                         </>
             }
-
-            {/* <hr /> */}
 
             {
                 isLoading ? <p>Cargando Departamentos...</p> :
@@ -46,7 +53,7 @@ export function GetSucursal({ id }: { id: string }) {
                                     }
                                 </div>
                             </div>
-                            <h1 className="text-center py-5">{`${data.lenght} departamento(s) encontrado(s)`}</h1>
+                            <h1 className="text-center py-5">{`${data instanceof Array ? data.length : 0} departamento(s) encontrado(s)`}</h1>
                         </>
             }
 
@@ -90,33 +97,18 @@ function CardDepartamento({ name, phone, email }: { name: string, phone: string,
 
                 </div>
 
-                {/* <div className="flex w-full justify-around">
-
-    <div className="w-auto m-0 p-0">
-        <div className="flex m-0 p-0 items-center justify-start ">
-            <span className="icon-[tabler--phone] m-0 p-0 mr-1"></span>
-            <p className="text-[0.6rem] m-0 p-0">{"3003436887"}</p>
-        </div>
-        <div className="flex m-0 p-0 align-top items-start justify-start h-auto">
-            <span className="icon-[tabler--phone] m-0 p-0 mr-1 bg-transparent"></span>
-            <p className="text-[0.6rem] text-gray-400 align-text-top m-0 p-0">Phone </p>
-        </div>
-    </div>
-
-    <div className="w-auto m-0 p-0">
-        <div className="flex m-0 p-0 items-center justify-start ">
-            <span className="icon-[tabler--mail] m-0 p-0 mr-1"></span>
-            <p className="text-[0.6rem] m-0 p-0">{"test@test.com"}</p>
-        </div>
-        <div className="flex m-0 p-0 align-top items-start justify-start h-auto">
-            <span className="icon-[tabler--phone] m-0 p-0 mr-1 bg-transparent"></span>
-            <p className="text-[0.6rem] text-gray-400 align-text-top m-0 p-0">Email </p>
-        </div>
-    </div>
-
-</div> */}
-
             </div>
         </>
+    )
+}
+
+function ItemInfo({ icon, text, classContainer = "" }: { icon: string, text: string, classContainer?: string }) {
+    return (
+        <div className={`w-auto m-0 ${classContainer}`}>
+            <div className="flex w-full m-0 p-0 items-start justify-start">
+                <span className={`icon-[tabler--${icon}] m-0 p-0 mr-1`}></span>
+                <p className="m-0 p-0">{text}</p>
+            </div>
+        </div>
     )
 }
