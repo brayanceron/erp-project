@@ -1,8 +1,9 @@
 // import React from "react";
+import { AlertComponent } from "../components/AlertComponent";
 import { useFetch } from "../hooks/useFetch"
 export function GetSucursal({ id }: { id: string }) {
     const { data: sucursal, error: errorSucursal, isLoading: isLoadingSucursal } = useFetch(`http://localhost:5000/api/sucursal/${id}`)
-    const { data, error, isLoading } = useFetch(`http://localhost:5000/api/departamento/get/by/sucursal/${id}`)
+    const { data: departamentos, error: errorDepartamentos, isLoading: isLoadingDepartamentos } = useFetch(`http://localhost:5000/api/departamento/get/by/sucursal/${id}`)
     console.log(sucursal);
 
     return (
@@ -12,9 +13,11 @@ export function GetSucursal({ id }: { id: string }) {
             </div>
 
             {
-                // isLoadingSucursal ? <p>Cargando...</p> :
                 isLoadingSucursal ? <div className="flex justify-center pt-5"><span className="loading loading-bars loading-lg"></span></div>
-                    : errorSucursal ? <p>Error!</p>
+                    : errorSucursal ?
+                        <div className="w-full flex justify-center">
+                            <div className="sm:w-full md:w-1/3 max-w-[450px]"><AlertComponent message={errorSucursal.message} /></div>
+                        </div>
                         :
                         <>
                             <div className="text-center text-3xl font-bold">
@@ -33,7 +36,18 @@ export function GetSucursal({ id }: { id: string }) {
                                     <ItemInfo text={sucursal.address} icon="map-pin" />
                                     <ItemInfo text={sucursal.country} icon="world" />
                                     <ItemInfo text={sucursal.city} icon="building-estate" />
-                                    <ItemInfo text={sucursal.description} icon="text-recognition" />
+                                    <ItemInfo text={`${departamentos instanceof Array ? departamentos.length : 0} departamento(s)`} icon="puzzle" />
+
+                                    <div className="col-span-full mt-2 sm:mx-1 md:mx-0">
+                                        <textarea className="textarea w-full max-h-[200px]" disabled placeholder="Description" id="textareaLabel">
+                                            {sucursal.description}
+                                        </textarea>
+                                        <div className="label">
+                                            <span className="label-text-alt"> </span>
+                                            <span className="label-text-alt">Description</span>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -41,23 +55,29 @@ export function GetSucursal({ id }: { id: string }) {
             }
 
             {
-                isLoading ? <p>Cargando Departamentos...</p> :
-                    error ? <p>Error al cargar los departamentos!</p> :
-                        <>
+                !errorSucursal ?
+                    isLoadingDepartamentos ? <div className="flex justify-center pt-5"><span className="loading loading-bars loading-lg"></span></div> :
+                        errorDepartamentos ?
                             <div className="w-full flex justify-center">
-                                <div className="flex flex-wrap justify-center sm:w-full md:w-4/5">
-                                    {
-                                        data.map((item: any, index: number) => {
-                                            return <CardDepartamento key={index} name={item.name} phone={item.phone} email={item.email} />
-                                        })
-                                    }
-                                </div>
+                                <div className="sm:w-full md:w-1/3 max-w-[450px]"><AlertComponent message={errorDepartamentos.message} /></div>
                             </div>
-                            <h1 className="text-center py-5">{`${data instanceof Array ? data.length : 0} departamento(s) encontrado(s)`}</h1>
-                        </>
+                            :
+                            <>
+                                <div className="w-full flex justify-center">
+                                    <div className="flex flex-wrap justify-center sm:w-full md:w-4/5">
+                                        {
+                                            departamentos.map((item: any, index: number) => {
+                                                return <CardDepartamento key={index} name={item.name} phone={item.phone} email={item.email} />
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                                <h1 className="text-center py-5 text-gray-400 text-sm">{`${departamentos instanceof Array ? departamentos.length : 0} departamento(s) encontrado(s)`}</h1>
+
+                            </>
+                    :
+                    <></>
             }
-
-
 
 
         </>

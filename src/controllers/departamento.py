@@ -169,7 +169,13 @@ def get_by_sucursal(id_sucursal) :#{
         cursor = conn.cursor()
         # cursor.execute('select * from departamento where id_sucursal = %s', [id_sucursal])
         cursor.execute('select id, id_sucursal, name, phone, email, description from departamento where id_sucursal = %s', [id_sucursal])
+        row_count = cursor.rowcount
         rows = cursor.fetchall()
+
+        if (row_count == 0) :#{
+            return {"message" : "No se encontraron departamentos para esta sucursal"}, 404
+        #}
+
         departamentos = []
         for row in rows :#{
             departamentos.append({
