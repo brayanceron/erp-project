@@ -1,23 +1,16 @@
-import { useState } from 'react';
 import { Navbar } from './Navbar';
+import { NavLink } from 'react-router';
 
 export function Sidebar() {
-
-    const [selected, setSelected] = useState('ds')
     const baseClass = "hover:bg-gray-800 focus:bg-purple-600 focus:text-white text-gray-400"
-    const isActiveClass = "bg-purple-600 text-white"
+    const isActiveClass = " bg-purple-600 text-white"
 
-    function clickOption(event : any){
-        event.preventDefault()
-        const element : HTMLElement = event.target
-        // console.log(element.innerText);
-        setSelected(element.innerText.toLowerCase())
-    }
+    function setActive(isActive: boolean) { return isActive ? baseClass + isActiveClass : baseClass }
 
     return (
         <>
-            <Navbar/>
-            <button type="button" className="btn btn-text max-sm:btn-square sm:hidden" aria-haspopup="dialog" aria-expanded="false" aria-controls="logo-sidebar" data-overlay="#logo-sidebar" >
+            <Navbar />
+            <button type="button" className="btn btn-text max-sm:btn-square sm:hidden my-0" aria-haspopup="dialog" aria-expanded="false" aria-controls="logo-sidebar" data-overlay="#logo-sidebar" >
                 <span className="icon-[tabler--menu-2] size-5"></span>
             </button>
 
@@ -35,38 +28,33 @@ export function Sidebar() {
                     <ul className="menu p-0 bg-gradient-to-r from-gray-950 to-gray-900 ">
 
                         <li>
-                            <a href="" onClick={clickOption} className={`${baseClass} ${selected =="home"?isActiveClass:""}`}>
-                                <span className="icon-[tabler--home] size-5"></span>
-                                Home
-                            </a>
+                            <NavLink to={"/"} className={({ isActive }) => setActive(isActive)}>
+                                <span className="icon-[tabler--home] size-5"></span>Home
+                            </NavLink>
                         </li>
 
                         <li>
-                            <a href="" onClick={clickOption} className={`${baseClass} ${selected =="sucursales"?isActiveClass:""}`}>
-                            <span className="icon-[tabler--building-factory-2] size-5"></span>
-                                Sucursales
-                            </a>
+                            <NavLink to={"/sucursal/get"} className={({ isActive }) => setActive(isActive)}>
+                                <span className="icon-[tabler--building-factory-2] size-5"></span>Sucursales
+                            </NavLink>
                         </li>
 
                         <li>
-                            <a href="" onClick={clickOption} className={`${baseClass} ${selected =="departamentos"?isActiveClass:""}`}>
-                                <span className="icon-[tabler--puzzle] size-5"></span>
-                                Departamentos
-                            </a>
+                            <NavLink to={"/departamento"} className={({ isActive }) => setActive(isActive)}>
+                                <span className="icon-[tabler--puzzle] size-5"></span>Departamentos
+                            </NavLink>
                         </li>
 
                         <li>
-                            <a href="" onClick={clickOption} className={`${baseClass} ${selected =="usuarios"?isActiveClass:""}`} >
-                                <span className="icon-[tabler--user] size-5"></span>
-                                Usuarios
-                            </a>
+                            <NavLink to={"/usuario/get/id"} className={({ isActive }) => setActive(isActive)}>
+                                <span className="icon-[tabler--user] size-5"></span>Usuarios
+                            </NavLink>
                         </li>
 
                         <li>
-                            <a href="" onClick={clickOption} className={`${baseClass} ${selected =="actividades"?isActiveClass:""}`} >
-                                <span className="icon-[tabler--activity] size-5"></span>
-                                Actividades
-                            </a>
+                            <NavLink to={"/actividades"} className={({ isActive }) => setActive(isActive)}>
+                                <span className="icon-[tabler--activity] size-5"></span>Actividades
+                            </NavLink>
                         </li>
 
                         <li className="space-y-0.5 text-gray-400">
@@ -77,13 +65,13 @@ export function Sidebar() {
                             </a>
                             <ul id="menu-app-collapse" className="collapse hidden w-auto overflow-hidden transition-[height] duration-300" aria-labelledby="menu-app" >
                                 <li>
-                                    <a href="" onClick={clickOption} className={`${baseClass} ${selected =="chat"?isActiveClass:""}`} >
+                                    <a href=""   >
                                         <span className="icon-[tabler--message] size-5"></span>
                                         Chat
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="" onClick={clickOption} className={`${baseClass} ${selected =="calendario"?isActiveClass:""}`} >
+                                    <a href=""  >
                                         <span className="icon-[tabler--calendar] size-5"></span>
                                         Calendario
                                     </a>
@@ -92,7 +80,7 @@ export function Sidebar() {
                         </li>
 
                         <li className="">
-                            <a href="" onClick={clickOption} className={`${baseClass} ${selected =="productos"?isActiveClass:""}`} >
+                            <a href=""  >
                                 <span className="icon-[tabler--shopping-bag] size-5"></span>
                                 Productos
                             </a>
@@ -102,7 +90,6 @@ export function Sidebar() {
 
                 </div>
             </aside>
-        
         </>
     )
 
