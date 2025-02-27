@@ -50,7 +50,7 @@ function ZoneSelector({ updateUrlSucursales }: { updateUrlSucursales: (country: 
         isLoading: isLoadingContinent } = useFetch("http://localhost:5000/api/ubicacion/continente/get")
     const [filter, setFilter] = useState(false)
 
-    const [continentSelected, setContinentSelected] = useState('')
+    const [continentSelected, setContinentSelected] = useState('noContinent')
     const onChangeContinent = (event: any) => { setContinentSelected(event.target.value) }
 
 
@@ -63,7 +63,7 @@ function ZoneSelector({ updateUrlSucursales }: { updateUrlSucursales: (country: 
         <>
             <div className="join drop-shadow mt-3 w-full justify-center">
                 <input type="radio" name="continent" aria-label="All Branch" value={'noContinent'} onChange={onChangeContinent}
-                    className="join-item btn btn-sm hover:bg-black hover:text-white"
+                    className="join-item btn btn-sm hover:bg-black hover:text-white" defaultChecked={true}
                 />
                 {
                     isLoadingContinent ? <h1>Loading...</h1> :
@@ -77,7 +77,7 @@ function ZoneSelector({ updateUrlSucursales }: { updateUrlSucursales: (country: 
                             })
                 }
                 <input type="radio" name="continent" aria-label="All Countries" value={''} onChange={onChangeContinent}
-                    className="join-item btn btn-sm hover:bg-black hover:text-white" defaultChecked={true}
+                    className="join-item btn btn-sm hover:bg-black hover:text-white"
                 />
             </div>
 
