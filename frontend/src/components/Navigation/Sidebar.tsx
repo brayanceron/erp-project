@@ -5,7 +5,10 @@ export function Sidebar() {
     const baseClass = "hover:bg-gray-800 focus:bg-purple-600 focus:text-white text-gray-400"
     const isActiveClass = " bg-purple-600 text-white"
 
-    function setActive(isActive: boolean) { return isActive ? baseClass + isActiveClass : baseClass }
+    function setActive(isActive: boolean, diffBaseClass: string = '') {
+        if (diffBaseClass) return isActive ? diffBaseClass + isActiveClass : diffBaseClass
+        return isActive ? baseClass + isActiveClass : baseClass
+    }
 
     return (
         <>
@@ -33,10 +36,32 @@ export function Sidebar() {
                             </NavLink>
                         </li>
 
-                        <li>
-                            <NavLink to={"/sucursal/get"} className={({ isActive }) => setActive(isActive)}>
-                                <span className="icon-[tabler--building-factory-2] size-5"></span>Sucursales
-                            </NavLink>
+                        <li className="space-y-0.5 text-gray-400">
+                            <a className="collapse-toggle collapse-open:bg-base-content/10" id="menu-app_suc" data-collapse="#menu-app-collapse_suc">
+                                <span className="icon-[tabler--building-factory-2] size-5"></span>Sucursalesss
+                                <span className="icon-[tabler--chevron-down] collapse-open:rotate-180 size-4 transition-all duration-300"></span>
+                            </a>
+                            {/* <NavLink to={"/sucursal/get"} className={({ isActive }) => setActive(isActive, "collapse-toggle collapse-open:bg-base-content/10")} id="menu-app_suc" data-collapse="#menu-app-collapse_suc">
+                                <span className="icon-[tabler--activity] size-5"></span>Sucursalesss
+                                <span className="icon-[tabler--chevron-down] collapse-open:rotate-180 size-4 transition-all duration-300"></span>
+                            </NavLink> */}
+                            <ul id="menu-app-collapse_suc" className="collapse hidden w-auto overflow-hidden transition-[height] duration-300" aria-labelledby="menu-app_suc" >
+                                <li>
+                                    <NavLink to={"/sucursal/get"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--eye] size-5"></span>Ver
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"/sucursal/post"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--playlist-add] size-5"></span>Registrar
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"/sucursal/search"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--list-search] size-5"></span>Buscar
+                                    </NavLink>
+                                </li>
+                            </ul>
                         </li>
 
                         <li>
