@@ -20,7 +20,7 @@ function App() {
 
           <Route path="sucursal">
             <Route path="get" element={<GetSucursales />}></Route>
-            <Route path="get/id" element={<GetSucursal id="26e51225-97bd-4c9f-99ec-9de94605ab38" />}></Route>
+            <Route path="get/:id" element={<GetSucursal />}></Route>
             <Route path="post" element={<FormSucursalComponent />}></Route>
           </Route>
 
@@ -32,7 +32,7 @@ function App() {
           <Route path="/*" element={<h1>404. Building...</h1>} ></Route>
         </Route>
 
-        <Route path="/login" element={<LoginComponent/>}>
+        <Route path="/login" element={<LoginComponent />}>
         </Route>
 
       </Routes >

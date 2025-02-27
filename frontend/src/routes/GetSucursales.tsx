@@ -29,7 +29,7 @@ export function GetSucursales() {
                         : sucursales && res?.ok ?
                             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 p-3">
                                 {sucursales.map((item: CardSucursalType, index: number) => {
-                                    return <CardSucursal key={index} name={item.name} country={item.country} city={item.city} phone={item.phone} address={item.address} />
+                                    return <CardSucursal key={index} id={item.id} name={item.name} country={item.country} city={item.city} phone={item.phone} address={item.address} />
                                 })}
                             </div>
                             :

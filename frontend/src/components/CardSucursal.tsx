@@ -1,11 +1,14 @@
+import { Link } from "react-router"
+
 export type CardSucursalType = {
+    id : string,
     name : string,
     country: string,
     city: string,
     address: string,
     phone : string
 }
-export function CardSucursal( { name , country, city, address, phone}:CardSucursalType ) {
+export function CardSucursal( { id, name , country, city, address, phone} : CardSucursalType ) {
     return (
         <>
             <div className="shadow-md bg-white w-[320px] m-2 p-6 rounded-md">
@@ -65,7 +68,7 @@ export function CardSucursal( { name , country, city, address, phone}:CardSucurs
 
 
                 <div className="w-auto flex justify-end gap-1 mt-2">
-                    <button className="btn btn-outline btn-xs gap-1"><span className="icon-[tabler--login-2] "></span>See</button>
+                    <Link to={`/sucursal/get/${id}`} className="btn btn-outline btn-xs gap-1"><span className="icon-[tabler--login-2] "></span>See</Link>
                     <button className="btn  bg-black text-white btn-xs gap-1 hover:bg-gray-800"> <span className="icon-[tabler--edit]"></span>Edit</button>
                 </div>
 

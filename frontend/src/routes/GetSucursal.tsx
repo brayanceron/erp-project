@@ -1,7 +1,12 @@
 // import React from "react";
 import { AlertComponent } from "../components/AlertComponent";
 import { useFetch } from "../hooks/useFetch"
-export function GetSucursal({ id }: { id: string }) {
+import { useParams } from "react-router";
+
+export function GetSucursal() {
+    let params = useParams();
+    let id = params.id || ''
+
     const { data: sucursal, error: errorSucursal, isLoading: isLoadingSucursal } = useFetch(`http://localhost:5000/api/sucursal/${id}`)
     const { data: departamentos, error: errorDepartamentos, isLoading: isLoadingDepartamentos } = useFetch(`http://localhost:5000/api/departamento/get/by/sucursal/${id}`)
     console.log(sucursal);
