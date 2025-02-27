@@ -11,7 +11,6 @@ export function LoginComponent() {
     const { formData, onChangeField } = useForm({ email: '', password: '' })
     const [messageAlert, setMessageAlert] = useState("")
 
-    const alertCode = AlertComponent({message : "Esta alerta fue creada desde codigo", initialHidden :""})
     async function onSubmitForm(event: any) {
         event.preventDefault()
 
@@ -36,10 +35,11 @@ export function LoginComponent() {
     }
 
     return (
-        <>
-            <div className="shadow-md sm:w-full md:w-1/2 max-w-[380px] max-[640px]:p-1 sm:p-3 md:p-4 m-2 ">
+        <div className="w-screen h-screen flex justify-center items-center flex-col">
+            
+            <div className="card h-auto max-[640px]:w-[95%] sm:w-full max-w-[370px] max-[370px]:p-2 max-[640px]:p-4 sm:p-5 md:p-5 lg:p-5 m-2">
 
-                <h1 className="text-4xl text-center font-bold my-8">Login</h1>
+                <h1 className="text-4xl text-center font-bold max-[370px]:my-2 my-8">Login</h1>
 
                 <form action="" onSubmit={onSubmitForm}>
 
@@ -75,13 +75,12 @@ export function LoginComponent() {
 
             </div>
 
-            {alertCode}
 
             <div className="sm:w-full md:w-1/2 max-w-[380px] m-2">
                 <AlertComponent message={messageAlert} />
             </div>
 
-        </>
+        </div>
     )
 }
 

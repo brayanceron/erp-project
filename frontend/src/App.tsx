@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router"
 import { GetSucursales } from "./routes/GetSucursales"
 import { UserProfile } from './components/UserProfile'
 import { LayoutDashboard } from "./routes/LayoutDashboard"
-// import { LoginComponent } from "./components/LoginComponent"
+import { LoginComponent } from "./components/LoginComponent"
 // import { ModalComponent, openModal } from "./components/ModalComponent"
 
 function App() {
@@ -30,6 +30,9 @@ function App() {
           </Route>
 
           <Route path="/*" element={<h1>404. Building...</h1>} ></Route>
+        </Route>
+
+        <Route path="/login" element={<LoginComponent/>}>
         </Route>
 
       </Routes >
