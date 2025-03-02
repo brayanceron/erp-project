@@ -1,5 +1,6 @@
 from uuid import uuid4
 import src.controllers.usuario
+import src.controllers.sucursal
 from src.database.database import get_connection
 import src.controllers.sucursal
 from src.utils.messages_errors import DB_CONNECTION_ERROR, INVALID_PARAMS_PAG_ERROR, ERROR_400, ERROR_500
@@ -228,4 +229,31 @@ def get_by_sucursal(id_sucursal) :#{
 #     #}
 # #}
 
+def get_id_extended(id : str) :#{
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+
+    try :#{
+        deparamento, status_departamento = get_id(id)
+        if status_departamento != 200 : return deparamento, status_departamento 
+
+        sucursal, status_sucursal = src.controllers.sucursal.get_id(deparamento['id_sucursal'])
+        if status_sucursal != 200 : sucursal = {}
+        # if status_sucursal != 200 : return deparamento, 404
+
+        deparamento['sucursal'] = sucursal
+
+        usuarios, status_usuario = src.controllers.usuario.get_by_departamento(deparamento['id'])
+        if status_usuario != 200 : usuarios = []
+
+        deparamento['usuarios'] = usuarios
+
+        return deparamento, 200
+        
+    #}
+    except :#{
+        return ERROR_500
+    #}
+    
+#}
 

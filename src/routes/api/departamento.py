@@ -13,6 +13,8 @@ def get() :#{
 
 @departamento_api_router.route('/<id>')
 def get_id(id) :#{
+    extended = request.args.get('extended')
+    if extended : return src.controllers.departamento.get_id_extended(id)
     return src.controllers.departamento.get_id(id)
 #}
 
