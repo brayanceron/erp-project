@@ -1,7 +1,7 @@
 // import React from "react";
 import { AlertComponent } from "../components/AlertComponent";
 import { useFetch } from "../hooks/useFetch"
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { ItemInfo } from "./ItemInfo";
 
 export function GetSucursal() {
@@ -73,7 +73,7 @@ export function GetSucursal() {
                                     <div className="flex flex-wrap justify-center sm:w-full md:w-4/5">
                                         {
                                             departamentos.map((item: any, index: number) => {
-                                                return <CardDepartamento key={index} name={item.name} phone={item.phone} email={item.email} />
+                                                return <CardDepartamento key={index} id={item.id} name={item.name} phone={item.phone} email={item.email} />
                                             })
                                         }
                                     </div>
@@ -90,16 +90,15 @@ export function GetSucursal() {
     )
 }
 
-function CardDepartamento({ name, phone, email }: { name: string, phone: string, email: string }) {
-
-    function onClickCardDepartamento(url: string) {
-        url
-        console.log("Click in the card");
+function CardDepartamento({ id, name, phone, email }: { id : string , name: string, phone: string, email: string }) {
+    let  navigate = useNavigate();
+    function onClickCardDepartamento(id: string) {
+        navigate(`/departamento/get/${id}`)
     }
 
     return (
         <>
-            <div onClick={_ => onClickCardDepartamento("url")} className="card w-[200px] h-[200px] bg-gray-200 justify-center text-center m-2 transition-transform duration-300 hover:bg-gray-300 hover:scale-105">
+            <div onClick={_ => onClickCardDepartamento(id)} className="card w-[200px] h-[200px] bg-gray-200 justify-center text-center m-2 transition-transform duration-300 hover:bg-gray-300 hover:scale-105">
 
                 <div className="h-full"></div>
                 <h1 className="text-xl">{name}</h1>
