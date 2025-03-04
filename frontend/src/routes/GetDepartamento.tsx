@@ -2,16 +2,14 @@
 import { AlertComponent } from "../components/AlertComponent"
 import { useFetch } from "../hooks/useFetch"
 import { ItemInfo } from "./ItemInfo"
+import { useParams, useNavigate } from 'react-router'
 
 export function GetDepartamento() {
-    // let id = "63c27cab-7cea-4f37-a82b-0cb897dda474"
-    let id = "818b5dd4-3497-4ca7-86ff-a68daddbe665"
-
+    let loginDepartmentUser = "818b5dd4-3497-4ca7-86ff-a68daddbe665" //el id del departamento del usuario que inicio sesion
+    let params = useParams()
+    let id = params.id || loginDepartmentUser || ''
 
     const { data: departament, isLoading: isLoadingDepartament, error: errorDepartament } = useFetch(`http://localhost:5000/api/departamento/${id}?extended=1`)
-    // const { data: users, isLoading: isLoadingUsers, error: errorUsers } = useFetch(`http://localhost:5000/api/usuario/get/by/departamento/${id}`)
-    // const { data, isLoading, error} = useFetch(``)
-
 
     return (
         <>
@@ -64,8 +62,7 @@ export function GetDepartamento() {
                             <div className="w-full flex justify-center gap-1">
                                 {
                                     departament.usuarios.map((item: any, index: number) => {
-                                        return <UserCard key={index} name={item.names} role={item.role} />
-                                        // return <li>{index} {item.names} {item.surnames} ---- {item.role}</li>
+                                        return <UserCard key={index} id={item.id} name={item.names} role={item.role} />
                                     })
                                 }
 
@@ -76,16 +73,17 @@ export function GetDepartamento() {
                         </>
             }
 
-            {/* <br /> */}
-
 
         </>
     )
 }
 
-function UserCard({ name, role }: { name: string, role: string }) {
+function UserCard({ id, name, role }: { id: string, name: string, role: string }) {
+    let navigate = useNavigate()
+    function onClickUserCard(id : string) { navigate(`/usuario/get/${id}`) }
+
     return (
-        <div className="w-fit border-base-content/20 flex items-center gap-3 rounded-lg border bg-base-100 p-2 shadow hover:cursor-pointer" >
+        <div onClick={_ => onClickUserCard(id)} className="w-fit border-base-content/20 flex items-center gap-3 rounded-lg border bg-base-100 p-2 shadow hover:cursor-pointer" >
             <img src="https://cdn.flyonui.com/fy-assets/avatar/avatar-10.png" alt="Sophia" className="size-8 rounded-full object-cover" />
             <div className="flex flex-col items-start pe-4">
                 <span className="text-base-content font-medium">{name}</span>
