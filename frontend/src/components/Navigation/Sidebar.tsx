@@ -71,7 +71,7 @@ export function Sidebar() {
                         </li>
 
                         <li>
-                            <NavLink to={"/usuario/get/id"} className={({ isActive }) => setActive(isActive)}>
+                            <NavLink to={"/usuario/get/"} className={({ isActive }) => setActive(isActive)}>
                                 <span className="icon-[tabler--user] size-5"></span>Usuarios
                             </NavLink>
                         </li>

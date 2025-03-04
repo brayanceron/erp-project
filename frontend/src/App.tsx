@@ -6,6 +6,7 @@ import { GetSucursales } from "./routes/GetSucursales"
 import { UserProfile } from './components/UserProfile'
 import { LayoutDashboard } from "./routes/LayoutDashboard"
 import { LoginComponent } from "./components/LoginComponent"
+import { GetDepartamento } from "./routes/GetDepartamento"
 // import { ModalComponent, openModal } from "./components/ModalComponent"
 
 function App() {
@@ -24,9 +25,16 @@ function App() {
             <Route path="post" element={<FormSucursalComponent />}></Route>
           </Route>
 
+          <Route path="departamento" element={<GetDepartamento />}>
+            <Route path="get/:id" element={<GetDepartamento />}></Route>
+          </Route>
+
           <Route path="usuario">
             <Route path="post" element={<FormUserComponent />}></Route>
-            <Route path="get/id" element={<UserProfile idUser='8fbb558a-0d76-40fa-84ee-316d5082f34c' />}></Route>
+
+            <Route path="get/" element={<UserProfile/>}></Route> // usuario logueado
+            <Route path="get/:id" element={<UserProfile/>}></Route>
+
           </Route>
 
           <Route path="/*" element={<h1>404. Building...</h1>} ></Route>
