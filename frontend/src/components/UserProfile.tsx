@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import {useParams} from 'react-router'
 
 type User = {
     id: string,
@@ -45,8 +46,10 @@ const emptyUser: User = {
 
 }
 
-export function UserProfile({ idUser }: { idUser: string }) {
-
+export function UserProfile() {
+    let loginUser = "8fbb558a-0d76-40fa-84ee-316d5082f34c" // id de usuario logueado 
+    let params = useParams()
+    let idUser = params.id || loginUser || ""
     const [user, setUser] = useState<User>(emptyUser)
 
     async function getUserData() {
