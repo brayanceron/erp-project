@@ -6,7 +6,7 @@ export type paramsPost = {
     error: null | Error,
     res: null | Response,
 }
-export function usePost(url: string, body: any, callback: (params: paramsPost) => void, method = 'POST') {
+export function usePost(url: string, body: any, method: Method = Method.POST, callback: (params: paramsPost) => void) {
     const [req, setReq] = useState<paramsPost>({ body, data: null, isLoading: false, error: null, res: null }) //initial state
 
     async function sendReq() {
@@ -46,9 +46,13 @@ export function usePost(url: string, body: any, callback: (params: paramsPost) =
     }
 
     useEffect(() => {
-        if (req.isLoading || (req.error === null && req.res === null))  return 
+        if (req.isLoading || (req.error === null && req.res === null)) return
         callback(req)
     }, [req])
 
     return { ...req, sendReq }
+}
+export enum Method {
+    POST = 'POST',
+    PUT = 'PUT'
 }
