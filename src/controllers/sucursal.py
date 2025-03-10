@@ -152,6 +152,49 @@ def delete(id) :#{
 
 
 # =====================================
+def search(id :str = None, name : str = None, city : str = None) :#{
+    if(not name and not id and not city) : return ERROR_400
+
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+
+    try :#{
+        cursor = conn.cursor()
+
+        query = f""" select  id, name, PaisNombre, country, CiudadNombre, city, address, phone, description
+        from sucursal join pais on country = PaisCodigo join ciudad on city = CiudadID where
+        {" or ".join([f'{k} like(%s)' for k, v in {'name' : name, 'id' : id, 'CiudadNombre' : city}.items() if v ])} 
+        """
+
+        cursor.execute(query, [ f"%{x}%" for x in [name, id, city] if x])
+
+        row_count = cursor.rowcount
+        if row_count == 0 : return {"message" : "No se encontraron sucursales para ese patron de busqueda :("}, 404
+
+        rows = cursor.fetchall()
+        sucursales = []
+        for row in rows :#{
+            sucursales.append({
+                "id":row[0],
+                "name":row[1],
+                "country":row[2],
+                "country_id":row[3],
+                "city":row[4],
+                "city_id":row[5],
+                # "postalcode":row[4],
+                "address":row[6],
+                "phone":row[7],
+                "description":row[8]
+            })
+        #}
+        conn.close()
+        return sucursales, 200
+    #}
+    except Exception as err:#{
+        print(err)
+        return ERROR_500
+    #}
+#}
 
 def get_by_ubicacion(country, city = "") :#{
     conn = get_connection()
@@ -233,5 +276,4 @@ def sucursalstatistics(continent, country, city) :#{
     except :#{
         return ERROR_500
     #}
-    
 #}

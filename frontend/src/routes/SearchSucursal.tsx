@@ -20,7 +20,7 @@ export function SearchSucursal() {
 
     function getSucursales() {
         if (!pattern) return
-        let urlParam = `${params.id ? `id=${pattern}&&` : ''}${params.name ? `name=${pattern}&&` : ''} ${params.city ? `city=${pattern}&&` : ''}`
+        let urlParam = `${params.id ? `id=${pattern}&` : ''}${params.name ? `name=${pattern}&` : ''}${params.city ? `city=${pattern}&` : ''}t=1`
         if (!urlParam) { alert("debe seleccionar un parametro"); return }
         setUrl(`http://localhost:5000/api/sucursal/search?${urlParam}`);
     }

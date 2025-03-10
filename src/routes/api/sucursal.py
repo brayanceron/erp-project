@@ -11,7 +11,8 @@ keys = ['name','city','country','address','description','phone']
 def before() :#{
     # if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
     # if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))[0]['auth']) : return {'error' : "error en ..."} 
-    if (not (is_auth := src.controllers.auth.auth_api_middleware(request.endpoint))[0]['auth']) : return is_auth[0], is_auth[1]
+    # if (not (is_auth := src.controllers.auth.auth_api_middleware(request.endpoint))[0]['auth']) : return is_auth[0], is_auth[1]
+    pass
 #}
 
 @sucursal_api_router.route('/')
@@ -39,6 +40,14 @@ def put(id) :#{
 @sucursal_api_router.route('/<id>', methods = ['DELETE'])
 def delete(id) :#{
     return src.controllers.sucursal.delete(id)
+#}
+
+@sucursal_api_router.route('/search')
+def search() :#{
+    id = request.args.get('id')
+    name = request.args.get('name')
+    city = request.args.get('city')
+    return src.controllers.sucursal.search(id, name, city)
 #}
 
 # @sucursal_api_router.route('/get/<id>/')
