@@ -1,9 +1,6 @@
-import { useState } from "react"
-import { useForm } from "../hooks/useForm"
 import { LocationComponent } from "./Location/LocationComponent"
-import { ModalComponent, openModal } from "./ModalComponent"
-import { useNavigate } from 'react-router'
-import { usePost, paramsPost, Method } from "../hooks/usePost"
+import { Method } from "../hooks/usePost"
+import { UsePostForm } from "../hooks/usePostForm"
 
 type FormSucursal = {
     name?: string,
@@ -13,10 +10,8 @@ type FormSucursal = {
     address?: string,
     description?: string
 }
-export function FormSucursalComponent({ defaultValues, url, method = Method.POST, }: { defaultValues?: FormSucursal, title?: string, url : string, method? : Method }) {
-    let navigate = useNavigate()
-    const { formData, onChangeField, setFields } = useForm({ ...defaultValues })
-    const [messageModal, setMessageModal] = useState('')
+export function FormSucursalComponent({ defaultValues, url, method = Method.POST, }: { defaultValues?: FormSucursal, url: string, method?: Method }) {
+    const { formData, onSubmitForm, onChangeField, isLoadingPostReq, setFields, ModalPostForm } = UsePostForm(defaultValues, url, method, "/sucursal/get/")
 
     function getData(country: any, city: any) {
         const CountryAndCity = [
@@ -26,25 +21,13 @@ export function FormSucursalComponent({ defaultValues, url, method = Method.POST
         setFields(CountryAndCity)
     }
 
-    function postCallback({ error, data, body }: paramsPost) {
-        setMessageModal(error ? error.message : data.message)
-        if (!error) { return navigate(`/sucursal/get/${method == Method.POST? data.id : method == Method.PUT ? body.id : ''}`) }
-        openModal(null, 'modalFormSucursal')
-    }
-
-    const { sendReq, isLoading } = usePost(url, formData, method, postCallback)
-    async function onSubmitForm(event: any) {
-        event.preventDefault()
-        await sendReq()
-    }
-
     return (
         <>
-            <ModalComponent id="modalFormSucursal" message={messageModal} vertical="middle" />
+            {ModalPostForm}
             <div className="container card p-7 m-3 sm:w-full md:w-[55%] lg:w-[35%] xl:w-[28%]">
                 <form action="" onSubmit={onSubmitForm}>
 
-                    <h3 className="text-2xl font-bold text-center">{method == Method.PUT? "Actualizar" : method == Method.POST? "Registrar" : ''}</h3>
+                    <h3 className="text-2xl font-bold text-center">{method == Method.PUT ? "Actualizar" : method == Method.POST ? "Registrar" : ''}</h3>
 
                     <div className="w-auto">
                         {/* <div className=" inline-block md:w-1/2"> */}
@@ -101,9 +84,9 @@ export function FormSucursalComponent({ defaultValues, url, method = Method.POST
                     </div>
 
                     <div className="w-auto my-3">
-                        <button type="submit" className={`btn btn-block bg-black text-white hover:bg-black ${isLoading && "btn-disabled"}`}>
-                            {isLoading && <span className="loading loading-spinner loading-sm"></span>}
-                            <span>{method == Method.PUT? "Actualizar" : method == Method.POST? "Registrar" : ''}</span>
+                        <button type="submit" className={`btn btn-block bg-black text-white hover:bg-black ${isLoadingPostReq && "btn-disabled"}`}>
+                            {isLoadingPostReq && <span className="loading loading-spinner loading-sm"></span>}
+                            <span>{method == Method.PUT ? "Actualizar" : method == Method.POST ? "Registrar" : ''}</span>
                         </button>
                     </div>
 
