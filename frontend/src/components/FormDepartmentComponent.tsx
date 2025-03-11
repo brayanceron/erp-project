@@ -1,10 +1,6 @@
-import { useState } from "react"
 import { useFetch } from "../hooks/useFetch"
-import { useForm } from "../hooks/useForm"
-import { paramsPost, usePost } from "../hooks/usePost"
-import { ModalComponent, openModal } from "./ModalComponent"
-import { useNavigate } from "react-router"
 import { AlertComponent } from "./AlertComponent"
+import { UsePostForm } from "../hooks/usePostForm"
 
 type FormDepartment = {
     name: string,
@@ -14,27 +10,12 @@ type FormDepartment = {
     description: string
 }
 export function FormDepartmentComponent({ idSucursal, defaultValues, url, method = Method.POST }: { idSucursal: string, defaultValues?: FormDepartment, url: string, method?: Method }) {
-    const navigate = useNavigate()
     const { data: sucursal, isLoading: isLoadingSucursal, error: errorSucursal } = useFetch(`http://localhost:5000/api/sucursal/${idSucursal}`)
-    const { formData, onChangeField } = useForm({ ...defaultValues, id_sucursal: idSucursal })
-    const [messageModal, setMessageModal] = useState('')
-
-
-    function postCallback({ error, data, body }: paramsPost) {
-        setMessageModal(error ? error.message : data.message)
-        if (!error) { return navigate(`/departamento/get/${method == Method.POST ? data.id : method == Method.PUT ? body.id : ''}`)  }
-        openModal(null, 'modal')
-    }
-
-    const { sendReq, isLoading } = usePost(url, formData, method, postCallback)
-    function onSubmitForm(event: React.FormEvent) {
-        event.preventDefault()
-        sendReq()
-    }
+    const { formData, onChangeField, onSubmitForm, isLoadingPostReq, ModalPostForm } = UsePostForm(defaultValues, url, method, `/departamento/get/`)
 
     return (
         <>
-            <ModalComponent message={messageModal} id="modal" />
+            {ModalPostForm}
             {
                 errorSucursal ?
                     <div className="w-full flex justify-center my-4">
@@ -107,8 +88,8 @@ export function FormDepartmentComponent({ idSucursal, defaultValues, url, method
                             </div>
 
                             <div className="w-auto my-3">
-                                <button type="submit" className={`btn btn-block bg-black text-white hover:bg-black ${isLoading && "btn-disabled"}`}>
-                                    {isLoading && <span className="loading loading-spinner loading-sm"></span>}
+                                <button type="submit" className={`btn btn-block bg-black text-white hover:bg-black ${isLoadingPostReq && "btn-disabled"}`}>
+                                    {isLoadingPostReq && <span className="loading loading-spinner loading-sm"></span>}
                                     <span>{method == Method.PUT ? "Actualizar" : method == Method.POST ? "Registrar" : ''}</span>
                                 </button>
                             </div>
