@@ -1,7 +1,7 @@
 import { useLocation, LocationProps } from "./useLocation";
 
 
-export function LocationComponent({ getData, countryDefault, cityDefault, filter = false }: LocationProps) {
+export function LocationComponent({ getData, countryDefault, cityDefault, filter = false, horizontal=false }: LocationProps) {
 
     console.log("=============== RENDER  Location =============================");
 
@@ -9,10 +9,10 @@ export function LocationComponent({ getData, countryDefault, cityDefault, filter
         onChangeField, countries, cities } = useLocation({ getData, countryDefault, cityDefault, filter })
 
     return (
-        <div className="my-2">
+        <div className={`my-2 w-full ${horizontal? ' sm:flex gap-1' : ''}`}>
             {/* <h4> {title} </h4> */}
 
-            <div className="w-auto">
+            <div className="w-full">
                 <label className="label label-text" htmlFor="country"> Country </label>
                 <div className="input-group w-auto">
 
@@ -40,7 +40,7 @@ export function LocationComponent({ getData, countryDefault, cityDefault, filter
             </div>
 
 
-            <div className="w-auto">
+            <div className="w-full">
                 <label className="label label-text" htmlFor="city"> City </label>
                 <div className="input-group w-auto">
 
@@ -69,13 +69,6 @@ export function LocationComponent({ getData, countryDefault, cityDefault, filter
                 </div>
             </div>
 
-            <button className="btn btn-primary my-5 py-1" onClick={event => {
-                event.preventDefault()
-                console.log(">>>>", formData);
-                // console.log(countrySelected, citySelected);
-            }}>
-                ok
-            </button>
 
         </div>
     )

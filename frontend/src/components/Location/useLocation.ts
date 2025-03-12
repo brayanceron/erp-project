@@ -8,6 +8,7 @@ export type LocationProps = {
     cityDefault?: { id: string, name: string },
     filter?: boolean
     continent?: string
+    horizontal? :boolean
 }
 
 export function useLocation({ getData, countryDefault, cityDefault, continent = '', filter = false }: LocationProps) {
