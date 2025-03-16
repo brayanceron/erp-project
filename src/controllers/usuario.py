@@ -261,7 +261,8 @@ def get_id_extended(id : str) :#{
     try :#{
         # cursor = conn.cursor()
 
-        usuario, _ = get_id(id)
+        usuario, status = get_id(id)
+        if status != 200 : return  usuario, status
 
         country_birth, _ = src.controllers.ubicacion.get_pais_id(usuario['country_birth'])
         city_birth, _ = src.controllers.ubicacion.get_ciudad_id(usuario['city_birth'])
@@ -297,5 +298,4 @@ def get_id_extended(id : str) :#{
         print(err)
         return ERROR_500
     #}
-    
 #}
