@@ -3,7 +3,6 @@ from src.utils.messages_errors import DB_CONNECTION_ERROR, ERROR_400, ERROR_500
 import src.controllers.ubicacion
 import src.controllers.sucursal
 import src.controllers.departamento
-import datetime
 
 from uuid import uuid4
 
@@ -72,7 +71,7 @@ def get_id(id) :#{
             "id":row[0],
             "names":row[1],
             "surnames":row[2],
-            "birthdate":row[3],
+            "birthdate":str(row[3]),
             "dni":row[4],
             "gender":row[5],
             "email":row[6],
@@ -87,8 +86,8 @@ def get_id(id) :#{
         }
         return usuario, 200
     #}
-    except :#{
-        # print("error")
+    except Exception as err :#{
+        print(err)
         return ERROR_500
     #}
 #}
@@ -112,8 +111,6 @@ def post(names, surnames, birthdate, dni, gender, email, phone, role, password, 
         return {"message":"usuario registrado exitosamente", "id" : id}, 200
     #}
     except Exception as err :#{
-    # except :#{
-        # print("err")
         print(err)
         return ERROR_500
     #}       
@@ -142,7 +139,7 @@ def get_by_departamento(id_departamento) :#{
                 "id":row[0],
                 "names":row[1],
                 "surnames":row[2],
-                "birthdate":row[3],
+                "birthdate":str(row[3]),
                 "dni":row[4],
                 "gender":row[5],
                 "email":row[6],
@@ -200,7 +197,7 @@ def search(names = None, dni = None, email = None) :#{
             "id":row[0],
             "names":row[1],
             "surnames":row[2],
-            "birthdate":row[3],
+            "birthdate":str(row[3]),
             "dni":row[4],
             "gender":row[5],
             "email":row[6],
@@ -233,7 +230,7 @@ def get_by_email(email) :#{
         usuario = {
             "names" : row[0],
             "surnames" : row[1],
-            "birthdate" : row[2],
+            "birthdate" : str(row[2]),
             "dni" : row[3],
             "gender" : row[4],
             "email" : row[5],
