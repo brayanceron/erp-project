@@ -116,6 +116,36 @@ def post(names, surnames, birthdate, dni, gender, email, phone, role, password, 
     #}       
 #}
 
+def put(id, names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth, id_sucursal, id_departamento) :#{
+    if (not names or not surnames or not birthdate or not dni or not country_birth or not city_birth or not email
+        or not phone or not role or not password or (gender not in ['F','M']) or not id_sucursal or not id_departamento) :#{
+                return ERROR_400
+    #}
+
+    conn = get_connection()
+    if not conn : return DB_CONNECTION_ERROR
+
+    res, status = get_id(id)
+    if status != 200 : return res, status
+
+    try :#{
+        cursor = conn.cursor()
+        cursor.execute("update usuario set names = %s, surnames = %s, birthdate = %s, dni = %s, gender = %s, email = %s, phone = %s, role = %s, password = %s, country_birth = %s, city_birth = %s, id_sucursal = %s, id_departamento = %s where id = %s",
+            [names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth, id_sucursal, id_departamento, id]
+        )
+
+        row_count = cursor.rowcount
+        if row_count == 0 : return {'message' : "No se actualizo ningun dato"}, 400
+        conn.commit()
+
+        return {'message' : "usuario actualizado exitosamente"}, 200
+    #}
+    except Exception as err:#{
+        print(err)
+        return ERROR_500
+    #}
+#}
+
 def get_by_departamento(id_departamento) :#{
     conn = get_connection()
     if not conn: return DB_CONNECTION_ERROR

@@ -23,6 +23,11 @@ def post() :#{
     return src.controllers.usuario.post(**body)
 #}
 
+@usuario_api_router.route('/<id>', methods=['PUT'])
+def put(id) :#{
+    body : dict = { k : request.get_json().get(k) for k in keys }
+    return src.controllers.usuario.put(id, **body)
+#}
 
 @usuario_api_router.route('/search')
 def search() :#{
