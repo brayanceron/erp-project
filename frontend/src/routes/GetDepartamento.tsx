@@ -2,7 +2,7 @@
 import { AlertComponent } from "../components/AlertComponent"
 import { useFetch } from "../hooks/useFetch"
 import { ItemInfo } from "./ItemInfo"
-import { useParams, useNavigate } from 'react-router'
+import { useParams, useNavigate, Link } from 'react-router'
 
 export function GetDepartamento() {
     let loginDepartmentUser = "818b5dd4-3497-4ca7-86ff-a68daddbe665" //el id del departamento del usuario que inicio sesion
@@ -38,7 +38,6 @@ export function GetDepartamento() {
                                     {/* <ItemInfo text={departament.name} icon="text-spellcheck" /> */}
                                     <ItemInfo text={departament.phone} icon="phone" />
                                     <ItemInfo text={departament.email} icon="mail" />
-
                                     <ItemInfo text={departament.sucursal.name} icon="building-factory-2" />
                                     <ItemInfo text={departament.sucursal.country} icon="world" />
                                     <ItemInfo text={departament.sucursal.city} icon="building-estate" />
@@ -56,6 +55,16 @@ export function GetDepartamento() {
 
 
                                 </div>
+                            </div>
+
+
+                            <div className="text-center w-full flex justify-center mt-0 mb-8">
+                                <Link to={`/sucursal/get/${departament.sucursal.id}`} className="btn btn-square btn-sm bg-black hover:bg-gray-700" aria-label="Icon Button" >
+                                    <span className="icon-[tabler--building-factory-2] text-white"></span>
+                                </Link>
+                                <Link to={`/usuario/post`} className="btn btn-square btn-sm bg-black hover:bg-gray-700" aria-label="Icon Button" >
+                                    <span className="icon-[tabler--user-plus] text-white"></span>
+                                </Link>
                             </div>
 
 
