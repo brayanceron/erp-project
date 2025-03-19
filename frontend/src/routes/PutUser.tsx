@@ -18,7 +18,7 @@ export function PutUser() {
                         <div>
                             <div className="w-full h-full flex justify-center items-center">
                                 <FormUserComponent
-                                    url='http://localhost:5000/api/usuario/'
+                                    url={`http://localhost:5000/api/usuario/${usuario.id}`}
                                     defaultValues={{
                                         ...usuario,
                                         ["country_birth"]: { name: usuario?.name_country_birth, id: usuario?.id_country_birth },
