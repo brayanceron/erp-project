@@ -10,7 +10,7 @@ type FormDepartment = {
     description: string
 }
 export function FormDepartmentComponent({ idSucursal, defaultValues, url, method = Method.POST }: { idSucursal: string, defaultValues?: FormDepartment, url: string, method?: Method }) {
-    const { data: sucursal, isLoading: isLoadingSucursal, error: errorSucursal } = useFetch(`http://localhost:5000/api/sucursal/${idSucursal}`)
+    const { data: sucursal, isLoading: isLoadingSucursal, error: errorSucursal } = useFetch(`http://localhost:5000/api/sucursal/${idSucursal || '_'}`)
     const { formData, onChangeField, onSubmitForm, isLoadingPostReq, ModalPostForm } = UsePostForm(defaultValues, url, method, `/departamento/get/`)
 
     return (
@@ -68,9 +68,11 @@ export function FormDepartmentComponent({ idSucursal, defaultValues, url, method
                                     <select className="select w-full" onClick={onChangeField} id="id_sucursal" name="id_sucursal" >
                                         {
                                             isLoadingSucursal ? <option>Cargando...</option> :
-                                                <option value={sucursal.id} className="h-[500px] w-full" >
-                                                    {sucursal.name}, {sucursal.country},{sucursal.city}, {sucursal.address},
-                                                </option>
+                                                sucursal.id ?
+                                                    <option value={sucursal.id} className="h-[500px] w-full" >
+                                                        {sucursal.name}, {sucursal.country},{sucursal.city}, {sucursal.address},
+                                                    </option>
+                                                    : <option>Error, No se pudo cargar la información</option>
                                         }
                                     </select>
                                 </div>
