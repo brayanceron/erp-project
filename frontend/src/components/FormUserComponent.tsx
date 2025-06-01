@@ -1,52 +1,72 @@
+import { useState } from "react"
 import { useForm } from "../hooks/useForm"
+import { usePost, paramsPost } from "../hooks/usePost"
 import { LocationComponent } from "./Location/LocationComponent"
+import { ModalComponent, openModal } from "./ModalComponent"
+import { useNavigate } from 'react-router'
+import { ModalSelectSucursal, openModalSelectSucursal } from "./ModalSelectSucursal"
 
-type FormFields = {
-    names?: string,
-    lastnames?: string,
-    birthday?: string,
-    dni?: string,
-    gender?: string,
-    email?: string,
-    phone?: string,
-    role?: string,
-    password?: string,
-    country?: { id: string, name: string },
-    city?: { id: string, name: string },
-}
-
-export function FormUserComponent({ defaultValues, title = "Registrar" }: { defaultValues?: FormFields, title? : string }) {
-
+export function FormUserComponent({ defaultValues, url, method = Method.POST }: { defaultValues?: any, url: string, method?: Method }) { // export function FormUserComponent({ url, defaultValues, method = Method.POST }: { url: string, defaultValues?: FormFields, method?: Method }) {
+    const navigate = useNavigate()
+    console.log(defaultValues);
     const { formData, onChangeField, setFields } = useForm({ ...defaultValues }) // const { formData, onChangeField } = useForm({ ...formEmptyFields, ...defaultValues })
+    const [messageModal, setMessageModal] = useState('')
+    const idModal = "ModalSelectSucursal"
 
-    function getData(country: any, city : any) {
+    function getData(country: any, city: any) {
         const CountryAndCity = [
-            {field: 'city', value :city},
-            {field: 'country', value :country},
+            { field: 'city_birth', value: city.id },
+            { field: 'country_birth', value: country.id },
         ]
         setFields(CountryAndCity)
-        // onChangeField({ target: { id: 'city', city } })
-        // onChangeField({ target: { id: 'country', country } })
     }
 
+    function getSucursalAndDepartment(sucursal: any, department: any) { // function getSucursalAndDepartment(sucursal: paramsGetData, department: paramsGetData) {
+        const fields = [
+            { field: 'id_sucursal', value: sucursal.id }, { field: 'name_sucursal', value: sucursal.name },
+            { field: 'id_departamento', value: department.id }, { field: 'name_departamento', value: department.name }
+        ]
+        setFields(fields)
+    }
 
-    function onSubmitForm(event: any) {
+    function postCallback({ error, data, body }: paramsPost) {
+        setMessageModal(error ? error.message : data.message)
+        if (!error) { return navigate(`/usuario/get/${method == Method.POST ? data.id : method == Method.PUT ? body.id : ''}`) }
+        openModal(null, 'modalFormUser')
+    }
+
+    const { isLoading, sendReq } = usePost(url, formData, method, postCallback)
+    async function onSubmitForm(event: any) {
         event.preventDefault()
-        const formEmptyFields: FormFields = {
-            names: '', lastnames: '', birthday: '', dni: '', gender: '', email: '', phone: '', role: '', password: '', country: { id: '', name: '' },
-            city: { id: '', name: '' },
-        }
-        let sendData = { ...formEmptyFields, ...formData }
-        console.log(sendData);
+        console.log(formData);
+        await sendReq()
     }
+
 
     return (
         <>
+            {
+                <ModalSelectSucursal
+                    id={idModal}
+                    getSucursalAndDepartment={getSucursalAndDepartment}
+                    defaultValues={
+                        defaultValues ? {
+                            defaultLocationSucursal: {
+                                country: { id: defaultValues.id_country_sucursal, name: '' },
+                                city: { id: defaultValues.id_city_sucursal, name: '' }
+                            },
+                            defaultSucursal: defaultValues.id_sucursal,
+                            defaultDepartament: defaultValues.id_departamento
+                        } : undefined
+                    }
+                />
+            }
 
-            <form action="" onSubmit={onSubmitForm}>
-                <div className="container card p-7 m-3 sm:w-full md:w-[55%] lg:w-[35%] xl:w-[28%]">
 
-                    <h3 className="text-2xl font-bold text-center">{title} </h3>
+            <div className="container card p-7 m-3 sm:w-full md:w-[55%] lg:w-[35%] xl:w-[28%]">
+                <form action="" onSubmit={onSubmitForm}>
+
+                    <h3 className="text-2xl font-bold text-center">{method === Method.PUT ? 'Actualizar' : method === Method.POST ? 'Registrar' : ''}</h3>
 
                     <div className="w-auto">
                         {/* <div className=" inline-block md:w-1/2"> */}
@@ -61,22 +81,22 @@ export function FormUserComponent({ defaultValues, title = "Registrar" }: { defa
 
                     <div className="w-auto">
                         {/* <div className=" inline-block md:w-1/3"> */}
-                        <label className="label label-text" htmlFor="lastnames"> Lastnames </label>
+                        <label className="label label-text" htmlFor="surnames"> Surnames </label>
                         <div className="input-group w-auto">
                             <span className="input-group-text">
                                 <span className="icon-[tabler--text-recognition] text-base-content/80 size-5"></span>
                             </span>
-                            <input type="text" className="input grow" id="lastnames" value={formData.lastnames} onChange={onChangeField} />
+                            <input type="text" className="input grow" id="surnames" value={formData.surnames} onChange={onChangeField} />
                         </div>
                     </div>
 
                     <div className="w-auto">
-                        <label className="label label-text" htmlFor="birthday"> birthday </label>
+                        <label className="label label-text" htmlFor="birthdate"> birthdate </label>
                         <div className="input-group w-auto">
                             <span className="input-group-text">
                                 <span className="icon-[tabler--cake] text-base-content/80 size-5"></span>
                             </span>
-                            <input type="date" className="input grow" id="birthday" value={formData.birthday} onChange={onChangeField} />
+                            <input type="date" className="input grow" id="birthdate" value={formData.birthdate} onChange={onChangeField} />
                         </div>
                     </div>
 
@@ -101,13 +121,13 @@ export function FormUserComponent({ defaultValues, title = "Registrar" }: { defa
     last:*:sm:rounded-bl-none rtl:divide-x-reverse">
                                 <li className="w-full">
                                     <label className="flex cursor-pointer items-center gap-2 p-3">
-                                        <input type="radio" name="gender" id="gender" value={'M'} className="radio radio-primary ms-3" onChange={onChangeField} />
+                                        <input type="radio" name="gender" id="gender" value={'M'} className="radio ms-3" onChange={onChangeField} defaultChecked={defaultValues ? defaultValues.gender === 'M' ? true : false : false} />
                                         <span className="label label-text text-base"> Male </span>
                                     </label>
                                 </li>
                                 <li className="w-full">
                                     <label className="flex cursor-pointer items-center gap-2 p-3">
-                                        <input type="radio" name="gender" id="gender" value={'F'} className="radio radio-primary ms-3" onChange={onChangeField} />
+                                        <input type="radio" name="gender" id="gender" value={'F'} className="radio ms-3" onChange={onChangeField} defaultChecked={defaultValues ? defaultValues.gender === 'F' ? true : false : false} />
                                         <span className="label label-text text-base"> Female </span>
                                     </label>
                                 </li>
@@ -116,16 +136,14 @@ export function FormUserComponent({ defaultValues, title = "Registrar" }: { defa
                     </div>
 
                     {
-                        (defaultValues?.country && defaultValues?.city) ?
+                        (defaultValues?.country_birth && defaultValues?.city_birth) ?
                             <LocationComponent
                                 getData={getData}
-                                countryDefault={defaultValues?.country}
-                                cityDefault={defaultValues?.city}
+                                countryDefault={defaultValues?.country_birth}
+                                cityDefault={defaultValues?.city_birth}
                             />
                             :
-                            <LocationComponent
-                                getData={getData}
-                            />
+                            <LocationComponent getData={getData} />
                     }
 
                     <div className="w-auto">
@@ -158,6 +176,67 @@ export function FormUserComponent({ defaultValues, title = "Registrar" }: { defa
                         </div>
                     </div>
 
+                    <div className="w-full">
+                        <label className="label label-text" htmlFor="country"> Branch </label>
+                        <div className="input-group w-auto">
+
+                            <span className="input-group-text">
+                                <span className="icon-[tabler--world] text-base-content/80 size-5"></span>
+                            </span>
+
+                            {
+                                <select className="select appearance-none input grow disabledd"
+                                    aria-label="select"
+                                    name="id_sucursal"
+                                    id="id_sucursal"
+                                    value={formData?.id_sucursal}
+                                    onChange={onChangeField}
+                                // disabled
+                                >
+                                    {
+                                        formData ?
+                                            formData.id_sucursal ? <option value={formData.id_sucursal}>{formData.name_sucursal}</option>
+                                                : <option>Seleccione una sucursal</option>
+                                            : <option>Seleccione una sucursal</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+                    </div>
+
+
+                    <div className="w-full">
+                        <label className="label label-text" htmlFor="country"> Department </label>
+                        <div className="input-group w-auto">
+
+                            <span className="input-group-text">
+                                <span className="icon-[tabler--world] text-base-content/80 size-5"></span>
+                            </span>
+
+                            {
+                                <select className="select appearance-none input grow disabledd"
+                                    aria-label="select"
+                                    name="id_departamento"
+                                    id="id_departamento"
+                                    value={formData?.id_departamento}
+                                    onChange={onChangeField}
+                                // disabled
+                                >
+                                    {
+                                        formData ?
+                                            formData.id_departamento ? <option value={formData.id_departamento}>{formData.name_departamento}</option>
+                                                : <option>Seleccione un departamento</option>
+                                            : <option>Seleccione un departamento</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+                    </div>
+
+                    <button type="button" className="btn btn-outline btn-sm my-1" onClick={_ => { openModalSelectSucursal("ModalSelectSucursal") }}>
+                        Buscar sucursal y departamento
+                    </button>
+
                     <div className="w-auto">
                         <label className="label label-text" htmlFor="password"> Password </label>
                         <div className="input-group w-auto">
@@ -169,13 +248,65 @@ export function FormUserComponent({ defaultValues, title = "Registrar" }: { defa
                     </div>
 
                     <div className="w-auto my-3">
-                        <button type="submit" className="btn btn-block bg-black text-white hover:bg-black">{title}</button>
+                        <button type="submit" className={`btn btn-block bg-black text-white hover:bg-black ${isLoading && 'btn-disabled'}`}>
+                            {isLoading && <span className="loading loading-spinner loading-sm"></span>}
+                            <span>{method === Method.PUT ? 'Actualizar' : method === Method.POST ? 'Registrar' : ''}</span>
+                        </button>
                     </div>
 
-                </div>
-            </form>
+                </form>
+            </div>
 
-
+            <ModalComponent id="modalFormUser" message={messageModal} />
         </>
     )
 }
+
+export enum Method {
+    POST = 'POST',
+    PUT = 'PUT'
+}
+
+/* type FormFields = {
+    names?: string,
+    surnames?: string,
+    birthdate?: string,
+    dni?: string,
+    gender?: string,
+    email?: string,
+    phone?: string,
+    role?: string,
+    password?: string,
+    country_birth?: { id: string, name: string },
+    city_birth?: { id: string, name: string },
+    // country_birth?: string,
+    // city_birth?: string,
+} */
+
+
+// TEST EXAMPLE
+/* 
+<ModalSelectSucursal
+                id={idModal+"v2"}
+                getSucursalAndDepartment={getSucursalAndDepartment}
+                defaultValues={
+                    {
+                        defaultLocationSucursal: {
+                            country: { id: 'COL', name: 'colombia' },
+                            city: { id: '4319', name: 'Tumaco' }
+                            // city:{ id : '2269' , name : 'Pasto'}
+                            // city:{ id : '2282' , name : 'Popayan'}
+                            // city:{ id : '2258' , name : 'Cali'}
+                        },
+                        defaultSucursal: 'cfc44aa0-fb50-4c13-bf82-d8ae7c3ea1ea', //tumaco
+                        defaultDepartament: '860f1953-5e01-4e64-ad07-d3c8bb4a15ee', //tumaco dep ventas
+
+                        // defaultSucursal :'08f02c39-a8c6-45ba-a9e2-93fda4e1e3b1', //pasto suc centro exito
+                        // defaultDepartament : 'ca742678-a1f5-4d22-97cb-41033436da4d', //pasto dep gerencia
+
+                        // defaultSucursal :'cc7bb3d5-8741-497b-aad4-3557d6b2cc3a', //popayan suc cauca
+                        // defaultDepartament : '63c27cab-7cea-4f37-a82b-0cb897dda474', //popayan dep finanzas
+                    }
+                }
+            /> 
+*/
