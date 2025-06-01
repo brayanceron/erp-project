@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import {useParams} from 'react-router'
+import { useParams } from 'react-router'
 
 type User = {
     id: string,
@@ -43,7 +43,6 @@ const emptyUser: User = {
     id_country_birth: '', name_country_birth: '', name_city_birth: '', id_city_birth: '',
     id_departamento: '', name_departamento: '', email_departamento: '', phone_departamento: '',
     id_sucursal: '', name_sucursal: '', phone_sucursal: '', address_sucursal: '', id_country_sucursal: '', name_country_sucursal: '', id_city_sucursal: '', name_city_sucursal: '',
-
 }
 
 export function UserProfile() {
@@ -54,14 +53,9 @@ export function UserProfile() {
 
     async function getUserData() {
         const res = await fetch(`http://localhost:5000/api/usuario/${idUser}?extended=1`)
-        // console.log(res);
 
         if (res.status == 200) {
             const data = await res.json()
-            // console.log(data);
-
-            const birthday = new Date(data.birthdate)
-            data.birthdate = `${birthday.getDay()}/${birthday.getMonth()}/${birthday.getFullYear()}`
             setUser(data)
         }
     }
