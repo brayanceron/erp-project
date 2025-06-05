@@ -1,5 +1,3 @@
-import { FormUserComponent } from "./components/FormUserComponent"
-import { FormSucursalComponent } from "./components/FormSucursalComponent"
 import { GetSucursal } from "./routes/GetSucursal"
 import { Routes, Route } from "react-router"
 import { GetSucursales } from "./routes/GetSucursales"
@@ -7,6 +5,15 @@ import { UserProfile } from './components/UserProfile'
 import { LayoutDashboard } from "./routes/LayoutDashboard"
 import { LoginComponent } from "./components/LoginComponent"
 import { GetDepartamento } from "./routes/GetDepartamento"
+import { PostSucursal } from "./routes/PostSucursal"
+import { PutSucursal } from "./routes/PutSucursal"
+// import { FormDepartmentComponent } from "./components/FormDepartmentComponent"
+import { PostDepartamento } from "./routes/PostDepartamento"
+import { PutDepartamento } from "./routes/PutDepartamento"
+import { SearchSucursal } from "./routes/SearchSucursal"
+import { PostUser } from "./routes/PostUser"
+import { PutUser } from "./routes/PutUser"
+import { SearchUser } from "./routes/SearchUser";
 // import { ModalComponent, openModal } from "./components/ModalComponent"
 
 function App() {
@@ -22,18 +29,27 @@ function App() {
           <Route path="sucursal">
             <Route path="get" element={<GetSucursales />}></Route>
             <Route path="get/:id" element={<GetSucursal />}></Route>
-            <Route path="post" element={<FormSucursalComponent />}></Route>
+            <Route path="post" element={<PostSucursal />}></Route>
+            <Route path="put/:id" element={<PutSucursal />}></Route>
+            <Route path="search" element={<SearchSucursal />}></Route>
           </Route>
 
-          <Route path="departamento" element={<GetDepartamento />}>
+          {/* <Route path="departamento" element={<GetDepartamento />}> */}
+          <Route path="departamento" >
             <Route path="get/:id" element={<GetDepartamento />}></Route>
+            <Route path="post" element={<PostDepartamento />}></Route>
+            <Route path="put/:id" element={<PutDepartamento />}></Route>
+            {/* <Route path="put/:id" element={<FormDepartmentComponent idSucursal="cfc44aa0-fb50-4c13-bf82-d8ae7c3ea1ea" url="http://localhost:5000/api/departamento" />}></Route> */}
           </Route>
 
           <Route path="usuario">
-            <Route path="post" element={<FormUserComponent />}></Route>
+            {/* <Route path="post" element={<FormUserComponent />}></Route> */}
 
-            <Route path="get/" element={<UserProfile/>}></Route> // usuario logueado
-            <Route path="get/:id" element={<UserProfile/>}></Route>
+            <Route path="get/" element={<UserProfile />}></Route> // usuario logueado
+            <Route path="get/:id" element={<UserProfile />}></Route>
+            <Route path="post" element={<PostUser />}></Route>
+            <Route path="put/:id" element={<PutUser/>}></Route>
+            <Route path="search/" element={<SearchUser/>}></Route>
 
           </Route>
 
