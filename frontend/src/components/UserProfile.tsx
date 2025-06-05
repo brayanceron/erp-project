@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from 'react-router'
+import { Link, useParams } from 'react-router'
 
 type User = {
     id: string,
@@ -235,16 +235,31 @@ export function UserProfile() {
                                     </div>
 
                                 </div>
+                                <div className="flex w-full  justify-center pb-1">
+                                        <Link to={`/usuario/put/${user.id}`} className="btn btn-sm bg-black text-white gap-1 hover:bg-gray-800 w-aut">
+                                            <span className="icon-[tabler--edit]"></span>
+                                            Editar
+                                        </Link>
+                                        <Link to= {''} className="btn btn-sm bg-black text-white gap-1 hover:bg-gray-800 w-aut">
+                                            <span className="icon-[tabler--calendar]"></span>
+                                            Calendar
+                                        </Link>
+                                        <Link to= {''} className="btn btn-sm bg-black text-white gap-1 hover:bg-gray-800 w-aut">
+                                            <span className="icon-[tabler--circle-plus]"></span>
+                                            New Activity
+                                        </Link>
+                                    </div>
 
                             </div>
 
                         </div>
-
-
                     </div>
                     :
                     <h1>No se encontro el usuario</h1>
             }
+
+            
+
         </>
     )
 }
