@@ -209,9 +209,9 @@ def search(names = None, dni = None, email = None) :#{
         cursor = conn.cursor()
 
         # cursor.execute("select * from usuario where %s", filtros)
-        if names : cursor.execute("select distinct id, names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth from usuario where names like(%s) or surnames like(%s)", ['%'+names+'%', '%'+names+'%'])
-        elif dni : cursor.execute("select distinct id, names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth from usuario where dni like(%s)", ['%'+dni+'%'])
-        elif email : cursor.execute("select distinct id, names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth from usuario where email like(%s)", ['%'+email+'%'])
+        if names : cursor.execute(f"select distinct id from usuario where names like(%s) or surnames like(%s)", ['%'+names+'%', '%'+names+'%'])
+        elif dni : cursor.execute(f"select distinct id from usuario where dni like(%s)", ['%'+dni+'%'])
+        elif email : cursor.execute(f"select distinct id from usuario where email like(%s)", ['%'+email+'%'])
         
         
         row_count = cursor.rowcount
@@ -222,21 +222,9 @@ def search(names = None, dni = None, email = None) :#{
         rows = cursor.fetchall()
         usuarios = []
         for row in rows :#{
-            # print(row)
-            usuarios.append({
-            "id":row[0],
-            "names":row[1],
-            "surnames":row[2],
-            "birthdate":str(row[3]),
-            "dni":row[4],
-            "gender":row[5],
-            "email":row[6],
-            "phone":row[7],
-            "role":row[8],
-            "password":row[9],
-            "country_birth":row[10],
-            "city_birth":row[11],
-        })
+            usuario, status = get_id_extended(row[0])
+            if status != 200 : continue
+            usuarios.append(usuario)
         #}
         return usuarios, 200
         # return "ok", 200    
