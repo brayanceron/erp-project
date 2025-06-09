@@ -251,8 +251,8 @@ def generate_empty_activities(id_user : str) :#{
         
     #}
     elif(days_dif < 0) : return ERROR_500
-    
 #}
+
 def post_set_date(id_user, title, description, date = datetime.datetime.now()) :#{
     if (not id_user or not title or not description) : return ERROR_400
     conn = get_connection()

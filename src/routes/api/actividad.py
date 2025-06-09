@@ -40,3 +40,12 @@ def get_latest_by_usuario(id_user) :#{
     return src.controllers.actividad.get_latest_by_usuario(id_user)
 #}
 
+@actividad_api_router.route('/', methods = ['POST'])
+def post() :#{
+    # date = request.form.get('date')
+    title = request.json.get('title')
+    id_user = request.json.get('id_user')
+    description = request.json.get('description')
+
+    return src.controllers.actividad.post(id_user, title, description)
+#}
