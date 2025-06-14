@@ -14,6 +14,10 @@ import { SearchSucursal } from "./routes/SearchSucursal"
 import { PostUser } from "./routes/PostUser"
 import { PutUser } from "./routes/PutUser"
 import { SearchUser } from "./routes/SearchUser";
+import GetActividad from "./routes/activity/GetActividad"
+import PostActividad from "./routes/activity/PostActividad"
+import GetActividades from "./routes/activity/GetActividades"
+import GetByDate from "./routes/activity/GetByDate"
 // import { ModalComponent, openModal } from "./components/ModalComponent"
 
 function App() {
@@ -51,6 +55,13 @@ function App() {
             <Route path="put/:id" element={<PutUser/>}></Route>
             <Route path="search/" element={<SearchUser/>}></Route>
 
+          </Route>
+
+          <Route path="actividad">
+            <Route path="get/" element={<GetActividades/>}></Route>
+            <Route path="get/:id" element={<GetActividad/>}></Route>
+            <Route path="get/by/date" element={<GetByDate/>}></Route>
+            <Route path="post/"   element={<PostActividad/>}></Route> //calendar
           </Route>
 
           <Route path="/*" element={<h1>404. Building...</h1>} ></Route>
