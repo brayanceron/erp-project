@@ -13,7 +13,7 @@ export function useFetch(url: string) {
 
     async function getData() {
         try {
-            const res = await fetch(url)
+            const res = await fetch(url, {credentials : 'include'})
             const data = await res.json()
             setReq({
                 data,
@@ -33,12 +33,11 @@ export function useFetch(url: string) {
     }
 
     useEffect(() => {
-        setReq({ data: null, isLoading: true, error: null, res: null }) // reset isLoading
+        // setReq({ data: null, isLoading: true, error: null, res: null }) // reset isLoading
         if (!url) {
             setReq({ data: null, isLoading: false, error: Error("Invalid Url"), res: null })
             return
         }
-        // setReq({ data: null, isLoading: true, error: null, res: null }) // reset isLoading
         getData()
     }, [url])
 
