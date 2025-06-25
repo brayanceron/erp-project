@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useForm } from "../hooks/useForm"
 import { AlertComponent } from "./AlertComponent"
+import { UserContext } from "../context/UserContext"
 
 /* type loginForm = {
     email : string,
@@ -10,6 +11,7 @@ export function LoginComponent() {
 
     const { formData, onChangeField } = useForm({ email: '', password: '' })
     const [messageAlert, setMessageAlert] = useState("")
+    const {login} = useContext<any>(UserContext)
 
     async function onSubmitForm(event: any) {
         event.preventDefault()
@@ -24,9 +26,7 @@ export function LoginComponent() {
         )
         const data = await res.json()
         if (res.status == 200) {
-            console.log(res.headers);
-            console.log(data);
-            // setMessageModal("") // PARA QUITAR EL ALERT
+            await login()
         }
         else {
             setMessageAlert(data.message === messageAlert ? data.message+" ": data.message)
@@ -35,6 +35,7 @@ export function LoginComponent() {
     }
 
     return (
+        // <ProtectedLogin>
         <div className="w-screen h-screen flex justify-center items-center flex-col">
             
             <div className="card h-auto max-[640px]:w-[95%] sm:w-full max-w-[370px] max-[370px]:p-2 max-[640px]:p-4 sm:p-5 md:p-5 lg:p-5 m-2">
@@ -81,6 +82,7 @@ export function LoginComponent() {
             </div>
 
         </div>
+        // </ProtectedLogin>
     )
 }
 
