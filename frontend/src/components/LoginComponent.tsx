@@ -1,41 +1,20 @@
 import { useContext, useState } from "react"
 import { useForm } from "../hooks/useForm"
 import { AlertComponent } from "./AlertComponent"
-import { UserContext } from "../context/UserContext"
+import { UserContext } from "../auth/UserContext"
 
-/* type loginForm = {
-    email : string,
-    password : string
-} */
 export function LoginComponent() {
-
     const { formData, onChangeField } = useForm({ email: '', password: '' })
     const [messageAlert, setMessageAlert] = useState("")
     const {login} = useContext<any>(UserContext)
 
     async function onSubmitForm(event: any) {
         event.preventDefault()
-
-        const res = await fetch('http://localhost:5000/api/auth/login',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-                credentials: 'include'
-            }
-        )
-        const data = await res.json()
-        if (res.status == 200) {
-            await login()
-        }
-        else {
-            setMessageAlert(data.message === messageAlert ? data.message+" ": data.message)
-        }
-
+        const errMessage = await login(formData.email, formData.password);
+        if(errMessage){ setMessageAlert(errMessage)}
     }
 
     return (
-        // <ProtectedLogin>
         <div className="w-screen h-screen flex justify-center items-center flex-col">
             
             <div className="card h-auto max-[640px]:w-[95%] sm:w-full max-w-[370px] max-[370px]:p-2 max-[640px]:p-4 sm:p-5 md:p-5 lg:p-5 m-2">
@@ -82,7 +61,6 @@ export function LoginComponent() {
             </div>
 
         </div>
-        // </ProtectedLogin>
     )
 }
 
