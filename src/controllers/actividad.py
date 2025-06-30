@@ -93,9 +93,10 @@ def post(id_user, title, description) :#{
 
 # ===========================================
 
-def get_by_usuario_by_mes(id_user : str, month : str = str(datetime.datetime.now().month)) :#{ Esto es para ver todas las tareas de un empleado en un mes(vista calendario)
+def get_by_usuario_by_mes(id_user : str, month : str = str(datetime.datetime.now().month), year : str = str(datetime.datetime.now().year)) :#{ Esto es para ver todas las tareas de un empleado en un mes(vista calendario)
     if (not id_user or not month) : return ERROR_400
     if not str(month).isnumeric() : return INVALID_PARAMS_PAG_ERROR
+    if not str(year).isnumeric() : return INVALID_PARAMS_PAG_ERROR
     if not (1 <= int(month) <= 12) : return INVALID_PARAMS_PAG_ERROR
     # if()
     # generate_empty_activities(id_user)
@@ -103,7 +104,7 @@ def get_by_usuario_by_mes(id_user : str, month : str = str(datetime.datetime.now
     conn = get_connection()
     if not conn : return DB_CONNECTION_ERROR
 
-    year = str(datetime.datetime.now().year)
+    # year = str(datetime.datetime.now().year)
     # year = "2024"
     fecha = f"{year}/{month}/"
     # print(year)
@@ -146,7 +147,7 @@ def get_by_usuario_by_fecha(id_user : str, date : str = str(datetime.datetime.no
     date = f"%{date.replace('/','-')}%"
     try :#{
         cursor = conn.cursor()
-        cursor.execute("select id, id_user, date, title, description from actividad where date like %s and id_user = %s",[ date, id_user])
+        cursor.execute("select id, id_user, date, title, description from actividad where date like %s and id_user = %s order by date",[ date, id_user])
         rows = cursor.fetchall()
         rowcount = cursor.rowcount
         if rowcount == 0 :#{
