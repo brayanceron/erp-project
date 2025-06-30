@@ -17,9 +17,10 @@ def get_id(id) :#{
 # @actividad_api_router.route('/get_by_usuario_by_mes')
 @actividad_api_router.route('/get/by/usuario/by/mes')
 def get_by_usuario_by_mes() :#{
-    keys_params = ['id_user', 'month'] 
+    keys_params = ['id_user', 'month', 'year'] 
     params : dict = { k : request.args.get(k) for k in keys_params } #todos
     if not params['month'] : del params['month']
+    if not params['year'] : del params['year']
     
     return src.controllers.actividad.get_by_usuario_by_mes(**params)
 #}
