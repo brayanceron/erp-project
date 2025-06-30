@@ -4,7 +4,7 @@ import { UsePostForm } from "../../hooks/usePostForm";
 const FormActivity = ({ defaultValues, url, method = Method.POST }: { defaultValues?: {}, url: string, method?: Method }) => {
     defaultValues = {...defaultValues, date : getTodayDate(), id_user : '725b5a63-41fe-4de0-927d-15532a8592fc' }    
     console.log(defaultValues)
-    const { formData, isLoadingPostReq: isLoading, onChangeField, onSubmitForm, ModalPostForm } = UsePostForm(defaultValues, url, method, '/')
+    const { formData, isLoadingPostReq: isLoading, onChangeField, onSubmitForm, ModalPostForm } = UsePostForm(defaultValues, url, method, '/actividad/get/')
 
     return (
         <>
@@ -27,7 +27,7 @@ const FormActivity = ({ defaultValues, url, method = Method.POST }: { defaultVal
                             <label className="label label-text" htmlFor="birthdate"> Date </label>
                             <div className="input-group w-auto">
                                 <span className="input-group-text">
-                                    <span className="icon-[tabler--cake] text-base-content/80 size-5"></span>
+                                    <span className="icon-[tabler--calendar-time] text-base-content/80 size-5 text-gray-300"></span>
                                 </span>
                                 <input type="date" className="input grow disabled" id="date" value={formData.date} onChange={onChangeField} />
                             </div>
