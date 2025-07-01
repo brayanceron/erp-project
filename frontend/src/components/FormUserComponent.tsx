@@ -64,7 +64,7 @@ export function FormUserComponent({ defaultValues, url, method = Method.POST }: 
 
 
             <div className="container card p-7 m-3 sm:w-full md:w-[55%] lg:w-[35%] xl:w-[28%]">
-                <form action="" onSubmit={onSubmitForm}>
+                <form action="" onSubmit={onSubmitForm} encType="multipart/form-data">
 
                     <h3 className="text-2xl font-bold text-center">{method === Method.PUT ? 'Actualizar' : method === Method.POST ? 'Registrar' : ''}</h3>
 
@@ -135,16 +135,18 @@ export function FormUserComponent({ defaultValues, url, method = Method.POST }: 
                         </div>
                     </div>
 
-                    {
-                        (defaultValues?.country_birth && defaultValues?.city_birth) ?
-                            <LocationComponent
-                                getData={getData}
-                                countryDefault={defaultValues?.country_birth}
-                                cityDefault={defaultValues?.city_birth}
-                            />
-                            :
-                            <LocationComponent getData={getData} />
-                    }
+                    <div className = "px-2 my-2 border-2 border-gray-200 rounded-md">
+                        {
+                            (defaultValues?.country_birth && defaultValues?.city_birth) ?
+                                <LocationComponent
+                                    getData={getData}
+                                    countryDefault={defaultValues?.country_birth}
+                                    cityDefault={defaultValues?.city_birth}
+                                />
+                                :
+                                <LocationComponent getData={getData} />
+                        }
+                    </div>
 
                     <div className="w-auto">
                         <label className="label label-text" htmlFor="email"> Email </label>
@@ -176,6 +178,7 @@ export function FormUserComponent({ defaultValues, url, method = Method.POST }: 
                         </div>
                     </div>
 
+                    <div className = "px-2 my-2 border-2 border-gray-200 rounded-md">
                     <div className="w-full">
                         <label className="label label-text" htmlFor="country"> Branch </label>
                         <div className="input-group w-auto">
@@ -236,6 +239,7 @@ export function FormUserComponent({ defaultValues, url, method = Method.POST }: 
                     <button type="button" className="btn btn-outline btn-sm my-1" onClick={_ => { openModalSelectSucursal("ModalSelectSucursal") }}>
                         Buscar sucursal y departamento
                     </button>
+                    </div>
 
                     <div className="w-auto">
                         <label className="label label-text" htmlFor="password"> Password </label>
@@ -246,6 +250,7 @@ export function FormUserComponent({ defaultValues, url, method = Method.POST }: 
                             <input type="password" placeholder="" className="input grow" id="password" value={formData.password} onChange={onChangeField} />
                         </div>
                     </div>
+
 
                     <div className="w-auto my-3">
                         <button type="submit" className={`btn btn-block bg-black text-white hover:bg-black ${isLoading && 'btn-disabled'}`}>
@@ -261,6 +266,17 @@ export function FormUserComponent({ defaultValues, url, method = Method.POST }: 
         </>
     )
 }
+
+// <div className="w-auto">
+//     <label className="label label-text" htmlFor="password"> Photo </label>
+//     <div className="input-group w-auto">
+//         {/* <span className="input-group-text"> */}
+//         {/* <span className="icon-[tabler--circle-key-filled] text-base-content/80 size-5" ></span> */}
+//         {/* </span> */}
+//         <input type="file" placeholder="" className="input grow" id="password" /* value={formData.password} */ /* onChange={onChangeField} */ />
+//     </div>
+// </div>
+
 
 export enum Method {
     POST = 'POST',
