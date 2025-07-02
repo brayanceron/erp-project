@@ -1,6 +1,6 @@
 import { LocationComponent } from "./Location/LocationComponent"
-import { Method } from "../hooks/usePost"
 import { UsePostForm } from "../hooks/usePostForm"
+import { Method } from "../utils/Methods"
 
 type FormSucursal = {
     name?: string,
