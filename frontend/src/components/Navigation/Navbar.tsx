@@ -1,4 +1,11 @@
+import { useContext, } from "react"
+import { UserContext } from "../../auth/UserContext"
+import { NavLink } from "react-router";
+
 export function Navbar() {
+    const val = useContext<any>(UserContext)
+    const { user, logout } = val;
+
     return (
         < nav className="navbar rounded-box justify-between gap-4 shadow ml-64 w-auto" >
             <div className="navbar-start">
@@ -40,39 +47,29 @@ export function Navbar() {
                                 </div>
                             </div>
                             <div>
-                                <h6 className="text-base-content text-base font-semibold">John Doe</h6>
-                                <small className="text-base-content/50">Admin</small>
+                                <h6 className="text-base-content text-base font-semibold">{user ? user.names : 'Unknown'}</h6>
+                                <small className="text-base-content/50">{user? user.id : 'sin id'}</small>
                             </div>
                         </li>
                         <li>
+                            <NavLink to={'/usuario/get'}>
                             <a className="dropdown-item" href="#">
                                 <span className="icon-[tabler--user]"></span>
                                 My Profile
                             </a>
+                            </NavLink>
                         </li>
                         <li>
-                            <a className="dropdown-item" href="#">
-                                <span className="icon-[tabler--settings]"></span>
-                                Settings
-                            </a>
-                        </li>
-                        <li>
-                            <a className="dropdown-item" href="#">
-                                <span className="icon-[tabler--receipt-rupee]"></span>
-                                Billing
-                            </a>
-                        </li>
-                        <li>
-                            <a className="dropdown-item" href="#">
-                                <span className="icon-[tabler--help-triangle]"></span>
-                                FAQs
-                            </a>
+                            <NavLink to={`/usuario/put/${user.id}`} className="dropdown-item" >
+                                    <span className="icon-[tabler--edit]"></span>
+                                    Edit Profile
+                            </NavLink>
                         </li>
                         <li className="dropdown-footer gap-2">
-                            <a className="btn btn-error btn-soft btn-block" href="#">
+                            <button className="btn btn-error btn-soft btn-block" onClick={ _ => logout() }>
                                 <span className="icon-[tabler--logout]"></span>
                                 Sign out
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </div>
