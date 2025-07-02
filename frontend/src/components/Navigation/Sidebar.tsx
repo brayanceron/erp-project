@@ -36,79 +36,94 @@ export function Sidebar() {
                             </NavLink>
                         </li>
 
-                        <li className="space-y-0.5 text-gray-400">
-                            <a className="collapse-toggle collapse-open:bg-base-content/10" id="menu-app_suc" data-collapse="#menu-app-collapse_suc">
-                                <span className="icon-[tabler--building-factory-2] size-5"></span>Sucursalesss
-                                <span className="icon-[tabler--chevron-down] collapse-open:rotate-180 size-4 transition-all duration-300"></span>
-                            </a>
-                            {/* <NavLink to={"/sucursal/get"} className={({ isActive }) => setActive(isActive, "collapse-toggle collapse-open:bg-base-content/10")} id="menu-app_suc" data-collapse="#menu-app-collapse_suc">
-                                <span className="icon-[tabler--activity] size-5"></span>Sucursalesss
-                                <span className="icon-[tabler--chevron-down] collapse-open:rotate-180 size-4 transition-all duration-300"></span>
-                            </NavLink> */}
-                            <ul id="menu-app-collapse_suc" className="collapse hidden w-auto overflow-hidden transition-[height] duration-300" aria-labelledby="menu-app_suc" >
-                                <li>
-                                    <NavLink to={"/sucursal/get"} className={({ isActive }) => setActive(isActive)}>
-                                        <span className="icon-[tabler--eye] size-5"></span>Ver
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to={"/sucursal/post"} className={({ isActive }) => setActive(isActive)}>
-                                        <span className="icon-[tabler--playlist-add] size-5"></span>Registrar
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to={"/sucursal/search"} className={({ isActive }) => setActive(isActive)}>
-                                        <span className="icon-[tabler--list-search] size-5"></span>Buscar
-                                    </NavLink>
-                                </li>
-                            </ul>
+                        <li>
+                            <NavLink to={"/sucursal/get"} className={({ isActive }) => setActive(isActive)}>
+                                <span className="icon-[tabler--building-factory-2] size-5"></span>Sucursal
+                            </NavLink>
                         </li>
 
                         <li>
-                            <NavLink to={"/departamento"} className={({ isActive }) => setActive(isActive)}>
-                                <span className="icon-[tabler--puzzle] size-5"></span>Departamentos
+                            <NavLink to={"/departamento/get"} className={({ isActive }) => setActive(isActive)}>
+                                <span className="icon-[tabler--puzzle] size-5"></span>Departamento
                             </NavLink>
                         </li>
 
                         <li>
                             <NavLink to={"/usuario/get/"} className={({ isActive }) => setActive(isActive)}>
-                                <span className="icon-[tabler--user] size-5"></span>Usuarios
+                                <span className="icon-[tabler--user] size-5"></span>Perfil
                             </NavLink>
                         </li>
 
                         <li>
-                            <NavLink to={"/actividades"} className={({ isActive }) => setActive(isActive)}>
+                            <NavLink to={"/actividad/get/by/date"} className={({ isActive }) => setActive(isActive)} >
                                 <span className="icon-[tabler--activity] size-5"></span>Actividades
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to={"/actividad/get"} className={({ isActive }) => setActive(isActive)} end>
+                                <span className="icon-[tabler--calendar] size-5"></span>Calendario
                             </NavLink>
                         </li>
 
                         <li className="space-y-0.5 text-gray-400">
                             <a className="collapse-toggle collapse-open:bg-base-content/10" id="menu-app" data-collapse="#menu-app-collapse">
-                                <span className="icon-[tabler--apps] size-5"></span>
-                                Apps
+                                <span className="icon-[tabler--world-search] size-5"></span>
+                                Explorar
                                 <span className="icon-[tabler--chevron-down] collapse-open:rotate-180 size-4 transition-all duration-300"></span>
                             </a>
                             <ul id="menu-app-collapse" className="collapse hidden w-auto overflow-hidden transition-[height] duration-300" aria-labelledby="menu-app" >
                                 <li>
-                                    <a href=""   >
-                                        <span className="icon-[tabler--message] size-5"></span>
-                                        Chat
-                                    </a>
+                                    <NavLink to={"/usuario/search/"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--user] size-5"></span> Buscar Usuario
+                                    </NavLink>
                                 </li>
                                 <li>
-                                    <a href=""  >
-                                        <span className="icon-[tabler--calendar] size-5"></span>
-                                        Calendario
-                                    </a>
+                                    <NavLink to={"/rol/get/"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--user] size-5"></span> Explorar Roles
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"/sucursal/search"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--list-search] size-5"></span>Buscar Sucursal
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"/sucursal/explore"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--building-factory-2] size-5"></span>Sucursales
+                                    </NavLink>
                                 </li>
                             </ul>
                         </li>
 
-                        <li className="">
-                            <a href=""  >
-                                <span className="icon-[tabler--shopping-bag] size-5"></span>
-                                Productos
+                        <li className="space-y-0.5 text-gray-400">
+                            <a className="collapse-toggle collapse-open:bg-base-content/10" id="menu-app" data-collapse="#menu-create-collapse">
+                                <span className="icon-[tabler--layout-grid-add] size-5"></span>
+                                Crear
+                                <span className="icon-[tabler--chevron-down] collapse-open:rotate-180 size-4 transition-all duration-300"></span>
                             </a>
+                            <ul id="menu-create-collapse" className="collapse hidden w-auto overflow-hidden transition-[height] duration-300" aria-labelledby="menu-app" >
+                                <li>
+                                    <NavLink to={"/usuario/post/"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--user] size-5"></span> Crear Usuario
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"/rol/post/"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--user] size-5"></span> Crear Rol
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"/sucursal/post"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--building-factory-2] size-5"></span>Crear Sucursal
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"/actividad/post"} className={({ isActive }) => setActive(isActive)}>
+                                        <span className="icon-[tabler--activity] size-5"></span>Crear Actividad
+                                    </NavLink>
+                                </li>
+                            </ul>
                         </li>
 
                     </ul>
