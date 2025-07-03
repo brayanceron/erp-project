@@ -3,6 +3,7 @@ from src.utils.messages_errors import DB_CONNECTION_ERROR, ERROR_400, ERROR_500
 import src.controllers.ubicacion
 import src.controllers.sucursal
 import src.controllers.departamento
+import src.controllers.rol
 
 from uuid import uuid4
 
@@ -152,8 +153,8 @@ def get_by_departamento(id_departamento) :#{
     
     try :#{
         cursor = conn.cursor()
-        cursor.execute('select id, names, surnames, birthdate, dni, gender, email, phone, role, password, country_birth, city_birth \
-                        from usuario where id_departamento = %s',[id_departamento])
+        cursor.execute('select usuario.id, usuario.names, usuario.surnames, usuario.birthdate, usuario.dni, usuario.gender, usuario.email, usuario.phone, rol.name, usuario.password, usuario.country_birth, usuario.city_birth \
+                        from usuario join rol on usuario.role = rol.id where id_departamento = %s',[id_departamento])
         
         rows = cursor.fetchall()
 
@@ -285,6 +286,8 @@ def get_id_extended(id : str) :#{
         sucursal_user, _ = src.controllers.sucursal.get_id(usuario['id_sucursal'])
         departamento_user, _ = src.controllers.departamento.get_id(usuario['id_departamento'])
 
+        name_rol, _ = src.controllers.rol.get_id(usuario['role'])
+
         usuario = { 
             **usuario,
             "id_country_birth" : country_birth['id'],
@@ -306,6 +309,7 @@ def get_id_extended(id : str) :#{
             "email_departamento" : departamento_user['email'],
             "phone_departamento" : departamento_user['phone'],
             
+            "name_role" : name_rol['name'],
         }
         return usuario, 200
     #}
