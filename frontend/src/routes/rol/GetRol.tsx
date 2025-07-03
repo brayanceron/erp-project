@@ -1,11 +1,26 @@
-import { useParams } from "react-router"
+import { Link, useNavigate, useParams } from "react-router"
 import { useFetch } from "../../hooks/useFetch";
 
 const GetRol = () => {
+    const navigate = useNavigate()
     const params = useParams()
     const id = params.id;
 
     const { data, isLoading, error } = useFetch(`http://localhost:5000/api/rol/${id}`);
+
+    const btnDelete = async (deleteId : string) => {
+        const  res = await fetch(`http://localhost:5000/api/rol/${deleteId}`,{
+            method : 'DELETE',
+            headers : {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            credentials : 'include'
+        });
+        const data = await res.json();
+        if(res.ok) { return navigate("/rol/get"); }
+        alert(data.message);
+    }
 
     return (
 
@@ -26,6 +41,14 @@ const GetRol = () => {
                                 <textarea className="textarea" rows={10} disabled >
                                     {data.description}
                                 </textarea>
+                            </div>
+                            <div className="text-center w-full flex justify-center mt-2">
+                                <button className="btn btn-square btn-sm bg-black hover:bg-gray-700" onClick={_=> btnDelete(data.id)} aria-label="Icon Button">
+                                    <span className="icon-[tabler--trash] text-white"></span>
+                                </button>
+                                <Link to={`/rol/put/${data.id}`} className="btn btn-square btn-sm bg-black hover:bg-gray-700">
+                                    <span className="icon-[tabler--pencil] text-white"></span>
+                                </Link>
                             </div>
                         </div>
             }
