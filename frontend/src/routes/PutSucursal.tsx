@@ -1,7 +1,7 @@
 import { FormSucursalComponent } from "../components/FormSucursalComponent";
 import { useParams } from "react-router"
 import { useFetch } from "../hooks/useFetch";
-import { Method } from "../hooks/usePost";
+import { Method } from "../utils/Methods";
 import { AlertComponent } from "../components/AlertComponent";
 
 export function PutSucursal() {
