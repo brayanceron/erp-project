@@ -4,3 +4,4 @@ INVALID_PARAMS_PAG_ERROR = ({"message" : "Parametros de la peticion invalidos" }
 ERROR_500 = ({"message":"Algno no salio bien, vuelva intentarlo :("}, 500)
 ERROR_400 = ({"message":"Debe proporcionar todos los datos"}, 400)
 ERROR_415 = ({"message":"No hay body en la peticion"}, 415)
+ERROR_403 = ({"message":"No autorizado"}, 403)
