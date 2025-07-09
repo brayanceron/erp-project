@@ -63,6 +63,9 @@ export function GetDepartamento() {
                                 <Link to={`/sucursal/get/${departament.sucursal.id}`} className="btn btn-square btn-sm bg-black hover:bg-gray-700" aria-label="Icon Button" >
                                     <span className="icon-[tabler--building-factory-2] text-white"></span>
                                 </Link>
+                                <Link to={`/departamento/put/${departament.id}`} className="btn btn-square btn-sm bg-black hover:bg-gray-700" aria-label="Icon Button" >
+                                    <span className="icon-[tabler--pencil] text-white"></span>
+                                </Link>
                                 <Link to={`/usuario/post?idSucursal=${departament.sucursal.id}&&idDepartment=${departament.id}`} className="btn btn-square btn-sm bg-black hover:bg-gray-700" aria-label="Icon Button" >
                                     <span className="icon-[tabler--user-plus] text-white"></span>
                                 </Link>
