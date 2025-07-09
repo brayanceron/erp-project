@@ -1,6 +1,7 @@
 import { useFetch } from "../hooks/useFetch"
 import { AlertComponent } from "./AlertComponent"
 import { UsePostForm } from "../hooks/usePostForm"
+import { Method } from "../utils/Methods"
 
 type FormDepartment = {
     name: string,
@@ -101,8 +102,4 @@ export function FormDepartmentComponent({ idSucursal, defaultValues, url, method
             }
         </>
     )
-}
-export enum Method {
-    POST = 'POST',
-    PUT = 'PUT'
 }
