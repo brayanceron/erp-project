@@ -3,6 +3,7 @@ import { useForm } from './useForm'
 import { useState } from 'react'
 import { paramsPost, usePost } from './usePost'
 import { ModalComponent, openModal } from '../components/ModalComponent'
+import { Method } from '../utils/Methods'
 
 export function UsePostForm(defaultValues: any, url: string, method: Method, urlRedirect: string) {
     const idModal = "idModal"
@@ -33,8 +34,4 @@ export function UsePostForm(defaultValues: any, url: string, method: Method, url
         ModalPostForm,
         idModal
     }
-}
-enum Method {
-    POST = 'POST',
-    PUT = 'PUT'
 }
