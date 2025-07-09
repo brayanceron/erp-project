@@ -1,7 +1,8 @@
 import { AlertComponent } from "../components/AlertComponent";
-import { FormDepartmentComponent, Method } from "../components/FormDepartmentComponent";
+import { FormDepartmentComponent } from "../components/FormDepartmentComponent";
 import { useFetch } from "../hooks/useFetch";
 import { useParams } from "react-router"
+import { Method } from "../utils/Methods";
 
 export function PutDepartamento() {
     const params = useParams()
