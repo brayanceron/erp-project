@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { Link, useParams } from 'react-router'
+import { Link, NavLink, useParams } from 'react-router'
 import { UserContext } from "../auth/UserContext"
 import { useFetch } from "../hooks/useFetch"
 import { AlertComponent } from "./AlertComponent"
@@ -115,7 +115,8 @@ export function UserProfile() {
 
                                     <div className="w-1/2 px-5 py-1 inline-block">
                                         <span className="icon-[tabler--user-share] size-5 inline-block mx-1 align-middle"></span>
-                                        <p className="inline-block mx-1 text-center align-middle">Role: {user.role}</p>
+                                        Role: 
+                                        <NavLink to={`/rol/get/${user.role}`} className="inline-block mx-1 text-center align-middle link link-animated">{user.name_role}</NavLink>
                                     </div>
 
                                     <div className="w-1/2 px-5 py-1 inline-block">
