@@ -1,8 +1,11 @@
-import { Method } from "../../hooks/usePost"
+import { Method } from "../../utils/Methods";
 import { UsePostForm } from "../../hooks/usePostForm";
+import { useContext } from "react";
+import { UserContext } from "../../auth/UserContext";
 
 const FormActivity = ({ defaultValues, url, method = Method.POST }: { defaultValues?: {}, url: string, method?: Method }) => {
-    defaultValues = {...defaultValues, date : getTodayDate(), id_user : '725b5a63-41fe-4de0-927d-15532a8592fc' }    
+    const { user } = useContext<any>(UserContext);
+    defaultValues = {...defaultValues, date : getTodayDate(), id_user : user.id }
     console.log(defaultValues)
     const { formData, isLoadingPostReq: isLoading, onChangeField, onSubmitForm, ModalPostForm } = UsePostForm(defaultValues, url, method, '/actividad/get/')
 
