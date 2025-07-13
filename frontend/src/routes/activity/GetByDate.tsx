@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useFetch } from '../../hooks/useFetch';
 import Header from './components/Header'
 
@@ -6,7 +6,7 @@ const user_id = '725b5a63-41fe-4de0-927d-15532a8592fc';
 const GetByDate = () => {
     const location = useLocation();
     const params = new URLSearchParams(location.search); // Obtener los parámetros de consulta
-    const date = params.get('date');
+    const date = params.get('date') || formatDate(new Date());
 
     const { data, isLoading, error } = useFetch(`http://localhost:5000/api/actividad/get/by/usuario/by/fecha?id_user=${user_id}&date=${date}`);
 
@@ -20,6 +20,16 @@ const GetByDate = () => {
                         error ? <p>Hubo un error : {error.message}</p> :
                             data.map((item: any) => <CardTask id={item.id} title={item.title} time={item.time} />)
                 }
+            </div>
+            <div className="flex w-full justify-center my-4">
+                <Link to= {'/actividad/get'} className="btn btn-sm bg-black text-white gap-1 hover:bg-gray-800 w-aut">
+                    <span className="icon-[tabler--calendar]"></span>
+                    Calendar
+                </Link>
+                <Link to= {'/actividad/post'} className="btn btn-sm bg-black text-white gap-1 hover:bg-gray-800 w-aut">
+                    <span className="icon-[tabler--circle-plus]"></span>
+                    New Activity
+                </Link>
             </div>
             <p className='text-center mt-10 text-xs'>{data ? data.length : 0} resultado(s) encontrado(s)</p>
         </>
@@ -50,4 +60,11 @@ const CardTask = ({ id, title, time }: { id: string, title: string, time: string
     );
 }
 
+function formatDate(date : Date) : string {
+    const year = date.getFullYear(); // Obtiene el año
+    const month = String(date.getMonth() +1).padStart(2, '0'); 
+    const numberDay = String(date.getDate()).padStart(2, '0'); 
+
+    return `${year}-${month}-${numberDay}`; 
+}
 export default GetByDate
