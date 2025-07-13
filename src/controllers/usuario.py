@@ -4,6 +4,7 @@ import src.controllers.ubicacion
 import src.controllers.sucursal
 import src.controllers.departamento
 import src.controllers.rol
+from src.controllers.auth_controllers.usuario import auth_put
 
 from uuid import uuid4
 
@@ -128,6 +129,7 @@ def put(id, names, surnames, birthdate, dni, gender, email, phone, role, passwor
 
     res, status = get_id(id)
     if status != 200 : return res, status
+    if (AUTH_ERROR := auth_put(id)) : return AUTH_ERROR
 
     try :#{
         cursor = conn.cursor()
