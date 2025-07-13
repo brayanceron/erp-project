@@ -27,7 +27,7 @@ def login(email : str, password : str) :#{
 
 def logout() :#{
     session.clear()
-    return {"message" : "Cierre de sesion exitoso"}, 200
+    return {"message" : "Cierre de sesion exitoso", "session" : session}, 200
 #}
 
 
@@ -41,8 +41,11 @@ def is_allow(url : str, auth_urls : list) :#{
     return {"message" : "Acceso denegado a esta url"}, 403
 #}
 
-def get_sesion_data() :#{
+def whoiam() :#{
+    if not session : return {"message" : "No session", "result" : [] }, 404
     return  dict(session)
+    # if (session.get('logged')) : return  dict(session), 200
+    # return {"message" : "Debe iniciar sesion"}, 403
 #}
 
 BASIC_URLS = [
