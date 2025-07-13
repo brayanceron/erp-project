@@ -1,13 +1,16 @@
 import { Link, useLocation, useNavigate } from 'react-router';
 import { useFetch } from '../../hooks/useFetch';
 import Header from './components/Header'
+import { useContext } from 'react';
+import { UserContext } from '../../auth/UserContext';
 
-const user_id = '725b5a63-41fe-4de0-927d-15532a8592fc';
 const GetByDate = () => {
     const location = useLocation();
     const params = new URLSearchParams(location.search); // Obtener los parámetros de consulta
     const date = params.get('date') || formatDate(new Date());
 
+    const {user : loggedUser} = useContext<any>(UserContext);
+    const user_id = loggedUser.id; // const user_id = '725b5a63-41fe-4de0-927d-15532a8592fc';
     const { data, isLoading, error } = useFetch(`http://localhost:5000/api/actividad/get/by/usuario/by/fecha?id_user=${user_id}&date=${date}`);
 
     return (
