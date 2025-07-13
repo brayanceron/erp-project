@@ -20,3 +20,13 @@ def login_post() :#{
     res, status = src.controllers.auth.login(email, password)
     return res, status
 #}
+
+@auth_api_router.route('/logout')
+def logout() :#{
+    return src.controllers.auth.logout()
+#}
+
+@auth_api_router.route('/whoiam')
+def whoiam() :#{
+    return src.controllers.auth.whoiam()
+#}
