@@ -5,6 +5,7 @@ import src.controllers.sucursal
 import src.controllers.departamento
 import src.controllers.rol
 from src.controllers.auth_controllers.usuario import auth_put
+import hashlib
 
 from uuid import uuid4
 
@@ -103,11 +104,12 @@ def post(names, surnames, birthdate, dni, gender, email, phone, role, password, 
                 return ERROR_400
     #}
     
+    password_hash : str = hashlib.sha256(password.encode()).hexdigest()
     try :#{
         id = uuid4()                                
         cursor = conn.cursor()
         cursor.execute("insert into usuario(id, names, surnames, birthdate, dni, gender, country_birth, city_birth, email, phone, role, password, id_sucursal, id_departamento)"
-                    " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",[id, names, surnames, birthdate, dni, gender, country_birth, city_birth, email, phone, role, password, id_sucursal, id_departamento])
+                    " values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",[id, names, surnames, birthdate, dni, gender, country_birth, city_birth, email, phone, role, password_hash, id_sucursal, id_departamento])
         conn.commit()
         conn.close()
         return {"message":"usuario registrado exitosamente", "id" : id}, 200

@@ -1,14 +1,15 @@
 from flask import session
 import src.controllers.usuario
+import hashlib
 
 def login(email : str, password : str) :#{
     if (not email or not password) : return {"message" : "Debe propocionar todos los datos"}, 400
-    
+    password_hash = hashlib.sha256(password.encode()).hexdigest()
     
     # VALIDATE USER AND PASSWORD    
     user, status = src.controllers.usuario.get_by_email(email)
     if status != 200 : return {"message" : "Usuario o contraseña invalidos"}, 400 #404 # User not found
-    if (user.get('password') != str(password)) : return {"message" : "Usuario o contraseña invalidos"}, 400 #403 #Password invalid
+    if (user.get('password') != str(password_hash)) : return {"message" : "Usuario o contraseña invalidos"}, 400 #403 #Password invalid
     
     # CREATING SESSION
     session['id'] = user.get('id')
