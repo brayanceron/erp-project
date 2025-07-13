@@ -3,7 +3,8 @@ import { useFetch } from "../../../hooks/useFetch"
 
 const Header = ({ user_id, getDate }: { user_id: string, getDate: (val: Date) => void }) => {
     const { data, isLoading, error } = useFetch(`http://localhost:5000/api/usuario/${user_id}?extended=1`);
-    const inputDate = useRef(null)
+    const inputDate = useRef(null);
+    let currentMonth = (new Date()).getMonth() + 1;
 
     const onChange = () => { 
         let dateStr : string = inputDate.current!['value'];
@@ -29,7 +30,7 @@ const Header = ({ user_id, getDate }: { user_id: string, getDate: (val: Date) =>
                             <IconLabel label={data.name_departamento} icon="puzzle" />
                             <IconLabel label={data.entry_date + "(Entry date)"} icon="calendar" />
 
-                            <input ref={inputDate} type="month" onChange={onChange} className="input input-xs w-1/12 " name="currentMonth" id="currentMonth" placeholder="Month" />
+                            <input ref={inputDate} type="month" onChange={onChange} className="input input-xs w-1/12 " name="currentMonth" id="currentMonth" defaultValue={`${new Date().getFullYear()}-${currentMonth < 10 ? '0'+currentMonth : currentMonth}`}/>
 
                         </div>
             }
