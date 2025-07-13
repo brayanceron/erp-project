@@ -1,14 +1,15 @@
 import { useFetch } from "../../hooks/useFetch"
 import Header from "./components/Header";
 import Calendar from "./components/Calendar";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../auth/UserContext";
 
 const baseUrl = "http://localhost:5000/api/actividad/get/by/usuario/by/mes?id_user=";
 const todayDate = new Date();
 
 const GetActividades = () => {
-    // const id_user = '8fbb558a-0d76-40fa-84ee-316d5082f34c';
-    const id_user = '725b5a63-41fe-4de0-927d-15532a8592fc';
+    const { user: loggedUser } = useContext<any>(UserContext); // const id_user = '8fbb558a-0d76-40fa-84ee-316d5082f34c';
+    const id_user = loggedUser.id;
     const [date, setDate] = useState({ month: todayDate.getMonth() + 1, year: todayDate.getFullYear() })
 
     const { data: tasks, isLoading, error, res } = useFetch(`${baseUrl}${id_user}&month=${date.month}&year=${date.year}`)
