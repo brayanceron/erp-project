@@ -1,10 +1,10 @@
 from uuid import uuid4
-import src.controllers.usuario
 import src.controllers.sucursal
 from src.database.database import get_connection
 import src.controllers.sucursal
 from src.utils.messages_errors import DB_CONNECTION_ERROR, INVALID_PARAMS_PAG_ERROR, ERROR_400, ERROR_500
 from src.utils.pagination import params_pagination_check
+from src.controllers.auth_controllers.departamento import auth_get, auth_post, auth_put, auth_delete, auth_get_id, auth_get_by_sucursal
 
 keys = ['id', 'id_sucursal', 'name', 'phone', 'email', 'description']
 cols = str(keys).replace("'","").replace("[","").replace("]","")
@@ -12,6 +12,7 @@ values_cols = "%s, " * (len(keys) -1) + " %s"
 
 def get(page : int = 0, pagination_size : int = 10) :#{  Endpoint que nunca se usaria
     if (not params_pagination_check(page, pagination_size)) : return INVALID_PARAMS_PAG_ERROR 
+    if (AUTH_ERROR := auth_get()) : return AUTH_ERROR
 
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
@@ -76,6 +77,7 @@ def get_id(id) :#{
         }
         
         conn.close()
+        if (AUTH_ERROR := auth_get_id(departamento['id_sucursal'])) : return AUTH_ERROR # wrap_get_id(departamento['id_sucursal'])
         return departamento, 200
     #}
     except :#{
@@ -85,6 +87,7 @@ def get_id(id) :#{
 
 def post(id_sucursal, name, phone, email, description) :#{
     if (not id_sucursal or not name or not phone or not email or not description) : return ERROR_400
+    if (AUTH_ERROR := auth_post(id_sucursal)) : return AUTH_ERROR
     # id = uuid4()
     
     # params = { k : v for k, v in locals().items() if k in keys} 
@@ -114,6 +117,7 @@ def post(id_sucursal, name, phone, email, description) :#{
 
 def put(id, id_sucursal, name, phone, email, description) :#{
     if (not id or not id_sucursal or not name or not phone or not email or not description) : return ERROR_400
+    if (AUTH_ERROR := auth_put(id)) : return AUTH_ERROR
     
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
@@ -140,6 +144,7 @@ def put(id, id_sucursal, name, phone, email, description) :#{
 #}
 
 def delete(id) :#{
+    if (AUTH_ERROR := auth_delete(id)) : return AUTH_ERROR
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
 
@@ -162,7 +167,7 @@ def delete(id) :#{
 
 # =================================================
 
-def get_by_sucursal(id_sucursal) :#{
+def get_by_sucursal(id_sucursal : str) :#{
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR;
     
@@ -188,6 +193,8 @@ def get_by_sucursal(id_sucursal) :#{
                 "description" : row[5]
             })
         #}
+        conn.close()
+        if (AUTH_ERROR := auth_get_by_sucursal(id_sucursal)) : return AUTH_ERROR
         return departamentos, 200
     #}
     # except Exception as err :#{
@@ -248,12 +255,13 @@ def get_id_extended(id : str) :#{
 
         deparamento['usuarios'] = usuarios
 
+        conn.close()
+        if (AUTH_ERROR := auth_get_id(deparamento['id_sucursal'])) : return AUTH_ERROR # wrap_get_id(departamento['id_sucursal'])
         return deparamento, 200
         
     #}
     except :#{
         return ERROR_500
     #}
-    
 #}
 
