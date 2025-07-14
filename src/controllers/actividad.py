@@ -2,6 +2,7 @@ from src.database.database import get_connection
 from src.utils.messages_errors import DB_CONNECTION_ERROR, ERROR_400, ERROR_500, INVALID_PARAMS_PAG_ERROR
 from src.utils.pagination import params_pagination_check
 import src.controllers.usuario
+from src.controllers.auth_controllers.actividad import auth_get, auth_get_id, auth_post
 
 from uuid import uuid4
 import datetime
@@ -10,6 +11,7 @@ import datetime
 
 def get(page : int = 0, pagination_sie : int = 10) :#{
     if (not params_pagination_check(page, pagination_sie)) : return INVALID_PARAMS_PAG_ERROR
+    if(AUTH_ERROR := auth_get()) : return AUTH_ERROR
     
     conn = get_connection()
     if not conn : return DB_CONNECTION_ERROR
@@ -61,6 +63,8 @@ def get_id(id) :#{ Esto es solamente para ver la informacion de una unica tarea
             'title':row[3],
             'description' : row[4]
         }
+        conn.close()
+        if(AUTH_ERROR := auth_get_id(actividad['id_user'])) : return AUTH_ERROR
         return actividad, 200
     #}
     except :#{
@@ -73,6 +77,7 @@ def post(id_user, title, description) :#{
     if (not id_user or not title or not description) : return ERROR_400
     conn = get_connection()
     if not conn : return DB_CONNECTION_ERROR
+    if(AUTH_ERROR := auth_post(id_user)) : return AUTH_ERROR
     
     try :#{
         id = uuid4()
@@ -98,9 +103,8 @@ def get_by_usuario_by_mes(id_user : str, month : str = str(datetime.datetime.now
     if not str(month).isnumeric() : return INVALID_PARAMS_PAG_ERROR
     if not str(year).isnumeric() : return INVALID_PARAMS_PAG_ERROR
     if not (1 <= int(month) <= 12) : return INVALID_PARAMS_PAG_ERROR
-    # if()
-    # generate_empty_activities(id_user)
-    
+
+    if(AUTH_ERROR := auth_get_id(id_user)) : return AUTH_ERROR    
     conn = get_connection()
     if not conn : return DB_CONNECTION_ERROR
 
@@ -140,7 +144,7 @@ def get_by_usuario_by_mes(id_user : str, month : str = str(datetime.datetime.now
 
 def get_by_usuario_by_fecha(id_user : str, date : str = str(datetime.datetime.now().strftime("%Y-%m-%d"))) :#{ Esto es para ver todas las tareas hechas por un empleado en un solo dia
     if (not id_user or not date) : return ERROR_400
-    # print(date)
+    if(AUTH_ERROR := auth_get_id(id_user)) : return AUTH_ERROR
     conn = get_connection()
     if not conn : return DB_CONNECTION_ERROR
 
@@ -176,7 +180,10 @@ def get_by_usuario_by_fecha(id_user : str, date : str = str(datetime.datetime.no
     #}
 #}
 
+#esto no se esta utilizando, borrarlo
 def get_latest_by_usuario(id_user : str) :#{
+    if (not id_user) : return ERROR_400
+    if(AUTH_ERROR := auth_get_id(id_user)) : return AUTH_ERROR
     conn = get_connection()
     if not conn : return DB_CONNECTION_ERROR
     
@@ -218,7 +225,7 @@ def get_latest_by_usuario(id_user : str) :#{
     #}
 #}
 
-
+#esto no se esta utilizando, borrarlo
 def generate_empty_activities(id_user : str) :#{
     # print("----------------", id_user)
     # delete from actividad where title = 'null' and description = 'null'
