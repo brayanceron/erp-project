@@ -1,6 +1,7 @@
 from src.database.database import  get_connection
 from src.utils.messages_errors import DB_CONNECTION_ERROR, ERROR_500, ERROR_400
 from uuid import uuid4
+from src.controllers.auth_controllers.sucursal import auth_put, auth_delete
 
 # CRUD
 
@@ -102,11 +103,10 @@ def post(name, city, country, address, description, phone) :#{
 #}
 
 def put(id, name, city, country, address, description, phone) :#{
-    
     if (not id or not name or not city or not country or not address or not phone or not description) : return ERROR_400
+    if AUTH_ERROR := auth_put(id) : return AUTH_ERROR
     conn  = get_connection()
     if (not conn): return DB_CONNECTION_ERROR
-    
     
     try :#{
         cursor = conn.cursor()
@@ -128,7 +128,7 @@ def put(id, name, city, country, address, description, phone) :#{
 
 def delete(id) :#{
     if (not id) : return ERROR_400
-        
+    if AUTH_ERROR := auth_delete(id) : return AUTH_ERROR
     conn = get_connection()
     if (not conn) : return DB_CONNECTION_ERROR
     
