@@ -1,6 +1,7 @@
-from flask import session
+from flask import session, abort, Response
 import src.controllers.usuario
 import hashlib
+import json
 
 def login(email : str, password : str) :#{
     if (not email or not password) : return {"message" : "Debe propocionar todos los datos"}, 400
@@ -33,8 +34,11 @@ def logout() :#{
 
 
 def is_logged() :#{
+    AUTH_ERROR = ({"message" : "Debe iniciar sesion"}, 403)
+
+    if (not session) : return AUTH_ERROR;
     if (session.get('logged')) : return {"message": "Acceso permitido"}, 200
-    return {"message" : "Debe iniciar sesion"}, 403
+    return AUTH_ERROR;
 #}
 
 def is_allow(url : str, auth_urls : list) :#{
@@ -105,13 +109,10 @@ def auth_ssr_middleware(endpoint) :#{
     return {'auth' : True}
 #}
 
-def auth_api_middleware(endpoint) :#{
-    res, status = is_logged()
-    if (status != 200) : return  {'message' : res.get('message'), 'auth' : False}, 401 # Error 401 requiere autenticacion
-    # print("okok", res, status)
-    router, path = endpoint.split('.') # 403 No autirazado
-    if (path not in urls_dict[router]) : return  { 'message' : 'Acceso denegado a esta url', 'auth' : False}, 403
-    return {'auth' : True}, 200
+def auth_api_middleware() :#{
+    error, status = is_logged()
+    res = Response(json.dumps(error), status, content_type='application/json')
+    if (status != 200) : return  abort(res);
 #}
 
 # suc_ssr_prefix = "sucursal_router" #f"{sucursal_router=}".split('=')[0] # 
