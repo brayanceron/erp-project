@@ -1,7 +1,13 @@
 from flask import Blueprint, request
 import src.controllers.actividad
+import src.controllers.auth
 
 actividad_api_router = Blueprint('actividad_api_router', __name__)
+
+@actividad_api_router.before_request
+def before() :#{
+    src.controllers.auth.auth_api_middleware()
+#}
 
 @actividad_api_router.route('/')
 def get() :#{
