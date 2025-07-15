@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect
+from flask import Blueprint, request
 import src.controllers.sucursal
 import src.controllers.auth
 
@@ -9,10 +9,7 @@ keys = ['name','city','country','address','description','phone']
 # --- AUTH MIDDLEWARE ---
 @sucursal_api_router.before_request
 def before() :#{
-    # if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))['auth']) : return redirect(is_auth['url']) 
-    # if (not (is_auth := src.controllers.auth.auth_middleware(request.endpoint))[0]['auth']) : return {'error' : "error en ..."} 
-    # if (not (is_auth := src.controllers.auth.auth_api_middleware(request.endpoint))[0]['auth']) : return is_auth[0], is_auth[1]
-    pass
+    src.controllers.auth.auth_api_middleware()
 #}
 
 @sucursal_api_router.route('/')
