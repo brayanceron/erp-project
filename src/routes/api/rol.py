@@ -1,7 +1,13 @@
 from flask import Blueprint, request;
 import src.controllers.rol
+import src.controllers.auth
 
 rol_api_router = Blueprint('rol_router', __name__)
+
+@rol_api_router.before_request
+def before() :#{
+    src.controllers.auth.auth_api_middleware()
+#}
 
 @rol_api_router.route('/')
 def get() :#{
