@@ -1,8 +1,14 @@
 from flask import Blueprint, request
 import src.controllers.departamento 
+import src.controllers.auth
 from src.controllers.departamento import keys
 
 departamento_api_router = Blueprint("departamento_api_router", __name__)
+
+@departamento_api_router.before_request
+def before() :#{
+    src.controllers.auth.auth_api_middleware()
+#}
 
 @departamento_api_router.route('/')
 def get() :#{
