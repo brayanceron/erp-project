@@ -1,9 +1,15 @@
 from flask import Blueprint, request
 import src.controllers.usuario
+import src.controllers.auth
 from src.utils.messages_errors import ERROR_400
 
 usuario_api_router = Blueprint("usuario_api_router", __name__)
 keys = ['names', 'surnames', 'birthdate', 'dni', 'gender', 'email', 'phone', 'role', 'password', 'country_birth', 'city_birth', 'id_sucursal', 'id_departamento']
+
+@usuario_api_router.before_request
+def before() :#{
+    src.controllers.auth.auth_api_middleware()
+#}
 
 @usuario_api_router.route('/')
 def get() :#{
