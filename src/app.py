@@ -13,6 +13,7 @@ from src.routes.api.departamento import departamento_api_router
 from src.routes.api.sucursal import sucursal_api_router
 from src.routes.api.actividad import actividad_api_router
 from src.routes.api.auth import auth_api_router
+from src.routes.api.rol import rol_api_router
 
 from src.routes.static import static_router, error_403
 
@@ -43,6 +44,7 @@ app.register_blueprint(usuario_api_router, url_prefix = '/api/usuario')
 app.register_blueprint(ubicacion_router, url_prefix = "/api/ubicacion")
 app.register_blueprint(actividad_api_router, url_prefix = '/api/actividad')
 app.register_blueprint(auth_api_router, url_prefix = '/api/auth')
+app.register_blueprint(rol_api_router, url_prefix = '/api/rol')
 
 #secret key
 app.secret_key = "shhh"
