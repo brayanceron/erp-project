@@ -19,7 +19,7 @@ usuario_router = Blueprint('usuario_router', __name__)
 @usuario_router.route('/')
 @usuario_router.route('/get')
 def get() :#{
-    return render_template("usuario/get.html", session_data = src.controllers.auth.get_sesion_data())
+    return render_template("usuario/get.html", session_data = src.controllers.auth.whoiam())
 #}
 
 @usuario_router.route('/get/<id>')
@@ -38,11 +38,11 @@ def get_id(id) :#{
                             ciudad_nacimiento = ciudad_nacimiento.get('name', 'No registra'),
                             sucursal = sucursal,
                             departamento = departamento,
-                            session_data = src.controllers.auth.get_sesion_data()
+                            session_data = src.controllers.auth.whoiam()
                         )
     #}
     else :#{
-        return render_template("usuario/get_id.html", error = usuario["message"], session_data = src.controllers.auth.get_sesion_data())
+        return render_template("usuario/get_id.html", error = usuario["message"], session_data = src.controllers.auth.whoiam())
     #}
 #}
 
@@ -56,12 +56,12 @@ def post() :#{
         # "url_pais_n": "/api/ubicacion/pais/get?filtrar=True",
         # "url_ciudad_n": """/api/ubicacion/pais/get/${select_pais.value}/ciudades?filtrar=True"""
     }
-    return render_template("usuario/post.html", **urls, session_data = src.controllers.auth.get_sesion_data())
+    return render_template("usuario/post.html", **urls, session_data = src.controllers.auth.whoiam())
 #}
 
 @usuario_router.route('/search')
 def search() :#{
-    return render_template("usuario/search.html", session_data = src.controllers.auth.get_sesion_data())
+    return render_template("usuario/search.html", session_data = src.controllers.auth.whoiam())
 #}
 
 
