@@ -1,0 +1,8 @@
+{
+    "bg@br4": {
+        "display:name": "Br4",
+        "display:order": -1,
+        "bg:*": true,
+        "bg" : "purple"
+    }
+}
