@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Method } from "../utils/Methods";
 export type paramsPost = {
     body: any,
     data: any | null,
@@ -6,7 +7,11 @@ export type paramsPost = {
     error: null | Error,
     res: null | Response,
 }
-export function usePost(url: string, body: any, method: Method = Method.POST, callback: (params: paramsPost) => void) {
+const defaultHeaders = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+}
+export function usePost(url: string, body: any, method: Method = Method.POST, callback: (params: paramsPost) => void, headers : any = defaultHeaders ) {
     const [req, setReq] = useState<paramsPost>({ body, data: null, isLoading: false, error: null, res: null }) //initial state
 
     async function sendReq() {
@@ -18,10 +23,12 @@ export function usePost(url: string, body: any, method: Method = Method.POST, ca
         try {
             let res = await fetch(url, {
                 method: method,
-                headers: {
+                headers : headers,
+                /* headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                },
+                }, */
+                credentials : 'include', // para lo de autorizacion y permisos
                 body: JSON.stringify(body)
             });
             let data = await res.json();
@@ -52,7 +59,7 @@ export function usePost(url: string, body: any, method: Method = Method.POST, ca
 
     return { ...req, sendReq }
 }
-export enum Method {
+/* export enum Method {
     POST = 'POST',
     PUT = 'PUT'
-}
+} */
