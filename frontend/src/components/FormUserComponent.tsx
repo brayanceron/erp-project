@@ -5,6 +5,7 @@ import { LocationComponent } from "./Location/LocationComponent"
 import { ModalComponent, openModal } from "./ModalComponent"
 import { useNavigate } from 'react-router'
 import { ModalSelectSucursal, openModalSelectSucursal } from "./ModalSelectSucursal"
+import SelectRolComponent from "./SelectRolComponent"
 
 export function FormUserComponent({ defaultValues, url, method = Method.POST }: { defaultValues?: any, url: string, method?: Method }) { // export function FormUserComponent({ url, defaultValues, method = Method.POST }: { url: string, defaultValues?: FormFields, method?: Method }) {
     const navigate = useNavigate()
@@ -168,13 +169,20 @@ export function FormUserComponent({ defaultValues, url, method = Method.POST }: 
                         </div>
                     </div>
 
-                    <div className="w-auto">
+                    {/* <div className="w-auto">
                         <label className="label label-text" htmlFor="role"> Role </label>
                         <div className="input-group w-auto">
                             <span className="input-group-text">
                                 <span className="icon-[tabler--user-cog] text-base-content/80 size-5"></span>
                             </span>
                             <input type="text" placeholder="" className="input grow" id="role" value={formData.role} onChange={onChangeField} />
+                        </div>
+                    </div> 
+                    */}
+                    <div className="w-auto">
+                        <label className="label label-text" htmlFor="phone"> Role </label>
+                        <div className="input-group w-auto">
+                            <SelectRolComponent value={formData.role} onChangeField={onChangeField}/>
                         </div>
                     </div>
 
