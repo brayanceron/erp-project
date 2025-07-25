@@ -31,8 +31,11 @@ export function SearchSucursal() {
 
     return (
         <>
-
             <div className="w-full flex justify-center items-center pt-8 pb-2">
+                    <span className="icon-[tabler--building-factory-2] size-20"></span>
+            </div>
+
+            <div className="w-full flex justify-center items-center pt-2 pb-2">
                 <div className="sm:w-full max-w-[500px]">
                     <div className="relative">
                         <span onClick={_ => setLive(!live)} className={`icon-[tabler--access-point] ${live ? "bg-green-600" : "bg-gray-300"} text-base-content absolute start-3 top-1/2 size-4 flex-shrink-0 -translate-y-1/2 hover:cursor-pointer hover:bg-gray-500`} ></span>
