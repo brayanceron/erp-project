@@ -1,22 +1,28 @@
-import { useSearch, SearchComponentParams } from "../hooks/useSearch";
+import { useRef } from "react";
+import { useSearch } from "../hooks/useSearch";
+
+export type SearchComponentParams = {
+    url: string,
+    params: any,
+    getSearchedData: (data: any, isLoading: boolean, error: Error | null, text: string) => void
+}
+
 
 export function SearchComponent(componentParams: SearchComponentParams) {
-    const { onKeyUp, formData, onChangeField, fetchData } = useSearch(componentParams);
-    // const { formData, onChangeField, fetchData } = useSearch(componentParams);
+    const inptText = useRef(null)
+    const { onKeyUp, formData, onChangeField, fetchData } = useSearch(componentParams); //on keyup para activa busqueda en tiempo real
 
     return (
         <>
             <div className="w-full flex justify-center items-center pt-8 pb-2">
+                    <span className="icon-[tabler--user-search] size-20"></span>
+            </div>
+            
+            <div className="w-full flex justify-center items-center pt-2 pb-2">
                 <div className="sm:w-full max-w-[500px]">
                     <div className="relative">
-
                         <span  onClick={ e => onChangeField({ ...e, target: { id: 'live', value: !formData.live } })} className={`icon-[tabler--access-point] ${formData.live ? "bg-green-600" : "bg-gray-300"} text-base-content absolute start-3 top-1/2 size-4 flex-shrink-0 -translate-y-1/2 hover:cursor-pointer hover:bg-gray-500`} ></span>
-                        
-                        <input onKeyUp={onKeyUp} onChange={onChangeField} name="text" id="text" value={formData.text} className="input ps-8 rounded-full text-center" type="text" placeholder="Search for an action" role="combobox" aria-expanded="false" data-combo-box-input="" />
-                        {/* <input onKeyUp={onKeyUp} name="text" id="text" value={formData.text} className="input ps-8 rounded-full text-center" type="text" placeholder="Search for an action" role="combobox" aria-expanded="false" data-combo-box-input="" /> */}
-                        {/* <input onChange={onChangeField} name="text" id="text" value={formData.text} className="input ps-8 rounded-full text-center" type="text" placeholder="Search for an action" role="combobox" aria-expanded="false" data-combo-box-input="" /> */}
-                        {/* <input onKeyUp={onChangeField} name="text" id="text" value={formData.text} className="input ps-8 rounded-full text-center" type="text" placeholder="Search for an action" role="combobox" aria-expanded="false" data-combo-box-input="" /> */}
-
+                        <input ref={inptText} onKeyUp={onKeyUp} onChange={onChangeField} name="text" id="text" value={formData.text} className="input ps-8 rounded-full text-center" type="text" placeholder="Search for an action" role="combobox" aria-expanded="false" data-combo-box-input="" />
                         <span  onClick={_ => fetchData()} className="icon-[tabler--search] text-base-content absolute end-3 top-1/2 size-4 flex-shrink-0 -translate-y-1/2 hover:cursor-pointer hover:bg-gray-500" ></span>
                     </div>
                 </div>
@@ -34,6 +40,7 @@ export function SearchComponent(componentParams: SearchComponentParams) {
         </>
     )
 }
+
 
 function CheckedOption({ nameKey, value, onChangeParams }: { nameKey: string, value: boolean, onChangeParams: (event: any) => void }) {
     return (
