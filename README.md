@@ -1,3 +1,7 @@
 # ERP project
 
-public project
+Public project
+
+## Description
+
+## Screenshots
